@@ -8,10 +8,10 @@ Introduction
 lua-Spore is an implementation of SPORE (Specification to a POrtable Rest Environment).
 
 Some specifications of service are available at
-[https://github.com/franckcuny/spore](https://github.com/franckcuny/spore).
+[http://github.com/franckcuny/spore](http://github.com/franckcuny/spore).
 
 The Perl5 implementation is available at
-[https://github.com/franckcuny/net-http-spore](https://github.com/franckcuny/net-http-spore)
+[http://github.com/franckcuny/net-http-spore](http://github.com/franckcuny/net-http-spore)
 
 Links
 -----

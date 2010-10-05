@@ -2,13 +2,13 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>lua-Spore - Homepage</title>
+  <title>Module Spore</title>
     <link rel="stylesheet" href="http://www.keplerproject.org/doc.css" type="text/css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta http-equiv="Author" content="Fran&ccedil;ois Perrad"/>
   <meta http-equiv="Language" content="en"/>
-  <meta http-equiv="Description" content="Homepage of lua-Spore"/>
-  <meta http-equiv="Keywords" content="lua, Spore, ReST, ReSTapi, ReSTful"/>
+  <meta http-equiv="Description" content="Module Spore"/>
+  <meta http-equiv="Keywords" content="lua, Spore, ReST, ReSTapi, ReSTful, new_from_spec, new_from_string"/>
 </head>
 
 <body>
@@ -28,9 +28,9 @@
 <div id="main">
 
 <div id="navigation">
-<h1>lua-Spore</h1>
+<h1>Spore</h1>
   <ul>
-    <li><strong>Home</strong>
+    <li><a href="index.html">Home</a>
       <ul>
         <li><a href="index.html#overview">Overview</a></li>
         <li><a href="index.html#references">References</a></li>
@@ -41,7 +41,7 @@
         <li><a href="index.html#license">License</a></li>
       </ul>
     </li>
-    <li><a href="spore.html">module <code>Spore</code></a>
+    <li><strong>module <code>Spore</code></strong>
       <ul>
         <li><a href="spore.html#reference">Reference</a></li>
         <li><a href="spore.html#examples">Examples</a></li>
@@ -65,72 +65,45 @@
 
 <div id="content">
 
-<h2><a name="overview"></a>Overview</h2>
+<h2><a name="reference"></a>Reference</h2>
 
-<p>lua-Spore is an implementation of SPORE (Specification to a POrtable Rest Environment).</p>
+<h4><code>new_from_spec()</code></h4>
 
-<h2><a name="references"></a>References</h2>
+<h4><code>new_from_string()</code></h4>
 
-<p>Some specifications of service are available at
-<a href="http://github.com/franckcuny/spore">http://github.com/franckcuny/spore</a>.
-</p>
+<h2><a name="examples"></a>Examples</h2>
 
-<p>The Perl5 implementation is available at
-<a href="http://github.com/franckcuny/net-http-spore">http://github.com/franckcuny/net-http-spore</a>.
-</p>
-
-<h2><a name="status"></a>Status</h2>
-
-<p>lua-Spore is in early stage.</p>
-
-<p>It's developed for Lua 5.1.</p>
-
-<h2><a name="download"></a>Download</h2>
-
-<p>lua-Spore source can be downloaded from
-<a href="http://github.com/fperrad/lua-Spore/downloads/">GitHub</a> or
-<a href="http://luaforge.net/projects/lua-spore/files/">Lua Forge</a>.</p>
-
-<h2><a name="installation"></a>Installation</h2>
-
-<p>lua-Spore is available via LuaRocks:</p>
+<p>GitHib via http.</p>
 
 <pre class="example">
-luarocks install lua-spore
+require 'Spore'
+
+local github = Spore.new_from_spec 'github.json'
+github:enable 'Format.JSON'
+github:enable('Auth.Basic', {
+    username = 'schacon/token',
+    password = '6ef8395fecf207165f1a82178ae1b984',
+})
+local res = github:user_information{format = 'json', username = 'schacon'}
+print(res.status)               --> 200
+print(res.headers['x-runtime']) --> 126ms
+print(res.body.user.name)       --> Scott Chacon
 </pre>
 
-<p>or manually, with:</p>
+<p>GitHib via https.</p>
 
 <pre class="example">
-make install
+require 'Spore'
+
+local github = Spore.new_from_spec('github.json', {
+    api_base_url = "https://github.com/api/v2/",
+})
+github:enable 'Format.JSON'
+local res = github:user_information{format = 'json', username = 'schacon'}
+print(res.status)               --> 200
+print(res.headers['x-runtime']) --> 126ms
+print(res.body.user.name)       --> Scott Chacon
 </pre>
-
-<h2><a name="test"></a>Test</h2>
-
-<p>The test suite requires the module
-<a href="http://fperrad.github.com/lua-TestMore">lua-TestMore</a>.</p>
-
-<pre class="example">
-make test
-</pre>
-
-<h2><a name="license"></a>Copyright and License</h2>
-
-<p>Copyright &copy; 2010 Fran&ccedil;ois Perrad
-<a href="http://www.ohloh.net/accounts/4780?ref=Rank">
-  <img alt="ohloh profile for Fran&ccedil;ois Perrad"
-       height="24" width="32" style="border-width:0"
-       src="http://www.ohloh.net/accounts/4780/widgets/account_rank.gif"/>
-</a>
-<a href="http://www.linkedin.com/in/fperrad">
-  <img alt="View Fran&ccedil;ois Perrad's profile on LinkedIn"
-       width="80" height="15" style="border-width:0"
-       src="http://www.linkedin.com/img/webpromo/btn_liprofile_blue_80x15.gif"/>
-</a>
-</p>
-
-<p>This library is licensed under the terms of the MIT/X11 license,
-like Lua itself.</p>
 
 </div> <!-- id="content" -->
 

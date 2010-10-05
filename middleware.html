@@ -2,13 +2,13 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>lua-Spore - Homepage</title>
+  <title>Module Spore.Middleware</title>
     <link rel="stylesheet" href="http://www.keplerproject.org/doc.css" type="text/css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta http-equiv="Author" content="Fran&ccedil;ois Perrad"/>
   <meta http-equiv="Language" content="en"/>
-  <meta http-equiv="Description" content="Homepage of lua-Spore"/>
-  <meta http-equiv="Keywords" content="lua, Spore, ReST, ReSTapi, ReSTful"/>
+  <meta http-equiv="Description" content="Module Spore.Middleware"/>
+  <meta http-equiv="Keywords" content="lua, Spore, ReST, ReSTapi, ReSTful, middleware"/>
 </head>
 
 <body>
@@ -28,9 +28,9 @@
 <div id="main">
 
 <div id="navigation">
-<h1>lua-Spore</h1>
+<h1>Spore</h1>
   <ul>
-    <li><strong>Home</strong>
+    <li><a href="index.html">Home</a>
       <ul>
         <li><a href="index.html#overview">Overview</a></li>
         <li><a href="index.html#references">References</a></li>
@@ -47,7 +47,7 @@
         <li><a href="spore.html#examples">Examples</a></li>
       </ul>
     </li>
-    <li><a href="middleware.html">module <code>S.Middleware</code></a>
+    <li><strong>module <code>S.Middleware</code></strong>
       <ul>
         <li><a href="middleware.html#basic">Auth.Basic</a></li>
         <li><a href="middleware.html#json">Format.JSON</a></li>
@@ -65,72 +65,30 @@
 
 <div id="content">
 
-<h2><a name="overview"></a>Overview</h2>
+<h2>Interface</h2>
 
-<p>lua-Spore is an implementation of SPORE (Specification to a POrtable Rest Environment).</p>
-
-<h2><a name="references"></a>References</h2>
-
-<p>Some specifications of service are available at
-<a href="http://github.com/franckcuny/spore">http://github.com/franckcuny/spore</a>.
-</p>
-
-<p>The Perl5 implementation is available at
-<a href="http://github.com/franckcuny/net-http-spore">http://github.com/franckcuny/net-http-spore</a>.
-</p>
-
-<h2><a name="status"></a>Status</h2>
-
-<p>lua-Spore is in early stage.</p>
-
-<p>It's developed for Lua 5.1.</p>
-
-<h2><a name="download"></a>Download</h2>
-
-<p>lua-Spore source can be downloaded from
-<a href="http://github.com/fperrad/lua-Spore/downloads/">GitHub</a> or
-<a href="http://luaforge.net/projects/lua-spore/files/">Lua Forge</a>.</p>
-
-<h2><a name="installation"></a>Installation</h2>
-
-<p>lua-Spore is available via LuaRocks:</p>
+<h2><a name="basic"></a>Auth.Basic</h2>
 
 <pre class="example">
-luarocks install lua-spore
+client:enable('Auth.Basic', {
+    username = 'schacon/token',
+    password = '6ef8395fecf207165f1a82178ae1b984',
+})
 </pre>
 
-<p>or manually, with:</p>
+<h2><a name="json"></a>Format.JSON</h2>
 
 <pre class="example">
-make install
+client:enable 'Format.JSON'
 </pre>
 
-<h2><a name="test"></a>Test</h2>
-
-<p>The test suite requires the module
-<a href="http://fperrad.github.com/lua-TestMore">lua-TestMore</a>.</p>
+<h2><a name="useragent"></a>UserAgent</h2>
 
 <pre class="example">
-make test
+client:enable('UserAgent', {
+    useragent = 'Mozilla/5.0 (X11; Linux x86_64; rv:2.0b4) Gecko/20100818 Firefox/4.0b4',
+})
 </pre>
-
-<h2><a name="license"></a>Copyright and License</h2>
-
-<p>Copyright &copy; 2010 Fran&ccedil;ois Perrad
-<a href="http://www.ohloh.net/accounts/4780?ref=Rank">
-  <img alt="ohloh profile for Fran&ccedil;ois Perrad"
-       height="24" width="32" style="border-width:0"
-       src="http://www.ohloh.net/accounts/4780/widgets/account_rank.gif"/>
-</a>
-<a href="http://www.linkedin.com/in/fperrad">
-  <img alt="View Fran&ccedil;ois Perrad's profile on LinkedIn"
-       width="80" height="15" style="border-width:0"
-       src="http://www.linkedin.com/img/webpromo/btn_liprofile_blue_80x15.gif"/>
-</a>
-</p>
-
-<p>This library is licensed under the terms of the MIT/X11 license,
-like Lua itself.</p>
 
 </div> <!-- id="content" -->
 

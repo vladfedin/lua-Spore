@@ -1,0 +1,38 @@
+package = 'lua-Spore'
+version = '@version@-@rev@'
+source = {
+    url = 'http://cloud.github.com/downloads/fperrad/lua-Spore/lua-spore-@version@.tar.gz',
+    md5 = '@md5@',
+    dir = 'lua-Spore-@version@',
+}
+description = {
+    summary = "a generic ReST client",
+    detailed = [[
+        lua-Spore is an implementation of SPORE (Specification to a POrtable Rest Environment).
+
+        Some specifications of service are available at
+        https://github.com/franckcuny/spore.
+    ]],
+    homepage = 'http://fperrad.github.com/lua-Spore',
+    maintainer = 'Francois Perrad',
+    license = 'MIT/X11'
+}
+dependencies = {
+    'lua >= 5.1',
+    'luasocket >= 2.0.2',
+    'luasec >= 0.4',            -- libssl-dev
+    'luajson >= 1.1',
+    'lua-testmore >= 0.2.1',
+}
+build = {
+    type = 'none',
+    modules = {
+        ['Spore']                               = 'src/Spore.lua',
+        ['Spore.Core']                          = 'src/Spore/Core.lua',
+        ['Spore.Request']                       = 'src/Spore/Request.lua',
+        ['Spore.Middleware.UserAgent']          = 'src/Spore/Middleware/UserAgent.lua',
+        ['Spore.Middleware.Auth.Basic']         = 'src/Spore/Middleware/Auth/Basic.lua',
+        ['Spore.Middleware.Format.JSON']        = 'src/Spore/Middleware/Format/JSON.lua',
+    },
+    copy_directories = { 'doc', 'test' },
+}

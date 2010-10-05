@@ -2,6 +2,7 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
+local pcall = pcall
 local require = require
 
 
@@ -17,8 +18,17 @@ function call (self, req)
     req.headers['accept'] = 'application/json'
     return  function (res)
                 if res.body then
-                    local decode = require 'json.decode'.decode
-                    res.body = decode(res.body)
+                    local r, msg = pcall(function ()
+                        local decode = require 'json.decode'.decode
+                        res.body = decode(res.body)
+                    end)
+                    if not r then
+                        res.status = 599
+                        res.body = nil
+                        if spore.errors then
+                            spore.errors:write(msg)
+                        end
+                    end
                 end
                 return res
             end

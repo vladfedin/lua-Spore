@@ -67,7 +67,7 @@ tag:
 	git tag -a -m 'tag release $(VERSION)' $(VERSION)
 
 doc:
-#	git read-tree --prefix=doc/ -u remotes/origin/gh-pages
+	git read-tree --prefix=doc/ -u remotes/origin/gh-pages
 
 MANIFEST: doc
 	git ls-files | perl -e '$(manifest_pl)' > MANIFEST
@@ -77,8 +77,8 @@ $(TARBALL): MANIFEST
 	perl -ne 'print qq{lua-Spore-$(VERSION)/$$_};' MANIFEST | \
 	    tar -zc -T - -f $(TARBALL)
 	rm lua-Spore-$(VERSION)
-#	rm -rf doc
-#	git rm doc/*
+	rm -rf doc
+	git rm doc/*
 
 dist: $(TARBALL)
 

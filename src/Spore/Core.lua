@@ -49,14 +49,7 @@ function http_request (self, env)
 
     if response == nil then
         req:finalize()
-        local t = {}
-        req.sink = ltn12.sink.table(t)
-        local r, status, headers = protocol[env.spore.url_scheme].request(req)
-        response = {
-            status = status,
-            headers = headers,
-            body = table.concat(t),
-        }
+        response = self:request(req)
     end
 
     if #callbacks > 0 then
@@ -66,6 +59,19 @@ function http_request (self, env)
         end
     end
     return response
+end
+
+function request (self, req)
+    local t = {}
+    req.sink = ltn12.sink.table(t)
+    req.redirect = false
+    local prot = protocol[req.env.spore.url_scheme]
+    local r, status, headers = prot.request(req)
+    return {
+        status = status,
+        headers = headers,
+        body = table.concat(t),
+    }
 end
 
 --

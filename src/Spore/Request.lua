@@ -5,7 +5,6 @@
 local pairs = pairs
 local setmetatable = setmetatable
 local table = require 'table'
-local ltn12 = require 'ltn12'
 local url = require 'socket.url'
 
 
@@ -51,12 +50,6 @@ function finalize (self)
         query   = query,
     }
     self.method = env.REQUEST_METHOD
-    local payload = env.spore.payload
-    if payload then
-        self.source = ltn12.source.string(payload)
-        self.headers['content-length'] = payload:len()
-        self.headers['content-type'] = 'application/x-www-form-urlencoded'
-    end
 end
 
 --

@@ -65,7 +65,14 @@ function request (self, req)
     local t = {}
     req.sink = ltn12.sink.table(t)
     req.redirect = false
-    local prot = protocol[req.env.spore.url_scheme]
+    local spore = req.env.spore
+    local payload = spore.payload
+    if payload then
+        req.source = ltn12.source.string(payload)
+        req.headers['content-length'] = payload:len()
+        req.headers['content-type'] = 'application/x-www-form-urlencoded'
+    end
+    local prot = protocol[spore.url_scheme]
     local r, status, headers = prot.request(req)
     return {
         status = status,

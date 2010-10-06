@@ -31,7 +31,7 @@ end
 function http_request (self, env)
     local req = Request.new(env)
     local callbacks = {}
-    local response 
+    local response
     local middlewares = self.middlewares
     for i = 1, #middlewares do
         local mw = middlewares[i]
@@ -64,7 +64,6 @@ end
 function request (self, req)
     local t = {}
     req.sink = ltn12.sink.table(t)
-    req.redirect = false
     local spore = req.env.spore
     local payload = spore.payload
     if payload then

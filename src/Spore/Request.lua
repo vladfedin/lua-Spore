@@ -4,6 +4,7 @@
 
 local pairs = pairs
 local setmetatable = setmetatable
+local tostring = tostring
 local table = require 'table'
 local url = require 'socket.url'
 
@@ -13,6 +14,7 @@ module 'Spore.Request'
 function new (env)
     local obj = {
         env = env,
+        redirect = false,
         headers = {
             ['user-agent'] = env.HTTP_USER_AGENT,
         },
@@ -27,27 +29,26 @@ function finalize (self)
     local path_info = env.PATH_INFO
     local query = {}
     for k, v in pairs(env.spore.params) do
-        k = url.escape(k)
-        v = url.escape(v)
+        k = tostring(k)
+        v = url.escape(tostring(v))
         local n
-        path_info, n = path_info:gsub(':' .. k, v)
+        path_info, n = path_info:gsub(':' .. k, (v:gsub('%%', '%%%%')))
         if n == 0 then
-            query[#query+1] = k .. '=' .. v
+            query[#query+1] = url.escape(k) .. '=' .. v
         end
     end
+    local query_string
     if #query > 0 then
-        query = table.concat(query, '&')
-    else
-        query = nil
+        query_string = table.concat(query, '&')
     end
     env.PATH_INFO = path_info
-    env.QUERY_STRING = query
+    env.QUERY_STRING = query_string
     self.url = url.build {
         scheme  = env.spore.url_scheme,
         host    = env.HTTP_HOST or env.SERVER_NAME,
         port    = env.SERVER_PORT,
         path    = (env.SCRIPT_NAME or '/') .. path_info,
-        query   = query,
+        query   = query_string,
     }
     self.method = env.REQUEST_METHOD
 end

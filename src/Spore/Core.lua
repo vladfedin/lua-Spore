@@ -3,6 +3,7 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
+local assert = assert
 local require = require
 local type = type
 local table = require 'table'
@@ -18,6 +19,8 @@ local protocol = {
 }
 
 function enable (self, mw, args)
+    args = args or {}
+    assert(type(args) == 'table')
     if not mw:match'^Spore%.Middleware%.' then
         mw = 'Spore.Middleware.' .. mw
     end

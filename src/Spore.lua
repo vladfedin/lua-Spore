@@ -3,7 +3,7 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore>
 --
 
-local error = error
+local assert = assert
 local pairs = pairs
 local setmetatable = setmetatable
 local io = require 'io'
@@ -29,9 +29,7 @@ local function wrap (self, name, method, params)
     local required = method.required or {}
     for i = 1, #required do
         local v = required[i]
-        if params[v] == nil then
-            error(v .. " is required for method " .. name)
-        end
+        assert(params[v] ~= nil, v .. " is required for method " .. name)
     end
 
     local authentication = method.authentication or self.authentication
@@ -69,9 +67,7 @@ function new_from_string (str, args)
     local spec = json.decode(str)
 
     args.api_base_url = args.api_base_url or spec.api_base_url
-    if not args.api_base_url then
-        error "api_base_url is missing!"
-    end
+    assert(args.api_base_url, "api_base_url is missing!")
     if spec.api_format then
         args.api_format = spec.api_format
     end
@@ -85,10 +81,11 @@ function new_from_string (str, args)
     for k, v in pairs(args) do
         obj[k] = v
     end
-    for k, v in pairs(spec.methods or {}) do
-        if obj[k] then
-            error("Duplicated method " .. k)
-        end
+    assert(spec.methods, "no method in spec")
+    for k, v in pairs(spec.methods) do
+        assert(not obj[k], "Duplicated method " .. k)
+        assert(v.method, k .. " without field method")
+        assert(v.path, k .. " without field path")
         obj[k] =  function (self, args)
                       return wrap(self, k, v, args)
                   end
@@ -100,9 +97,7 @@ end
 
 function new_from_spec (fname, args)
     local f, msg = io.open(fname)
-    if f == nil then
-        error(msg)
-    end
+    assert(f, msg)
     local content = f:read '*a'
     f:close()
     return new_from_string(content, args)

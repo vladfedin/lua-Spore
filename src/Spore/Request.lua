@@ -42,7 +42,7 @@ function finalize (self)
         query_string = table.concat(query, '&')
     end
     env.PATH_INFO = path_info
-    env.QUERY_STRING = query_string
+    env.QUERY_STRING = query_string or ''
     self.url = url.build {
         scheme  = env.spore.url_scheme,
         host    = env.HTTP_HOST or env.SERVER_NAME,

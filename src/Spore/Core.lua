@@ -52,11 +52,9 @@ function http_request (self, env)
         response = self:request(req)
     end
 
-    if #callbacks > 0 then
-        for i = #callbacks, 1 do
-            local cb = callbacks[i]
-            response = cb(response)
-        end
+    for i = #callbacks, 1, -1 do
+        local cb = callbacks[i]
+        response = cb(response)
     end
     return response
 end

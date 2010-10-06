@@ -31,6 +31,10 @@ function enable (self, mw, args)
     local t = self.middlewares; t[#t+1] = f
 end
 
+function reset_middlewares (self)
+    self.middlewares = {}
+end
+
 function http_request (self, env)
     local req = Request.new(env)
     local callbacks = {}

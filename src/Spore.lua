@@ -6,6 +6,8 @@
 local assert = assert
 local pairs = pairs
 local setmetatable = setmetatable
+local tostring = tostring
+local type = type
 local io = require 'io'
 local json = require 'json.decode'
 local url = require 'socket.url'
@@ -16,20 +18,23 @@ module 'Spore'
 
 local version = '0.0.1'
 
-local function wrap (self, name, method, params)
+local function wrap (self, name, method, args)
+    local params = {}
+    for k, v in pairs(args) do
+        v = tostring(v)
+        if type(k) == 'number' then
+            params[v] = v
+        else
+            params[tostring(k)] = v
+        end
+    end
     local payload = params.spore_payload or params.payload
     params.spore_payload = nil
     params.payload = nil
-    for i = 1, #params do
-        local v = params[i]
-        params[v] = v
-        params[i] = nil
-    end
-
     local required = method.required or {}
     for i = 1, #required do
         local v = required[i]
-        assert(params[v] ~= nil, v .. " is required for method " .. name)
+        assert(params[v], v .. " is required for method " .. name)
     end
 
     local authentication = method.authentication or self.authentication

@@ -4,7 +4,6 @@
 
 local pairs = pairs
 local setmetatable = setmetatable
-local tostring = tostring
 local table = require 'table'
 local url = require 'socket.url'
 
@@ -29,8 +28,7 @@ function finalize (self)
     local path_info = env.PATH_INFO
     local query = {}
     for k, v in pairs(env.spore.params) do
-        k = tostring(k)
-        v = url.escape(tostring(v))
+        v = url.escape(v)
         local n
         path_info, n = path_info:gsub(':' .. k, (v:gsub('%%', '%%%%')))
         if n == 0 then

@@ -4,7 +4,7 @@
 
 local pairs = pairs
 local setmetatable = setmetatable
-local table = require 'table'
+local tconcat = require 'table'.concat
 local url = require 'socket.url'
 
 
@@ -37,7 +37,7 @@ function finalize (self)
     end
     local query_string
     if #query > 0 then
-        query_string = table.concat(query, '&')
+        query_string = tconcat(query, '&')
     end
     env.PATH_INFO = path_info
     env.QUERY_STRING = query_string or ''

@@ -6,7 +6,7 @@
 local assert = assert
 local require = require
 local type = type
-local table = require 'table'
+local tconcat = require 'table'.concat
 local ltn12 = require 'ltn12'
 local Request = require 'Spore.Request'
 
@@ -81,7 +81,7 @@ function request (self, req)
     return {
         status = status,
         headers = headers,
-        body = table.concat(t),
+        body = tconcat(t),
     }
 end
 

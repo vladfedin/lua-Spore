@@ -71,6 +71,7 @@ local function wrap (self, name, method, args)
             url_scheme      = api_base_url.scheme,
             format          = format,
         },
+        sporex = {},
     }
     return self:http_request(env)
 end

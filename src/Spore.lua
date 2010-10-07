@@ -18,7 +18,14 @@ module 'Spore'
 
 local version = '0.0.1'
 
+function checktype (caller, narg, arg, tname)
+    assert(type(arg) == tname, "bad argument #" .. tostring(narg) .. " to "
+          .. caller .. " (" .. tname .. " expected, got " .. type(arg) .. ")")
+end
+
 local function wrap (self, name, method, args)
+    args = args or {}
+    checktype(name, 2, args, 'table')
     local params = {}
     for k, v in pairs(args) do
         v = tostring(v)
@@ -68,7 +75,9 @@ local function wrap (self, name, method, args)
 end
 
 function new_from_string (str, args)
-    local args = args or {}
+    checktype('new_from_string', 1, str, 'string')
+    args = args or {}
+    checktype('new_from_string', 2, args, 'table')
     local spec = json.decode(str)
 
     args.api_base_url = args.api_base_url or spec.api_base_url
@@ -86,10 +95,13 @@ function new_from_string (str, args)
     for k, v in pairs(args) do
         obj[k] = v
     end
+    local valid = {
+        DELETE = true, HEAD = true, GET = true, POST = true, PUT = true
+    }
     assert(spec.methods, "no method in spec")
     for k, v in pairs(spec.methods) do
-        assert(not obj[k], "Duplicated method " .. k)
         assert(v.method, k .. " without field method")
+        assert(valid[v.method], k .. " with invalid method " .. v.method)
         assert(v.path, k .. " without field path")
         obj[k] =  function (self, args)
                       return wrap(self, k, v, args)
@@ -101,6 +113,9 @@ function new_from_string (str, args)
 end
 
 function new_from_spec (fname, args)
+    checktype('new_from_spec', 1, fname, 'string')
+    args = args or {}
+    checktype('new_from_spec', 2, args, 'table')
     local f, msg = io.open(fname)
     assert(f, msg)
     local content = f:read '*a'

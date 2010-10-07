@@ -3,7 +3,6 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
-local assert = assert
 local require = require
 local type = type
 local tconcat = require 'table'.concat
@@ -19,8 +18,10 @@ local protocol = {
 }
 
 function enable (self, mw, args)
+    local checktype = require 'Spore'.checktype
+    checktype('enable', 2, mw, 'string')
     args = args or {}
-    assert(type(args) == 'table')
+    checktype('enable', 3, args, 'table')
     if not mw:match'^Spore%.Middleware%.' then
         mw = 'Spore.Middleware.' .. mw
     end

@@ -68,7 +68,7 @@ local function wrap (self, name, method, args)
             payload         = payload,
             errors          = io.stderr,
             debug           = debug,
-            url_scheme      = api_base_url.scheme or 'http',
+            url_scheme      = api_base_url.scheme,
             format          = format,
         },
     }
@@ -83,6 +83,9 @@ function new_from_string (str, args)
 
     args.api_base_url = args.api_base_url or spec.api_base_url
     assert(args.api_base_url, "api_base_url is missing!")
+    local uri = url.parse(args.api_base_url)
+    assert(uri.host, "api_base_url without host")
+    assert(uri.scheme, "api_base_url without scheme")
     if spec.api_format then
         args.api_format = spec.api_format
     end

@@ -10,10 +10,12 @@ local url = require 'socket.url'
 
 module 'Spore.Request'
 
+redirect = false
+
 function new (env)
     local obj = {
         env = env,
-        redirect = false,
+        redirect = redirect,
         headers = {
             ['user-agent'] = env.HTTP_USER_AGENT,
         },

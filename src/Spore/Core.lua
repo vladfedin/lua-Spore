@@ -3,6 +3,7 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
+local assert = assert
 local require = require
 local type = type
 local tconcat = require 'table'.concat
@@ -26,6 +27,7 @@ function enable (self, mw, args)
         mw = 'Spore.Middleware.' .. mw
     end
     local m = require(mw)
+    assert(type(m.call) == 'function', mw .. " without a function call")
     local f = function (req)
         return m.call(args, req)
     end

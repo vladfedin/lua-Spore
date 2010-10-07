@@ -78,7 +78,13 @@ function request (self, req)
         req.headers['content-type'] = 'application/x-www-form-urlencoded'
     end
     local prot = protocol[spore.url_scheme]
-    local r, status, headers = prot.request(req)
+    if spore.debug then
+        spore.debug:write(req.method, " ", req.url, "\n")
+    end
+    local r, status, headers, line = prot.request(req)
+    if spore.debug then
+        spore.debug:write(line, "\n")
+    end
     return {
         status = status,
         headers = headers,

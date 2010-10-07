@@ -67,6 +67,7 @@ local function wrap (self, name, method, args)
             params          = params,
             payload         = payload,
             errors          = io.stderr,
+            debug           = debug,
             url_scheme      = api_base_url.scheme or 'http',
             format          = format,
         },

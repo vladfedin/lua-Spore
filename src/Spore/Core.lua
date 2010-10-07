@@ -57,7 +57,7 @@ function http_request (self, env)
 
     if response == nil then
         req:finalize()
-        response = self:request(req)
+        response = request(req)
     end
 
     for i = #callbacks, 1, -1 do
@@ -67,7 +67,7 @@ function http_request (self, env)
     return response
 end
 
-function request (self, req)
+function request (req)
     local t = {}
     req.sink = ltn12.sink.table(t)
     local spore = req.env.spore
@@ -83,7 +83,7 @@ function request (self, req)
     end
     local r, status, headers, line = prot.request(req)
     if spore.debug then
-        spore.debug:write(line, "\n")
+        spore.debug:write(line or status, "\n")
     end
     return {
         status = status,

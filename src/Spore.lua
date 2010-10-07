@@ -113,15 +113,30 @@ function new_from_string (str, args)
     })
 end
 
-function new_from_spec (fname, args)
-    checktype('new_from_spec', 1, fname, 'string')
+function new_from_spec (name, args)
+    checktype('new_from_spec', 1, name, 'string')
     args = args or {}
     checktype('new_from_spec', 2, args, 'table')
-    local f, msg = io.open(fname)
-    assert(f, msg)
-    local content = f:read '*a'
-    f:close()
-    return new_from_string(content, args)
+    local uri = url.parse(name)
+    if not uri.scheme or uri.scheme == 'file' then
+        local f, msg = io.open(uri.path)
+        assert(f, msg)
+        local content = f:read '*a'
+        f:close()
+        return new_from_string(content, args)
+    else
+        local res = core.request{
+            env = {
+                spore = {
+                    url_scheme = uri.scheme,
+                    debug = debug,
+                },
+            },
+            method = 'GET',
+            url = name,
+        }
+        return new_from_string(res.body, args)
+    end
 end
 
 _VERSION = version

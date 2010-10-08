@@ -4,12 +4,12 @@ require 'Spore.Request'
 
 require 'Test.More'
 
-plan(10)
-
-if not require_ok 'yaml' then
-    skip_rest "no yaml"
-    os.exit()
+r, msg = pcall(require, 'yaml')
+if not r then
+    skip_all 'no yaml'
 end
+
+plan(9)
 
 if not require_ok 'Spore.Middleware.Format.YAML' then
     skip_rest "no Spore.Middleware.Format.YAML"

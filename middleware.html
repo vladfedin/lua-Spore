@@ -51,6 +51,9 @@
       <ul>
         <li><a href="middleware.html#basic">Auth.Basic</a></li>
         <li><a href="middleware.html#json">Format.JSON</a></li>
+        <li><a href="middleware.html#yaml">Format.YAML</a></li>
+        <li><a href="middleware.html#logging">Logging</a></li>
+        <li><a href="middleware.html#runtime">Runtime</a></li>
         <li><a href="middleware.html#useragent">UserAgent</a></li>
       </ul>
     </li>
@@ -67,7 +70,7 @@
 
 <h2>Interface</h2>
 
-<h2><a name="basic"></a>Auth.Basic</h2>
+<h2><a name="basic"></a>Spore.Middleware.Auth.Basic</h2>
 
 <pre class="example">
 client:enable('Auth.Basic', {
@@ -76,17 +79,41 @@ client:enable('Auth.Basic', {
 })
 </pre>
 
-<h2><a name="json"></a>Format.JSON</h2>
+<h2><a name="json"></a>Spore.Middleware.Format.JSON</h2>
 
 <pre class="example">
 client:enable 'Format.JSON'
 </pre>
 
-<h2><a name="useragent"></a>UserAgent</h2>
+<h2><a name="yaml"></a>Spore.Middleware.Format.YAML</h2>
+
+<pre class="example">
+client:enable 'Format.YAML'
+</pre>
+
+<h2><a name="logging"></a>Spore.Middleware.Logging</h2>
+
+<pre class="example">
+require 'logging.file'
+
+client:enable('Logging', {
+    logger = logging.file 'test%s.log'
+})
+</pre>
+
+<h2><a name="runtime"></a>Spore.Middleware.Runtime</h2>
+
+<pre class="example">
+client:enable 'Runtime'
+...
+print(response.headers['x-spore-runtime']
+</pre>
+
+<h2><a name="useragent"></a>Spore.Middleware.UserAgent</h2>
 
 <pre class="example">
 client:enable('UserAgent', {
-    useragent = 'Mozilla/5.0 (X11; Linux x86_64; rv:2.0b4) Gecko/20100818 Firefox/4.0b4',
+    useragent = 'Mozilla/5.0'
 })
 </pre>
 

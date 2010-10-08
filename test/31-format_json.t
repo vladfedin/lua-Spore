@@ -4,7 +4,7 @@ require 'Spore.Request'
 
 require 'Test.More'
 
-plan(11)
+plan(12)
 
 if not require_ok 'Spore.Middleware.Format.JSON' then
     skip_rest "no Spore.Middleware.Format.JSON"
@@ -30,6 +30,7 @@ local resp = {
 }
 
 local ret = cb(resp)
+is( req.headers['accept'], 'application/json' )
 is( ret, resp, "returns same table" )
 is( ret.status, 200, "200 OK" )
 local data = ret.body

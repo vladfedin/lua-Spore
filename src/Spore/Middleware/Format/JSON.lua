@@ -2,6 +2,7 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
+local error = error
 local pcall = pcall
 local require = require
 
@@ -13,7 +14,7 @@ function call (self, req)
     if spore.payload then
         local encode = require 'json.encode'.encode
         spore.payload = encode(spore.payload)
-        req.headers['content-type'] = 'application/json' 
+        req.headers['content-type'] = 'application/json'
     end
     req.headers['accept'] = 'application/json'
     return  function (res)
@@ -23,11 +24,11 @@ function call (self, req)
                         res.body = decode(res.body)
                     end)
                     if not r then
-                        res.status = 599
-                        res.body = nil
                         if spore.errors then
-                            spore.errors:write(msg)
+                            spore.errors:write(msg, "\n")
+                            spore.errors:write(res.body, "\n")
                         end
+                        error "Invalid JSON data"
                     end
                 end
                 return res

@@ -4,7 +4,7 @@ require 'Spore.Request'
 
 require 'Test.More'
 
-plan(12)
+plan(11)
 
 if not require_ok 'Spore.Middleware.Format.JSON' then
     skip_rest "no Spore.Middleware.Format.JSON"
@@ -45,11 +45,11 @@ resp.body = [[
 }
 ]]
 env.spore.errors = io.tmpfile()
-ret = cb(resp)
-is( ret, resp, "returns same table" )
-is( ret.status, 599, "internal error" )
-data = ret.body
-is( data, nil, "no body" )
+error_like( function () cb(resp) end,
+            "Invalid JSON data" )
 env.spore.errors:seek'set'
-local msg = env.spore.errors:read '*a'
+local msg = env.spore.errors:read '*l'
 like( msg, "Invalid JSON data", "Invalid JSON data" )
+
+local msg = env.spore.errors:read '*a'
+is( msg, resp.body .. "\n")

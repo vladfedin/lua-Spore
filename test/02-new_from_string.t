@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(14)
+plan(16)
 
 error_like( [[Spore.new_from_string(true)]],
             "bad argument #1 to new_from_string %(string expected, got boolean%)" )
@@ -63,6 +63,34 @@ error_like( [=[Spore.new_from_string([[
 }
 ]])]=],
             "get_info without field path" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    api_base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+            required : true,
+        }
+    }
+}
+]])]=],
+            "required of get_info is not an array" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    api_base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+            params : true,
+        }
+    }
+}
+]])]=],
+            "params of get_info is not an array" )
 
 local client = Spore.new_from_string([[
 {

@@ -132,6 +132,8 @@ function new_from_string (str, args)
         assert(v.method, k .. " without field method")
         assert(valid[v.method], k .. " with invalid method " .. v.method)
         assert(v.path, k .. " without field path")
+        assert(type(v.required or {}) == 'table', "required of " .. k .. " is not an array")
+        assert(type(v.params or {}) == 'table', "params of " .. k .. " is not an array")
         obj[k] =  function (self, args)
                       return wrap(self, k, v, args)
                   end

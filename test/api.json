@@ -1,23 +1,23 @@
 {
-    "api_base_url" : "http://services.org:9999/restapi/",
-    "methods" : {
-        "get_info" : {
-            "path" : "/show",
-            "method" : "GET",
-            "params" : [
+    api_base_url : "http://services.org:9999/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+            params : [
                 "user",
                 "border"
             ],
         },
-        "get_user_info" : {
-            "required" : [
+        get_user_info : {
+            required : [
                 "user"
             ],
-            "params" : [
+            params : [
                 "border"
             ],
-            "path" : "/show",
-            "method" : "GET",
+            path : "/show",
+            method : "GET",
         }
     }
 }

@@ -21,11 +21,7 @@ local protocol = {
     https   = require 'ssl.https',
 }
 
-function enable (self, mw, args)
-    local checktype = require 'Spore'.checktype
-    checktype('enable', 2, mw, 'string')
-    args = args or {}
-    checktype('enable', 3, args, 'table')
+local function _enable_if (self, cond, mw, args)
     if not mw:match'^Spore%.Middleware%.' then
         mw = 'Spore.Middleware.' .. mw
     end
@@ -34,7 +30,24 @@ function enable (self, mw, args)
     local f = function (req)
         return m.call(args, req)
     end
-    local t = self.middlewares; t[#t+1] = f
+    local t = self.middlewares; t[#t+1] = { cond = cond, code = f }
+end
+
+function enable_if (self, cond, mw, args)
+    local checktype = require 'Spore'.checktype
+    checktype('enable_if', 2, cond, 'function')
+    checktype('enable_if', 3, mw, 'string')
+    args = args or {}
+    checktype('enable_if', 4, args, 'table')
+    return _enable_if(self, cond, mw, args)
+end
+
+function enable (self, mw, args)
+    local checktype = require 'Spore'.checktype
+    checktype('enable', 2, mw, 'string')
+    args = args or {}
+    checktype('enable', 3, args, 'table')
+    return _enable_if(self, function () return true end, mw, args)
 end
 
 function reset_middlewares (self)
@@ -53,15 +66,17 @@ function http_request (self, env)
     local middlewares = self.middlewares
     for i = 1, #middlewares do
         local mw = middlewares[i]
-        local res = mw(req)
-        if type(res) == 'function' then
-            callbacks[#callbacks+1] = res
-        elseif res then
-            if res.status == 599 then
-                return res
+        if mw.cond(req) then
+            local res = mw.code(req)
+            if type(res) == 'function' then
+                callbacks[#callbacks+1] = res
+            elseif res then
+                if res.status == 599 then
+                    return res
+                end
+                response = res
+                break
             end
-            response = res
-            break
         end
     end
 

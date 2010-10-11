@@ -2,9 +2,9 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
-local error = error
 local pcall = pcall
 local require = require
+local raises = require 'Spore.Core'.raises
 
 
 module 'Spore.Middleware.Format.JSON'
@@ -28,7 +28,7 @@ function call (self, req)
                             spore.errors:write(msg, "\n")
                             spore.errors:write(res.body, "\n")
                         end
-                        error "Invalid JSON data"
+                        raises(res, msg)
                     end
                 end
                 return res

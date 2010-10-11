@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(16)
+plan(17)
 
 error_like( [[Spore.new_from_string(true)]],
             "bad argument #1 to new_from_string %(string expected, got boolean%)" )
@@ -63,6 +63,20 @@ error_like( [=[Spore.new_from_string([[
 }
 ]])]=],
             "get_info without field path" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    api_base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+            expected : true,
+        }
+    }
+}
+]])]=],
+            "expected of get_info is not an array" )
 
 error_like( [=[Spore.new_from_string([[
 {

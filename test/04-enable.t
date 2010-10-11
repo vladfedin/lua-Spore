@@ -41,7 +41,7 @@ client:enable 'Dummy'
 is( #client.middlewares, 1 )
 type_ok( client.middlewares[1], 'table' )
 
-client:enable 'Dummy'
+client:enable_if(function (req) return true end, 'Dummy')
 is( #client.middlewares, 2 )
 
 client:reset_middlewares()

@@ -2,6 +2,8 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
+local pcall = pcall
+local raises = require 'Spore.Core'.raises
 require 'yaml'
 local yaml = yaml
 
@@ -17,7 +19,16 @@ function call (self, req)
     req.headers['accept'] = 'text/x-yaml'
     return  function (res)
                 if res.body then
-                    res.body = yaml.load(res.body)
+                    local r, msg = pcall(function ()
+                        res.body = yaml.load(res.body)
+                    end)
+                    if not r then
+                        if spore.errors then
+                            spore.errors:write(msg)
+                            spore.errors:write(res.body, "\n")
+                        end
+                        raises(res, msg)
+                    end
                 end
                 return res
             end

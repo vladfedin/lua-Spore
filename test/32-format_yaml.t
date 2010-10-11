@@ -9,7 +9,7 @@ if not r then
     skip_all 'no yaml'
 end
 
-plan(9)
+plan(12)
 
 if not require_ok 'Spore.Middleware.Format.YAML' then
     skip_rest "no Spore.Middleware.Format.YAML"
@@ -45,5 +45,14 @@ resp.body = [[
 username : "john"
 INV?LID
 ]]
-error_like( function () cb(resp) end,
-            "syntax error" )
+env.spore.errors = io.tmpfile()
+local r, ex = pcall(cb, resp)
+nok( r )
+like( ex.reason, "syntax error" )
+env.spore.errors:seek'set'
+local msg = env.spore.errors:read '*l'
+like( msg, "syntax error", "syntax error" )
+
+local msg = env.spore.errors:read '*a'
+is( msg, resp.body .. "\n")
+

@@ -29,10 +29,10 @@ error_like( [[Spore.new_from_string('{ }', { api_base_url = 'http://services.org
 
 error_like( [=[Spore.new_from_string([[
 {
-    "api_base_url" : "http://services.org/restapi/",
-    "methods" : {
-        "get_info" : {
-            "path" : "/show",
+    api_base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
         }
     }
 }
@@ -41,11 +41,11 @@ error_like( [=[Spore.new_from_string([[
 
 error_like( [=[Spore.new_from_string([[
 {
-    "api_base_url" : "http://services.org/restapi/",
-    "methods" : {
-        "get_info" : {
-            "path" : "/show",
-            "method" : "PET",
+    api_base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "PET",
         }
     }
 }
@@ -54,10 +54,10 @@ error_like( [=[Spore.new_from_string([[
 
 error_like( [=[Spore.new_from_string([[
 {
-    "api_base_url" : "http://services.org/restapi/",
-    "methods" : {
-        "get_info" : {
-            "method" : "GET",
+    api_base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            method : "GET",
         }
     }
 }
@@ -66,11 +66,11 @@ error_like( [=[Spore.new_from_string([[
 
 local client = Spore.new_from_string([[
 {
-    "api_base_url" : "http://services.org/restapi/",
-    "methods" : {
-        "get_info" : {
-            "path" : "/show",
-            "method" : "GET",
+    api_base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
         }
     }
 }

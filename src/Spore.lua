@@ -62,7 +62,7 @@ local function wrap (self, name, method, args)
         QUERY_STRING    = '',
         HTTP_USER_AGENT = 'lua-Spore v' .. version,
         spore = {
-            expected        = method.expected or {},
+            expected        = method.expected,
             authentication  = authentication,
             params          = params,
             payload         = payload,
@@ -133,6 +133,7 @@ function new_from_spec (name, args)
             env = {
                 spore = {
                     url_scheme = uri.scheme,
+                    expected = { 200 },
                     debug = debug,
                 },
             },

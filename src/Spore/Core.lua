@@ -4,7 +4,10 @@
 --
 
 local assert = assert
+local error = error
 local require = require
+local setmetatable = setmetatable
+local tonumber = tonumber
 local type = type
 local tconcat = require 'table'.concat
 local ltn12 = require 'ltn12'
@@ -36,6 +39,11 @@ end
 
 function reset_middlewares (self)
     self.middlewares = {}
+end
+
+function raises (response, reason)
+    error(setmetatable({ response = response, reason = reason },
+        { __tostring = function (self) return self.reason end }))
 end
 
 function http_request (self, env)
@@ -87,11 +95,29 @@ function request (req)
     if spore.debug then
         spore.debug:write(line or status, "\n")
     end
-    return {
+    local res = {
         status = status,
         headers = headers,
         body = tconcat(t),
     }
+    local expected = spore.expected
+    if expected then
+        local found = false
+        for i = 1, #expected do
+            if status == tonumber(expected[i]) then
+                found = true
+                break
+            end
+        end
+        if not found then
+            if spore.errors then
+                spore.errors:write(req.method, " ", req.url, "\n")
+                spore.errors:write(line or status, "\n")
+            end
+            raises(res, status .. ' not expected')
+        end
+    end
+    return res
 end
 
 --

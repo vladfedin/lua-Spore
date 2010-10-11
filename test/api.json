@@ -4,10 +4,17 @@
         "get_info" : {
             "path" : "/show",
             "method" : "GET",
+            "params" : [
+                "user",
+                "border"
+            ],
         },
         "get_user_info" : {
             "required" : [
                 "user"
+            ],
+            "params" : [
+                "border"
             ],
             "path" : "/show",
             "method" : "GET",

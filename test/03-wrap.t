@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(14)
+plan(16)
 
 Spore.Core.http_request = function (self, env) return env end -- mock
 
@@ -31,3 +31,9 @@ error_like( function () client:get_user_info{} end,
 
 local res = client:get_info{ user = 'joe' }
 is( res.spore.params.user, 'joe' )
+
+error_like( function () client:get_info{ mode = 'raw' } end,
+            "mode is not expected for method get_info" )
+
+Spore.strict = false
+lives_ok( function () client:get_info{ mode = 'raw' } end )

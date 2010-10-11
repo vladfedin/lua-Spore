@@ -18,6 +18,8 @@ module 'Spore'
 
 local version = '0.0.1'
 
+strict = true
+
 function checktype (caller, narg, arg, tname)
     assert(type(arg) == tname, "bad argument #" .. tostring(narg) .. " to "
           .. caller .. " (" .. tname .. " expected, got " .. type(arg) .. ")")
@@ -42,6 +44,28 @@ local function wrap (self, name, method, args)
     for i = 1, #required do
         local v = required[i]
         assert(params[v], v .. " is required for method " .. name)
+    end
+
+    if strict then
+        local optional = method.params or {}
+        for param in pairs(params) do
+            local found = false
+            for i = 1, #required do
+                if param == required[i] then
+                    found = true
+                    break
+                end
+            end
+            if not found then
+                for i = 1, #optional do
+                    if param == optional[i] then
+                        found = true
+                        break
+                    end
+                end
+            end
+            assert(found, param .. " is not expected for method " .. name)
+        end
     end
 
     local authentication = method.authentication or self.authentication

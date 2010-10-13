@@ -5,13 +5,11 @@ lua-Spore : a generic ReST client
 Introduction
 ------------
 
-lua-Spore is an implementation of SPORE (Specification to a POrtable Rest Environment).
+lua-Spore is an implementation of [SPORE](http://github.com/SPORE/specifications)
+(Specification to a POrtable Rest Environment).
 
 Some specifications of service are available at
-[http://github.com/franckcuny/spore](http://github.com/franckcuny/spore).
-
-The Perl5 implementation is available at
-[http://github.com/franckcuny/net-http-spore](http://github.com/franckcuny/net-http-spore)
+[http://github.com/SPORE/api-description](http://github.com/SPORE/api-description).
 
 Links
 -----

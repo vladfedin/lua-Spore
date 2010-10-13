@@ -8,10 +8,11 @@ source = {
 description = {
     summary = "a generic ReST client",
     detailed = [[
-        lua-Spore is an implementation of SPORE (Specification to a POrtable Rest Environment).
+        lua-Spore is an implementation of SPORE (Specification to a POrtable Rest Environment),
+        see http://github.com/SPORE/specifications.
 
         Some specifications of service are available at
-        https://github.com/franckcuny/spore.
+        http://github.com/SPORE/api-description.
     ]],
     homepage = 'http://fperrad.github.com/lua-Spore',
     maintainer = 'Francois Perrad',

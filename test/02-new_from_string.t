@@ -16,20 +16,20 @@ error_like( [[Spore.new_from_string('{ BAD }')]],
             "Invalid JSON data" )
 
 error_like( [[Spore.new_from_string('{ }')]],
-            "api_base_url is missing" )
+            "base_url is missing" )
 
-error_like( [[Spore.new_from_string('{ }', { api_base_url = 'services.org' })]],
-            "api_base_url without host" )
+error_like( [[Spore.new_from_string('{ }', { base_url = 'services.org' })]],
+            "base_url without host" )
 
-error_like( [[Spore.new_from_string('{ }', { api_base_url = '//services.org/restapi/' })]],
-            "api_base_url without scheme" )
+error_like( [[Spore.new_from_string('{ }', { base_url = '//services.org/restapi/' })]],
+            "base_url without scheme" )
 
-error_like( [[Spore.new_from_string('{ }', { api_base_url = 'http://services.org/restapi/' })]],
+error_like( [[Spore.new_from_string('{ }', { base_url = 'http://services.org/restapi/' })]],
             "no method in spec" )
 
 error_like( [=[Spore.new_from_string([[
 {
-    api_base_url : "http://services.org/restapi/",
+    base_url : "http://services.org/restapi/",
     methods : {
         get_info : {
             path : "/show",
@@ -41,7 +41,7 @@ error_like( [=[Spore.new_from_string([[
 
 error_like( [=[Spore.new_from_string([[
 {
-    api_base_url : "http://services.org/restapi/",
+    base_url : "http://services.org/restapi/",
     methods : {
         get_info : {
             path : "/show",
@@ -54,7 +54,7 @@ error_like( [=[Spore.new_from_string([[
 
 error_like( [=[Spore.new_from_string([[
 {
-    api_base_url : "http://services.org/restapi/",
+    base_url : "http://services.org/restapi/",
     methods : {
         get_info : {
             method : "GET",
@@ -66,49 +66,49 @@ error_like( [=[Spore.new_from_string([[
 
 error_like( [=[Spore.new_from_string([[
 {
-    api_base_url : "http://services.org/restapi/",
+    base_url : "http://services.org/restapi/",
     methods : {
         get_info : {
             path : "/show",
             method : "GET",
-            expected : true,
+            expected_status : true,
         }
     }
 }
 ]])]=],
-            "expected of get_info is not an array" )
+            "expected_status of get_info is not an array" )
 
 error_like( [=[Spore.new_from_string([[
 {
-    api_base_url : "http://services.org/restapi/",
+    base_url : "http://services.org/restapi/",
     methods : {
         get_info : {
             path : "/show",
             method : "GET",
-            required : true,
+            required_params : true,
         }
     }
 }
 ]])]=],
-            "required of get_info is not an array" )
+            "required_params of get_info is not an array" )
 
 error_like( [=[Spore.new_from_string([[
 {
-    api_base_url : "http://services.org/restapi/",
+    base_url : "http://services.org/restapi/",
     methods : {
         get_info : {
             path : "/show",
             method : "GET",
-            params : true,
+            optional_params : true,
         }
     }
 }
 ]])]=],
-            "params of get_info is not an array" )
+            "optional_params of get_info is not an array" )
 
 local client = Spore.new_from_string([[
 {
-    api_base_url : "http://services.org/restapi/",
+    base_url : "http://services.org/restapi/",
     methods : {
         get_info : {
             path : "/show",

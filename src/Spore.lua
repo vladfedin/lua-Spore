@@ -40,25 +40,25 @@ local function wrap (self, name, method, args)
     local payload = params.spore_payload or params.payload
     params.spore_payload = nil
     params.payload = nil
-    local required = method.required or {}
-    for i = 1, #required do
-        local v = required[i]
+    local required_params = method.required_params or {}
+    for i = 1, #required_params do
+        local v = required_params[i]
         assert(params[v], v .. " is required for method " .. name)
     end
 
     if strict then
-        local optional = method.params or {}
+        local optional_params = method.optional_params or {}
         for param in pairs(params) do
             local found = false
-            for i = 1, #required do
-                if param == required[i] then
+            for i = 1, #required_params do
+                if param == required_params[i] then
                     found = true
                     break
                 end
             end
             if not found then
-                for i = 1, #optional do
-                    if param == optional[i] then
+                for i = 1, #optional_params do
+                    if param == optional_params[i] then
                         found = true
                         break
                     end
@@ -69,30 +69,30 @@ local function wrap (self, name, method, args)
     end
 
     local authentication = method.authentication or self.authentication
-    local format = method.format or self.api_format
-    local api_base_url = url.parse(method.base_url or self.api_base_url)
-    local script = api_base_url.path
+    local format = method.formats or self.formats
+    local base_url = url.parse(method.base_url or self.base_url)
+    local script = base_url.path
     if script == '/' then
         script = nil
     end
 
     local env = {
         REQUEST_METHOD  = method.method,
-        SERVER_NAME     = api_base_url.host,
-        SERVER_PORT     = api_base_url.port,
+        SERVER_NAME     = base_url.host,
+        SERVER_PORT     = base_url.port,
         SCRIPT_NAME     = script,
         PATH_INFO       = method.path,
         REQUEST_URI     = '',
         QUERY_STRING    = '',
         HTTP_USER_AGENT = 'lua-Spore v' .. version,
         spore = {
-            expected        = method.expected,
+            expected        = method.expected_status,
             authentication  = authentication,
             params          = params,
             payload         = payload,
             errors          = io.stderr,
             debug           = debug,
-            url_scheme      = api_base_url.scheme,
+            url_scheme      = base_url.scheme,
             format          = format,
         },
         sporex = {},
@@ -106,13 +106,13 @@ function new_from_string (str, args)
     checktype('new_from_string', 2, args, 'table')
     local spec = json.decode(str)
 
-    args.api_base_url = args.api_base_url or spec.api_base_url
-    assert(args.api_base_url, "api_base_url is missing!")
-    local uri = url.parse(args.api_base_url)
-    assert(uri.host, "api_base_url without host")
-    assert(uri.scheme, "api_base_url without scheme")
-    if spec.api_format then
-        args.api_format = spec.api_format
+    args.base_url = args.base_url or spec.base_url
+    assert(args.base_url, "base_url is missing!")
+    local uri = url.parse(args.base_url)
+    assert(uri.host, "base_url without host")
+    assert(uri.scheme, "base_url without scheme")
+    if spec.formats then
+        args.formats = spec.formats
     end
     if spec.authentication then
         args.authentication = spec.authentication
@@ -132,9 +132,9 @@ function new_from_string (str, args)
         assert(v.method, k .. " without field method")
         assert(valid[v.method], k .. " with invalid method " .. v.method)
         assert(v.path, k .. " without field path")
-        assert(type(v.expected or {}) == 'table', "expected of " .. k .. " is not an array")
-        assert(type(v.required or {}) == 'table', "required of " .. k .. " is not an array")
-        assert(type(v.params or {}) == 'table', "params of " .. k .. " is not an array")
+        assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
+        assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
+        assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
         obj[k] =  function (self, args)
                       return wrap(self, k, v, args)
                   end

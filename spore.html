@@ -81,7 +81,7 @@
 <pre class="example">
 require 'Spore'
 
-local github = Spore.new_from_spec 'github.json'
+local github = Spore.new_from_spec 'http://github.com/SPORE/api-description/raw/master/services/github.json'
 github:enable 'Format.JSON'
 github:enable('Auth.Basic', {
     username = 'schacon/token',
@@ -98,8 +98,8 @@ print(res.body.user.name)       --> Scott Chacon
 <pre class="example">
 require 'Spore'
 
-local github = Spore.new_from_spec('github.json', {
-    api_base_url = "https://github.com/api/v2/",
+local github = Spore.new_from_spec('http://github.com/SPORE/api-description/raw/master/services/github.json', {
+    base_url = "https://github.com/api/v2/",
 })
 github:enable 'Format.JSON'
 local res = github:user_information{format = 'json', username = 'schacon'}

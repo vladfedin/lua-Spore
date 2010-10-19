@@ -60,6 +60,7 @@ function raises (response, reason)
 end
 
 function http_request (self, env)
+    local spore = env.spore
     local req = Request.new(env)
     local callbacks = {}
     local response
@@ -82,6 +83,12 @@ function http_request (self, env)
 
     if response == nil then
         req:finalize()
+        local payload = spore.payload
+        if payload then
+            req.source = ltn12.source.string(payload)
+            req.headers['content-length'] = payload:len()
+            req.headers['content-type'] = 'application/x-www-form-urlencoded'
+        end
         response = request(req)
     end
 
@@ -89,34 +96,10 @@ function http_request (self, env)
         local cb = callbacks[i]
         response = cb(response)
     end
-    return response
-end
 
-function request (req)
-    local t = {}
-    req.sink = ltn12.sink.table(t)
-    local spore = req.env.spore
-    local payload = spore.payload
-    if payload then
-        req.source = ltn12.source.string(payload)
-        req.headers['content-length'] = payload:len()
-        req.headers['content-type'] = 'application/x-www-form-urlencoded'
-    end
-    local prot = protocol[spore.url_scheme]
-    if spore.debug then
-        spore.debug:write(req.method, " ", req.url, "\n")
-    end
-    local r, status, headers, line = prot.request(req)
-    if spore.debug then
-        spore.debug:write(line or status, "\n")
-    end
-    local res = {
-        status = status,
-        headers = headers,
-        body = tconcat(t),
-    }
     local expected = spore.expected
     if expected then
+        local status = response.status
         local found = false
         for i = 1, #expected do
             if status == tonumber(expected[i]) then
@@ -129,10 +112,29 @@ function request (req)
                 spore.errors:write(req.method, " ", req.url, "\n")
                 spore.errors:write(line or status, "\n")
             end
-            raises(res, status .. ' not expected')
+            raises(response, status .. ' not expected')
         end
     end
-    return res
+    return response
+end
+
+function request (req)
+    local spore = req.env.spore
+    local t = {}
+    req.sink = ltn12.sink.table(t)
+    local prot = protocol[spore.url_scheme]
+    if spore.debug then
+        spore.debug:write(req.method, " ", req.url, "\n")
+    end
+    local r, status, headers, line = prot.request(req)
+    if spore.debug then
+        spore.debug:write(line or status, "\n")
+    end
+    return {
+        status = status,
+        headers = headers,
+        body = tconcat(t),
+    }
 end
 
 --

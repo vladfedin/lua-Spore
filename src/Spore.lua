@@ -160,13 +160,13 @@ function new_from_spec (name, args)
             env = {
                 spore = {
                     url_scheme = uri.scheme,
-                    expected = { 200 },
                     debug = debug,
                 },
             },
             method = 'GET',
             url = name,
         }
+        assert(res.status == 200, res.status .. " not expected")
         return new_from_string(res.body, args)
     end
 end

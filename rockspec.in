@@ -23,6 +23,7 @@ dependencies = {
     'luasocket >= 2.0.2',
     'luasec >= 0.4',            -- libssl-dev
     'luajson >= 1.1',
+--    'luaexpat >= 1.1.0',        -- libexpat1-dev
 --    'luayaml >= 0.5.6',         -- syck 0.55
     'lua-testmore >= 0.2.1',
 }
@@ -38,6 +39,7 @@ build = {
         ['Spore.Middleware.UserAgent']          = 'src/Spore/Middleware/UserAgent.lua',
         ['Spore.Middleware.Auth.Basic']         = 'src/Spore/Middleware/Auth/Basic.lua',
         ['Spore.Middleware.Format.JSON']        = 'src/Spore/Middleware/Format/JSON.lua',
+        ['Spore.Middleware.Format.XML']         = 'src/Spore/Middleware/Format/XML.lua',
         ['Spore.Middleware.Format.YAML']        = 'src/Spore/Middleware/Format/YAML.lua',
     },
     copy_directories = { 'doc', 'test' },

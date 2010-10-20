@@ -21,7 +21,7 @@ function call (self, req)
                                   or status == 303 or status == 307) then
                         req.headers['host'] = nil
                         req.headers['cookie'] = nil
-                        req.url =  url.absolute(req.url, location)
+                        req.url = url.absolute(req.url, location)
                         req.env.spore.url_scheme = url.parse(location).scheme
                         res = request(req)
                         nredirect = nredirect + 1

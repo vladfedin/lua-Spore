@@ -18,6 +18,7 @@ install:
 	cp src/Spore/Core.lua                       $(LIBDIR)/Spore
 	cp src/Spore/Request.lua                    $(LIBDIR)/Spore
 	cp src/Spore/Middleware/Logging.lua         $(LIBDIR)/Spore/Middleware
+	cp src/Spore/Middleware/Redirection.lua     $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Runtime.lua         $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/UserAgent.lua       $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Auth/Basic.lua      $(LIBDIR)/Spore/Middleware/Auth
@@ -100,7 +101,7 @@ test:
 
 coverage:
 	rm -f src/luacov.stats.out src/luacov.report.out
-	cd src && prove --exec="$(LUA) -lluacov" ../test/*.t
+	-cd src && prove --exec="$(LUA) -lluacov" ../test/*.t
 	cd src && luacov
 
 README.html: README.md

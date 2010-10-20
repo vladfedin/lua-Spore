@@ -100,6 +100,18 @@ local function wrap (self, name, method, args)
     return self:http_request(env)
 end
 
+local function new (args)
+    local obj = {
+        middlewares = {}
+    }
+    for k, v in pairs(args) do
+        obj[k] = v
+    end
+    return setmetatable(obj, {
+        __index = core,
+    })
+end
+
 function new_from_string (str, args)
     checktype('new_from_string', 1, str, 'string')
     args = args or {}
@@ -118,12 +130,7 @@ function new_from_string (str, args)
         args.authentication = spec.authentication
     end
 
-    local obj = {
-        middlewares = {}
-    }
-    for k, v in pairs(args) do
-        obj[k] = v
-    end
+    local obj = new(args)
     local valid = {
         DELETE = true, HEAD = true, GET = true, POST = true, PUT = true
     }
@@ -139,9 +146,7 @@ function new_from_string (str, args)
                       return wrap(self, k, v, args)
                   end
     end
-    return setmetatable(obj, {
-        __index = core,
-    })
+    return obj
 end
 
 function new_from_spec (name, args)

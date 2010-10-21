@@ -5,6 +5,7 @@
 
 local assert = assert
 local error = error
+local pcall = pcall
 local require = require
 local setmetatable = setmetatable
 local tonumber = tonumber
@@ -16,10 +17,15 @@ local Request = require 'Spore.Request'
 
 module 'Spore.Core'
 
+local r, m = pcall(require, 'ssl.https')
+if not r then
+    m = nil
+end
 local protocol = {
     http    = require 'socket.http',
-    https   = require 'ssl.https',
+    https   = m,
 }
+
 
 local function _enable_if (self, cond, mw, args)
     if not mw:match'^Spore%.Middleware%.' then
@@ -123,6 +129,7 @@ function request (req)
     local t = {}
     req.sink = ltn12.sink.table(t)
     local prot = protocol[spore.url_scheme]
+    assert(prot, "not protocol " .. spore.url_scheme)
     if spore.debug then
         spore.debug:write(req.method, " ", req.url, "\n")
     end

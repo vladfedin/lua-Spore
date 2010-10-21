@@ -5,7 +5,6 @@
 
 local assert = assert
 local require = require
-local tonumber = tonumber
 local type = type
 local ltn12 = require 'ltn12'
 local Request = require 'Spore.Request'
@@ -89,7 +88,7 @@ function http_request (self, env)
         local status = response.status
         local found = false
         for i = 1, #expected do
-            if status == tonumber(expected[i]) then
+            if status == expected[i] then
                 found = true
                 break
             end

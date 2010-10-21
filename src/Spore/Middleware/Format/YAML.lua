@@ -3,7 +3,7 @@
 --
 
 local pcall = pcall
-local raises = require 'Spore.Core'.raises
+local raises = require 'Spore'.raises
 require 'yaml'
 local yaml = yaml
 

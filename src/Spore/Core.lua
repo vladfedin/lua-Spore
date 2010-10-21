@@ -4,28 +4,14 @@
 --
 
 local assert = assert
-local error = error
-local pcall = pcall
 local require = require
-local setmetatable = setmetatable
 local tonumber = tonumber
 local type = type
-local tconcat = require 'table'.concat
 local ltn12 = require 'ltn12'
 local Request = require 'Spore.Request'
 
 
 module 'Spore.Core'
-
-local r, m = pcall(require, 'ssl.https')
-if not r then
-    m = nil
-end
-local protocol = {
-    http    = require 'socket.http',
-    https   = m,
-}
-
 
 local function _enable_if (self, cond, mw, args)
     if not mw:match'^Spore%.Middleware%.' then
@@ -60,11 +46,6 @@ function reset_middlewares (self)
     self.middlewares = {}
 end
 
-function raises (response, reason)
-    error(setmetatable({ response = response, reason = reason },
-        { __tostring = function (self) return self.reason end }))
-end
-
 function http_request (self, env)
     local spore = env.spore
     local req = Request.new(env)
@@ -95,7 +76,7 @@ function http_request (self, env)
             req.headers['content-length'] = payload:len()
             req.headers['content-type'] = 'application/x-www-form-urlencoded'
         end
-        response = request(req)
+        response = require 'Spore'.request(req)
     end
 
     for i = #callbacks, 1, -1 do
@@ -118,30 +99,10 @@ function http_request (self, env)
                 spore.errors:write(req.method, " ", req.url, "\n")
                 spore.errors:write(line or status, "\n")
             end
-            raises(response, status .. ' not expected')
+            require 'Spore'.raises(response, status .. ' not expected')
         end
     end
     return response
-end
-
-function request (req)
-    local spore = req.env.spore
-    local t = {}
-    req.sink = ltn12.sink.table(t)
-    local prot = protocol[spore.url_scheme]
-    assert(prot, "not protocol " .. spore.url_scheme)
-    if spore.debug then
-        spore.debug:write(req.method, " ", req.url, "\n")
-    end
-    local r, status, headers, line = prot.request(req)
-    if spore.debug then
-        spore.debug:write(line or status, "\n")
-    end
-    return {
-        status = status,
-        headers = headers,
-        body = tconcat(t),
-    }
 end
 
 --

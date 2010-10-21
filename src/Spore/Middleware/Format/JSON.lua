@@ -4,7 +4,7 @@
 
 local pcall = pcall
 local require = require
-local raises = require 'Spore.Core'.raises
+local raises = require 'Spore'.raises
 
 
 module 'Spore.Middleware.Format.JSON'

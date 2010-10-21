@@ -4,14 +4,19 @@
 --
 
 local assert = assert
+local error = error
 local pairs = pairs
+local pcall = pcall
+local require = require
 local setmetatable = setmetatable
 local tostring = tostring
 local type = type
 local io = require 'io'
 local json = require 'json.decode'
+local ltn12 = require 'ltn12'
 local url = require 'socket.url'
 local core = require 'Spore.Core'
+local tconcat = require 'table'.concat
 
 
 module 'Spore'
@@ -19,6 +24,40 @@ module 'Spore'
 local version = '0.0.1'
 
 strict = true
+
+local r, m = pcall(require, 'ssl.https')
+if not r then
+    m = nil
+end
+local protocol = {
+    http    = require 'socket.http',
+    https   = m,
+}
+
+function request (req)
+    local spore = req.env.spore
+    local t = {}
+    req.sink = ltn12.sink.table(t)
+    local prot = protocol[spore.url_scheme]
+    assert(prot, "not protocol " .. spore.url_scheme)
+    if spore.debug then
+        spore.debug:write(req.method, " ", req.url, "\n")
+    end
+    local r, status, headers, line = prot.request(req)
+    if spore.debug then
+        spore.debug:write(line or status, "\n")
+    end
+    return {
+        status = status,
+        headers = headers,
+        body = tconcat(t),
+    }
+end
+
+function raises (response, reason)
+    error(setmetatable({ response = response, reason = reason },
+        { __tostring = function (self) return self.reason end }))
+end
 
 function checktype (caller, narg, arg, tname)
     assert(type(arg) == tname, "bad argument #" .. tostring(narg) .. " to "
@@ -158,7 +197,7 @@ local function slurp (name)
         f:close()
         return content
     else
-        local res = core.request{
+        local res = request{
             env = {
                 spore = {
                     url_scheme = uri.scheme,

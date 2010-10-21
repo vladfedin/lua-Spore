@@ -5,7 +5,7 @@
 local error = error
 local pcall = pcall
 local require = require
-local raises = require 'Spore.Core'.raises
+local raises = require 'Spore'.raises
 local xml = require 'lxp.lom'
 
 module 'Spore.Middleware.Format.XML'

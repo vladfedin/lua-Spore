@@ -3,7 +3,7 @@
 --
 
 local url = require 'socket.url'
-local request = require 'Spore.Core'.request
+local request = require 'Spore'.request
 
 
 module 'Spore.Middleware.Redirection'

@@ -149,17 +149,14 @@ function new_from_string (str, args)
     return obj
 end
 
-function new_from_spec (name, args)
-    checktype('new_from_spec', 1, name, 'string')
-    args = args or {}
-    checktype('new_from_spec', 2, args, 'table')
+local function slurp (name)
     local uri = url.parse(name)
     if not uri.scheme or uri.scheme == 'file' then
         local f, msg = io.open(uri.path)
         assert(f, msg)
         local content = f:read '*a'
         f:close()
-        return new_from_string(content, args)
+        return content
     else
         local res = core.request{
             env = {
@@ -172,8 +169,15 @@ function new_from_spec (name, args)
             url = name,
         }
         assert(res.status == 200, res.status .. " not expected")
-        return new_from_string(res.body, args)
+        return res.body
     end
+end
+
+function new_from_spec (name, args)
+    checktype('new_from_spec', 1, name, 'string')
+    args = args or {}
+    checktype('new_from_spec', 2, args, 'table')
+    return new_from_string(slurp(name), args)
 end
 
 _VERSION = version

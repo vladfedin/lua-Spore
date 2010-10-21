@@ -55,8 +55,9 @@ function request (req)
 end
 
 function raises (response, reason)
-    error(setmetatable({ response = response, reason = reason },
-        { __tostring = function (self) return self.reason end }))
+    local ex = { response = response, reason = reason }
+    local mt = { __tostring = function (self) return self.reason end }
+    error(setmetatable(ex, mt))
 end
 
 function checktype (caller, narg, arg, tname)

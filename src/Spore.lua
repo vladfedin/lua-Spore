@@ -170,12 +170,6 @@ function new_from_string (...)
     for i = 1, nb do
         local spec = json.decode(args[i])
 
-        local base_url = opts.base_url or spec.base_url
-        assert(base_url, "base_url is missing!")
-        local uri = url.parse(base_url)
-        assert(uri.host, "base_url without host")
-        assert(uri.scheme, "base_url without scheme")
-
         assert(spec.methods, "no method in spec")
         for k, v in pairs(spec.methods) do
             assert(obj[k] == nil, k .. " duplicated")
@@ -188,6 +182,10 @@ function new_from_string (...)
             v.authentication = opts.authentication or v.authentication or spec.authentication
             v.base_url = opts.base_url or v.base_url or spec.base_url
             v.formats = opts.formats or v.formats or spec.formats
+            assert(v.base_url, "base_url is missing")
+            local uri = url.parse(v.base_url)
+            assert(uri.host, "base_url without host")
+            assert(uri.scheme, "base_url without scheme")
             obj[k] =  function (self, args)
                           return wrap(self, k, v, args)
                       end

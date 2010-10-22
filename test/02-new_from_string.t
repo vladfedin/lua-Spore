@@ -15,16 +15,7 @@ error_like( [[Spore.new_from_string('', '', true)]],
 error_like( [[Spore.new_from_string('{ BAD }')]],
             "Invalid JSON data" )
 
-error_like( [[Spore.new_from_string('{ }')]],
-            "base_url is missing" )
-
-error_like( [[Spore.new_from_string('{ }', { base_url = 'services.org' })]],
-            "base_url without host" )
-
-error_like( [[Spore.new_from_string('{ }', { base_url = '//services.org/restapi/' })]],
-            "base_url without scheme" )
-
-error_like( [[Spore.new_from_string('{ }', '{ }', { base_url = 'http://services.org/restapi/' })]],
+error_like( [[Spore.new_from_string('{ }', '{ }')]],
             "no method in spec" )
 
 error_like( [=[Spore.new_from_string([[
@@ -105,6 +96,42 @@ error_like( [=[Spore.new_from_string([[
 }
 ]])]=],
             "optional_params of get_info is not an array" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+        }
+    }
+}
+]])]=],
+            "base_url is missing" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+        }
+    }
+}
+]], { base_url = 'services.org' })]=],
+            "base_url without host" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+        }
+    }
+}
+]], { base_url = '//services.org/restapi/' })]=],
+            "base_url without scheme" )
 
 error_like( [=[Spore.new_from_string([[
 {

@@ -11,6 +11,7 @@ local require = require
 local setmetatable = setmetatable
 local tostring = tostring
 local type = type
+local unpack = require 'table'.unpack or unpack
 local io = require 'io'
 local json = require 'json.decode'
 local ltn12 = require 'ltn12'
@@ -108,9 +109,7 @@ local function wrap (self, name, method, args)
         end
     end
 
-    local authentication = method.authentication or self.authentication
-    local format = method.formats or self.formats
-    local base_url = url.parse(method.base_url or self.base_url)
+    local base_url = url.parse(method.base_url)
     local script = base_url.path
     if script == '/' then
         script = nil
@@ -127,65 +126,74 @@ local function wrap (self, name, method, args)
         HTTP_USER_AGENT = 'lua-Spore v' .. version,
         spore = {
             expected        = method.expected_status,
-            authentication  = authentication,
+            authentication  = method.authentication,
             params          = params,
             payload         = payload,
             errors          = io.stderr,
             debug           = debug,
             url_scheme      = base_url.scheme,
-            format          = format,
+            format          = method.formats,
         },
         sporex = {},
     }
     return self:http_request(env)
 end
 
-local function new (args)
+local function new ()
     local obj = {
         middlewares = {}
     }
-    for k, v in pairs(args) do
-        obj[k] = v
-    end
-    return setmetatable(obj, {
+    local mt = {
         __index = core,
-    })
+    }
+    return setmetatable(obj, mt)
 end
 
-function new_from_string (str, args)
-    checktype('new_from_string', 1, str, 'string')
-    args = args or {}
-    checktype('new_from_string', 2, args, 'table')
-    local spec = json.decode(str)
-
-    args.base_url = args.base_url or spec.base_url
-    assert(args.base_url, "base_url is missing!")
-    local uri = url.parse(args.base_url)
-    assert(uri.host, "base_url without host")
-    assert(uri.scheme, "base_url without scheme")
-    if spec.formats then
-        args.formats = spec.formats
-    end
-    if spec.authentication then
-        args.authentication = spec.authentication
+function new_from_string (...)
+    local args = {...}
+    local opts = {}
+    local nb
+    for i = 1, #args do
+        local arg = args[i]
+        if i > 1 and type(arg) == 'table' then
+            opts = arg
+            break
+        end
+        checktype('new_from_string', i, arg, 'string')
+        nb = i
     end
 
-    local obj = new(args)
-    local valid = {
+    local obj = new()
+    local valid_method = {
         DELETE = true, HEAD = true, GET = true, POST = true, PUT = true
     }
-    assert(spec.methods, "no method in spec")
-    for k, v in pairs(spec.methods) do
-        assert(v.method, k .. " without field method")
-        assert(valid[v.method], k .. " with invalid method " .. v.method)
-        assert(v.path, k .. " without field path")
-        assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
-        assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
-        assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
-        obj[k] =  function (self, args)
-                      return wrap(self, k, v, args)
-                  end
+    for i = 1, nb do
+        local spec = json.decode(args[i])
+
+        local base_url = opts.base_url or spec.base_url
+        assert(base_url, "base_url is missing!")
+        local uri = url.parse(base_url)
+        assert(uri.host, "base_url without host")
+        assert(uri.scheme, "base_url without scheme")
+
+        assert(spec.methods, "no method in spec")
+        for k, v in pairs(spec.methods) do
+            assert(obj[k] == nil, k .. " duplicated")
+            assert(v.method, k .. " without field method")
+            assert(valid_method[v.method], k .. " with invalid method " .. v.method)
+            assert(v.path, k .. " without field path")
+            assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
+            assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
+            assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
+            v.authentication = opts.authentication or v.authentication or spec.authentication
+            v.base_url = opts.base_url or v.base_url or spec.base_url
+            v.formats = opts.formats or v.formats or spec.formats
+            obj[k] =  function (self, args)
+                          return wrap(self, k, v, args)
+                      end
+        end
     end
+
     return obj
 end
 
@@ -213,11 +221,21 @@ local function slurp (name)
     end
 end
 
-function new_from_spec (name, args)
-    checktype('new_from_spec', 1, name, 'string')
-    args = args or {}
-    checktype('new_from_spec', 2, args, 'table')
-    return new_from_string(slurp(name), args)
+function new_from_spec (...)
+    local args = {...}
+    local opts = {}
+    local t = {}
+    for i = 1, #args do
+        local arg = args[i]
+        if i > 1 and type(arg) == 'table' then
+            opts = arg
+            break
+        end
+        checktype('new_from_spec', i, arg, 'string')
+        t[#t+1] = slurp(arg)
+    end
+    t[#t+1] = opts
+    return new_from_string(unpack(t))
 end
 
 _VERSION = version

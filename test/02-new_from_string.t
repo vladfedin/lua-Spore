@@ -4,13 +4,13 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(17)
+plan(18)
 
 error_like( [[Spore.new_from_string(true)]],
             "bad argument #1 to new_from_string %(string expected, got boolean%)" )
 
-error_like( [[Spore.new_from_string('', true)]],
-            "bad argument #2 to new_from_string %(table expected, got boolean%)" )
+error_like( [[Spore.new_from_string('', '', true)]],
+            "bad argument #3 to new_from_string %(string expected, got boolean%)" )
 
 error_like( [[Spore.new_from_string('{ BAD }')]],
             "Invalid JSON data" )
@@ -24,7 +24,7 @@ error_like( [[Spore.new_from_string('{ }', { base_url = 'services.org' })]],
 error_like( [[Spore.new_from_string('{ }', { base_url = '//services.org/restapi/' })]],
             "base_url without scheme" )
 
-error_like( [[Spore.new_from_string('{ }', { base_url = 'http://services.org/restapi/' })]],
+error_like( [[Spore.new_from_string('{ }', '{ }', { base_url = 'http://services.org/restapi/' })]],
             "no method in spec" )
 
 error_like( [=[Spore.new_from_string([[
@@ -105,6 +105,29 @@ error_like( [=[Spore.new_from_string([[
 }
 ]])]=],
             "optional_params of get_info is not an array" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+        }
+    }
+}
+]], [[
+{
+    base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+        }
+    }
+}
+]])]=],
+            "get_info duplicated" )
 
 local client = Spore.new_from_string([[
 {

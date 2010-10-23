@@ -69,12 +69,6 @@ function http_request (self, env)
 
     if response == nil then
         req:finalize()
-        local payload = spore.payload
-        if payload then
-            req.source = ltn12.source.string(payload)
-            req.headers['content-length'] = payload:len()
-            req.headers['content-type'] = 'application/x-www-form-urlencoded'
-        end
         response = require 'Spore'.request(req)
     end
 

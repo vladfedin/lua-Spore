@@ -13,11 +13,15 @@ local tostring = tostring
 local type = type
 local unpack = require 'table'.unpack or unpack
 local io = require 'io'
+local math = require 'math'
+local string = require 'string'
 local json = require 'json.decode'
 local ltn12 = require 'ltn12'
+local mime = require 'mime'
 local url = require 'socket.url'
 local core = require 'Spore.Core'
 local tconcat = require 'table'.concat
+math.randomseed(os.time())
 
 
 module 'Spore'
@@ -35,12 +39,60 @@ local protocol = {
     https   = m,
 }
 
+local function boundary (size)
+    local t = {}
+    for i = 1, 3 * size do
+        t[#t+1] = math.random(256) - 1
+    end
+    local b = mime.b64(string.char(unpack(t))):gsub('%W', 'X')
+    return b
+end
+
+local function _form_data (data)
+    local p = {}
+    for k, v in pairs(data) do
+        p[#p+1] = 'content-disposition: form-data; name="' .. k .. '"\r\n\r\n' .. v
+    end
+
+    local b = boundary(10)
+    local t = {}
+    for i = 1, #p do
+        t[#t+1] = '--'
+        t[#t+1] = b
+        t[#t+1] = '\r\n'
+        t[#t+1] = p[i]
+        t[#t+1] = '\r\n'
+    end
+    t[#t+1] = '--'
+    t[#t+1] = b
+    t[#t+1] = '--'
+    t[#t+1] = '\r\n'
+    return tconcat(t), b
+end
+
 function request (req)
     local spore = req.env.spore
-    local t = {}
-    req.sink = ltn12.sink.table(t)
     local prot = protocol[spore.url_scheme]
     assert(prot, "not protocol " .. spore.url_scheme)
+
+    local form_data = spore.form_data
+    if form_data then
+        local content, boundary = _form_data(form_data)
+        req.source = ltn12.source.string(content)
+        req.headers['content-length'] = content:len()
+        req.headers['content-type'] = 'multipart/form-data; boundary=' .. boundary
+    end
+
+    local payload = spore.payload
+    if payload then
+        req.source = ltn12.source.string(payload)
+        req.headers['content-length'] = payload:len()
+        req.headers['content-type'] = 'application/x-www-form-urlencoded'
+    end
+
+    local t = {}
+    req.sink = ltn12.sink.table(t)
+
     if spore.debug then
         spore.debug:write(req.method, " ", req.url, "\n")
     end
@@ -71,16 +123,20 @@ local function wrap (self, name, method, args)
     checktype(name, 2, args, 'table')
     local params = {}
     for k, v in pairs(args) do
-        v = tostring(v)
         if type(k) == 'number' then
             params[v] = v
         else
             params[tostring(k)] = v
         end
     end
+    local form_data = params.spore_form_data or params.form_data
+    params.spore_form_data = nil
+    params.form_data = nil
     local payload = params.spore_payload or params.payload
     params.spore_payload = nil
     params.payload = nil
+    assert(not (form_data and payload), "form_data and payload are exclusive")
+
     local required_params = method.required_params or {}
     for i = 1, #required_params do
         local v = required_params[i]
@@ -128,6 +184,7 @@ local function wrap (self, name, method, args)
             expected        = method.expected_status,
             authentication  = method.authentication,
             params          = params,
+            form_data       = form_data,
             payload         = payload,
             errors          = io.stderr,
             debug           = debug,

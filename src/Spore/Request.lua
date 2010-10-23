@@ -4,6 +4,7 @@
 
 local pairs = pairs
 local setmetatable = setmetatable
+local tostring = tostring
 local tconcat = require 'table'.concat
 local url = require 'socket.url'
 
@@ -30,7 +31,7 @@ function finalize (self)
     local path_info = env.PATH_INFO
     local query = {}
     for k, v in pairs(env.spore.params) do
-        v = url.escape(v)
+        v = url.escape(tostring(v))
         local n
         path_info, n = path_info:gsub(':' .. k, (v:gsub('%%', '%%%%')))
         if n == 0 then

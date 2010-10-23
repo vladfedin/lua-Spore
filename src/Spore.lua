@@ -39,6 +39,30 @@ local protocol = {
     https   = m,
 }
 
+local function slurp (name)
+    local uri = url.parse(name)
+    if not uri.scheme or uri.scheme == 'file' then
+        local f, msg = io.open(uri.path)
+        assert(f, msg)
+        local content = f:read '*a'
+        f:close()
+        return content
+    else
+        local res = request{
+            env = {
+                spore = {
+                    url_scheme = uri.scheme,
+                    debug = debug,
+                },
+            },
+            method = 'GET',
+            url = name,
+        }
+        assert(res.status == 200, res.status .. " not expected")
+        return res.body
+    end
+end
+
 local function boundary (size)
     local t = {}
     for i = 1, 3 * size do
@@ -51,7 +75,21 @@ end
 local function _form_data (data)
     local p = {}
     for k, v in pairs(data) do
-        p[#p+1] = 'content-disposition: form-data; name="' .. k .. '"\r\n\r\n' .. v
+        if type(v) == 'table' then
+            for i = 1, #v, 2 do
+                local file = v[i]
+                local usename = v[i+1] or ''
+                if usename == '' then
+                    usename = file
+                end
+                local content = slurp(file)
+                p[#p+1] = 'content-disposition: form-data; name="' .. k .. '"; filename="' .. usename ..'"\r\n'
+                       .. 'content-type: application/octet-stream\r\n\r\n'
+                       .. content
+            end
+        else
+            p[#p+1] = 'content-disposition: form-data; name="' .. k .. '"\r\n\r\n' .. v
+        end
     end
 
     local b = boundary(10)
@@ -250,30 +288,6 @@ function new_from_string (...)
     end
 
     return obj
-end
-
-local function slurp (name)
-    local uri = url.parse(name)
-    if not uri.scheme or uri.scheme == 'file' then
-        local f, msg = io.open(uri.path)
-        assert(f, msg)
-        local content = f:read '*a'
-        f:close()
-        return content
-    else
-        local res = request{
-            env = {
-                spore = {
-                    url_scheme = uri.scheme,
-                    debug = debug,
-                },
-            },
-            method = 'GET',
-            url = name,
-        }
-        assert(res.status == 200, res.status .. " not expected")
-        return res.body
-    end
 end
 
 function new_from_spec (...)

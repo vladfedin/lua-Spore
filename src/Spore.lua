@@ -174,6 +174,12 @@ local function wrap (self, name, method, args)
     params.spore_payload = nil
     params.payload = nil
     assert(not (form_data and payload), "form_data and payload are exclusive")
+    if form_data then
+        assert(method.method == 'POST', "form_data requires a POST method")
+    end
+    if payload then
+        assert(method.method == 'PUT' or method.method == 'POST', "payload requires a PUT or POST method")
+    end
 
     local required_params = method.required_params or {}
     for i = 1, #required_params do

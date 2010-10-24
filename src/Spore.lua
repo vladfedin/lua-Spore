@@ -270,17 +270,21 @@ function new_from_string (...)
             assert(obj[k] == nil, k .. " duplicated")
             assert(v.method, k .. " without field method")
             assert(valid_method[v.method], k .. " with invalid method " .. v.method)
+            if v.required_payload then
+                assert(v.method == 'PUT' or v.method == 'POST', k .. ": payload requires a PUT or POST method")
+            end
             if v['form-data'] then
-                assert(v.method == 'PUT' or v.method == 'POST', "form-data requires a PUT or POST method")
+                assert(v.method == 'PUT' or v.method == 'POST', k .. ": form-data requires a PUT or POST method")
             end
             assert(v.path, k .. " without field path")
             assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
             assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
             assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
-            assert(v.base_url, "base_url is missing")
+            assert(type(v['form-data'] or {}) == 'table', "form-data of " .. k .. " is not an hash")
+            assert(v.base_url, k .. ": base_url is missing")
             local uri = url.parse(v.base_url)
-            assert(uri.host, "base_url without host")
-            assert(uri.scheme, "base_url without scheme")
+            assert(uri.host, k .. ": base_url without host")
+            assert(uri.scheme, k .. ": base_url without scheme")
             obj[k] =  function (self, args)
                           return wrap(self, k, v, args)
                       end

@@ -273,6 +273,10 @@ function new_from_string (...)
 
         assert(spec.methods, "no method in spec")
         for k, v in pairs(spec.methods) do
+            v.authentication = opts.authentication or v.authentication or spec.authentication
+            v.base_url = opts.base_url or v.base_url or spec.base_url
+            v.expected_status = opts.expected_status or v.expected_status or spec.expected_status
+            v.formats = opts.formats or v.formats or spec.formats
             assert(obj[k] == nil, k .. " duplicated")
             assert(v.method, k .. " without field method")
             assert(valid_method[v.method], k .. " with invalid method " .. v.method)
@@ -280,9 +284,6 @@ function new_from_string (...)
             assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
             assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
             assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
-            v.authentication = opts.authentication or v.authentication or spec.authentication
-            v.base_url = opts.base_url or v.base_url or spec.base_url
-            v.formats = opts.formats or v.formats or spec.formats
             assert(v.base_url, "base_url is missing")
             local uri = url.parse(v.base_url)
             assert(uri.host, "base_url without host")

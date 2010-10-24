@@ -29,13 +29,25 @@ end
 function finalize (self)
     local env = self.env
     local path_info = env.PATH_INFO
+    local form_data = env.spore.form_data
     local query = {}
+    local form = {}
     for k, v in pairs(env.spore.params) do
-        v = url.escape(tostring(v))
+        local e = url.escape(tostring(v))
         local n
-        path_info, n = path_info:gsub(':' .. k, (v:gsub('%%', '%%%%')))
+        path_info, n = path_info:gsub(':' .. k, (e:gsub('%%', '%%%%')))
+        if form_data then
+            for kk, vv in pairs(form_data or {}) do
+                local nn
+                vv, nn = vv:gsub(':' .. k, v)
+                if nn > 0 then
+                    form[kk] = vv
+                    n = n + 1
+                end
+            end
+        end
         if n == 0 then
-            query[#query+1] = url.escape(k) .. '=' .. v
+            query[#query+1] = url.escape(k) .. '=' .. e
         end
     end
     local query_string
@@ -44,6 +56,9 @@ function finalize (self)
     end
     env.PATH_INFO = path_info
     env.QUERY_STRING = query_string or ''
+    if form_data then
+        self.env.spore.form_data = form
+    end
     self.url = url.build {
         scheme  = env.spore.url_scheme,
         host    = env.HTTP_HOST or env.SERVER_NAME,

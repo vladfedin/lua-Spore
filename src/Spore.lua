@@ -75,18 +75,12 @@ end
 local function _form_data (data)
     local p = {}
     for k, v in pairs(data) do
-        if type(v) == 'table' then
-            for i = 1, #v, 2 do
-                local file = v[i]
-                local usename = v[i+1] or ''
-                if usename == '' then
-                    usename = file
-                end
-                local content = slurp(file)
-                p[#p+1] = 'content-disposition: form-data; name="' .. k .. '"; filename="' .. usename ..'"\r\n'
-                       .. 'content-type: application/octet-stream\r\n\r\n'
-                       .. content
-            end
+        if v:sub(1, 1) == '@' then
+            local fname = v:sub(2)
+            local content = slurp(fname)
+            p[#p+1] = 'content-disposition: form-data; name="' .. k .. '"; filename="' .. fname ..'"\r\n'
+                   .. 'content-type: application/octet-stream\r\n\r\n'
+                   .. content
         else
             p[#p+1] = 'content-disposition: form-data; name="' .. k .. '"\r\n\r\n' .. v
         end
@@ -167,18 +161,11 @@ local function wrap (self, name, method, args)
             params[tostring(k)] = v
         end
     end
-    local form_data = params.spore_form_data or params.form_data
-    params.spore_form_data = nil
-    params.form_data = nil
     local payload = params.spore_payload or params.payload
     params.spore_payload = nil
     params.payload = nil
     if method.required_payload then
         assert(payload, "payload required")
-    end
-    assert(not (form_data and payload), "form_data and payload are exclusive")
-    if form_data then
-        assert(method.method == 'POST', "form_data requires a POST method")
     end
     if payload then
         assert(method.method == 'PUT' or method.method == 'POST', "payload requires a PUT or POST method")
@@ -231,7 +218,7 @@ local function wrap (self, name, method, args)
             expected        = method.expected_status,
             authentication  = method.authentication,
             params          = params,
-            form_data       = form_data,
+            form_data       = method['form-data'],
             payload         = payload,
             errors          = io.stderr,
             debug           = debug,
@@ -283,6 +270,9 @@ function new_from_string (...)
             assert(obj[k] == nil, k .. " duplicated")
             assert(v.method, k .. " without field method")
             assert(valid_method[v.method], k .. " with invalid method " .. v.method)
+            if v['form-data'] then
+                assert(v.method == 'PUT' or v.method == 'POST', "form-data requires a PUT or POST method")
+            end
             assert(v.path, k .. " without field path")
             assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
             assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")

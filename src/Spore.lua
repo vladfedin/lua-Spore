@@ -215,6 +215,7 @@ local function wrap (self, name, method, args)
         QUERY_STRING    = '',
         HTTP_USER_AGENT = 'lua-Spore v' .. version,
         spore = {
+            caller          = name,
             expected        = method.expected_status,
             authentication  = method.authentication,
             params          = params,

@@ -3,6 +3,7 @@
 --
 
 local pcall = pcall
+local type = type
 local raises = require 'Spore'.raises
 require 'yaml'
 local yaml = yaml
@@ -12,9 +13,9 @@ module 'Spore.Middleware.Format.YAML'
 
 function call (self, req)
     local spore = req.env.spore
-    if spore.payload then
+    if spore.payload and type(spore.payload) == 'table' then
         spore.payload = yaml.dump(spore.payload)
-        req.headers['content-type'] = 'text/x-yaml' 
+        req.headers['content-type'] = 'text/x-yaml'
     end
     req.headers['accept'] = 'text/x-yaml'
     return  function (res)

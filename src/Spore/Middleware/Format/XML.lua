@@ -5,6 +5,7 @@
 local error = error
 local pcall = pcall
 local require = require
+local type = type
 local raises = require 'Spore'.raises
 local xml = require 'lxp.lom'
 
@@ -12,9 +13,9 @@ module 'Spore.Middleware.Format.XML'
 
 function call (self, req)
     local spore = req.env.spore
-    if spore.payload then
+    if spore.payload and type(spore.payload) == 'table' then
         spore.payload = error "TODO"
-        req.headers['content-type'] = 'text/xml' 
+        req.headers['content-type'] = 'text/xml'
     end
     req.headers['accept'] = 'text/xml'
     return  function (res)

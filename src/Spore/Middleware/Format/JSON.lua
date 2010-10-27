@@ -4,6 +4,7 @@
 
 local pcall = pcall
 local require = require
+local type = type
 local raises = require 'Spore'.raises
 
 
@@ -11,7 +12,7 @@ module 'Spore.Middleware.Format.JSON'
 
 function call (self, req)
     local spore = req.env.spore
-    if spore.payload then
+    if spore.payload and type(spore.payload) == 'table' then
         local encode = require 'json.encode'.encode
         spore.payload = encode(spore.payload)
         req.headers['content-type'] = 'application/json'

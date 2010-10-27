@@ -178,6 +178,9 @@ local function wrap (self, name, method, args)
     end
 
     if strict then
+        if payload then
+            assert(method.required_payload or method.optional_payload, "payload is not expected for method " .. name)
+        end
         local optional_params = method.optional_params or {}
         for param in pairs(params) do
             local found = false

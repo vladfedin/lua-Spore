@@ -30,6 +30,7 @@ function finalize (self)
     local env = self.env
     local path_info = env.PATH_INFO
     local form_data = env.spore.form_data
+    local headers = env.spore.headers
     local query = {}
     local form = {}
     for k, v in pairs(env.spore.params) do
@@ -42,6 +43,16 @@ function finalize (self)
                 vv, nn = vv:gsub(':' .. k, v)
                 if nn > 0 then
                     form[kk] = vv
+                    n = n + 1
+                end
+            end
+        end
+        if headers then
+            for kk, vv in pairs(headers or {}) do
+                local nn
+                vv, nn = vv:gsub(':' .. k, v)
+                if nn > 0 then
+                    self.headers[kk] = vv
                     n = n + 1
                 end
             end

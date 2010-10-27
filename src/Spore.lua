@@ -223,6 +223,7 @@ local function wrap (self, name, method, args)
             authentication  = method.authentication,
             params          = params,
             form_data       = method['form-data'],
+            headers         = method.headers,
             payload         = payload,
             errors          = io.stderr,
             debug           = debug,
@@ -285,6 +286,7 @@ function new_from_string (...)
             assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
             assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
             assert(type(v['form-data'] or {}) == 'table', "form-data of " .. k .. " is not an hash")
+            assert(type(v.headers or {}) == 'table', "headers of " .. k .. " is not an hash")
             assert(v.base_url, k .. ": base_url is missing")
             local uri = url.parse(v.base_url)
             assert(uri.host, k .. ": base_url without host")

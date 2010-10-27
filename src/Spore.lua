@@ -117,9 +117,13 @@ function request (req)
 
     local payload = spore.payload
     if payload then
+        if payload:sub(1, 1) == '@' then
+            local fname = payload:sub(2)
+            payload = slurp(fname)
+        end
         req.source = ltn12.source.string(payload)
         req.headers['content-length'] = payload:len()
-        req.headers['content-type'] = 'application/x-www-form-urlencoded'
+        req.headers['content-type'] = req.headers['content-type'] or 'application/x-www-form-urlencoded'
     end
 
     local t = {}

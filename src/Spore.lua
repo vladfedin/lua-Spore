@@ -169,9 +169,6 @@ local function wrap (self, name, method, args)
     if method.required_payload then
         assert(payload, "payload required")
     end
-    if payload then
-        assert(method.method == 'PUT' or method.method == 'POST', "payload requires a PUT or POST method")
-    end
 
     local required_params = method.required_params or {}
     for i = 1, #required_params do
@@ -262,9 +259,6 @@ function new_from_string (...)
     end
 
     local obj = new()
-    local valid_method = {
-        DELETE = true, HEAD = true, GET = true, POST = true, PUT = true
-    }
     for i = 1, nb do
         local spec = json.decode(args[i])
 
@@ -277,13 +271,6 @@ function new_from_string (...)
             v.unattended_params = opts.unattended_params or v.unattended_params or spec.unattended_params
             assert(obj[k] == nil, k .. " duplicated")
             assert(v.method, k .. " without field method")
-            assert(valid_method[v.method], k .. " with invalid method " .. v.method)
-            if v.required_payload then
-                assert(v.method == 'PUT' or v.method == 'POST', k .. ": payload requires a PUT or POST method")
-            end
-            if v['form-data'] then
-                assert(v.method == 'PUT' or v.method == 'POST', k .. ": form-data requires a PUT or POST method")
-            end
             assert(v.path, k .. " without field path")
             assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
             assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")

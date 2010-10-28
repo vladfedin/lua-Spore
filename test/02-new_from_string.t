@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(18)
+plan(17)
 
 error_like( [[Spore.new_from_string(true)]],
             "bad argument #1 to new_from_string %(string expected, got boolean%)" )
@@ -29,19 +29,6 @@ error_like( [=[Spore.new_from_string([[
 }
 ]])]=],
             "get_info without field method" )
-
-error_like( [=[Spore.new_from_string([[
-{
-    base_url : "http://services.org/restapi/",
-    methods : {
-        get_info : {
-            path : "/show",
-            method : "PET",
-        }
-    }
-}
-]])]=],
-            "get_info with invalid method PET" )
 
 error_like( [=[Spore.new_from_string([[
 {

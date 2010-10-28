@@ -28,8 +28,6 @@ module 'Spore'
 
 local version = '0.0.1'
 
-strict = true
-
 local r, m = pcall(require, 'ssl.https')
 if not r then
     m = nil
@@ -181,7 +179,7 @@ local function wrap (self, name, method, args)
         assert(params[v], v .. " is required for method " .. name)
     end
 
-    if strict then
+    if not method.unattended_params then
         if payload then
             assert(method.required_payload or method.optional_payload, "payload is not expected for method " .. name)
         end
@@ -276,6 +274,7 @@ function new_from_string (...)
             v.base_url = opts.base_url or v.base_url or spec.base_url
             v.expected_status = opts.expected_status or v.expected_status or spec.expected_status
             v.formats = opts.formats or v.formats or spec.formats
+            v.unattended_params = opts.unattended_params or v.unattended_params or spec.unattended_params
             assert(obj[k] == nil, k .. " duplicated")
             assert(v.method, k .. " without field method")
             assert(valid_method[v.method], k .. " with invalid method " .. v.method)

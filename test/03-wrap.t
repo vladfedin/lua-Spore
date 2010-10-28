@@ -35,5 +35,5 @@ is( res.spore.params.user, 'joe' )
 error_like( function () client:get_info{ mode = 'raw' } end,
             "mode is not expected for method get_info" )
 
-Spore.strict = false
+client = Spore.new_from_spec('../test/api.json', { unattended_params = true })
 lives_ok( function () client:get_info{ mode = 'raw' } end )

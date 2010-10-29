@@ -231,6 +231,9 @@ local function wrap (self, name, method, args)
         },
         sporex = {},
     }
+    if method.deprecated and debug then
+        debug:write(name, " is deprecated\n")
+    end
     return self:http_request(env)
 end
 

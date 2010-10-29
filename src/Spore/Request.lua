@@ -34,11 +34,15 @@ function finalize (self)
     local query = {}
     local form = {}
     for k, v in pairs(env.spore.params) do
-        local e = url.escape(tostring(v))
+        k = tostring(k)
+        v = tostring(v)
+        local e = url.escape(v)
         local n
         path_info, n = path_info:gsub(':' .. k, (e:gsub('%%', '%%%%')))
         if form_data then
             for kk, vv in pairs(form_data or {}) do
+                kk = tostring(kk)
+                vv = tostring(vv)
                 local nn
                 vv, nn = vv:gsub(':' .. k, v)
                 if nn > 0 then
@@ -49,6 +53,8 @@ function finalize (self)
         end
         if headers then
             for kk, vv in pairs(headers or {}) do
+                kk = tostring(kk)
+                vv = tostring(vv)
                 local nn
                 vv, nn = vv:gsub(':' .. k, v)
                 if nn > 0 then

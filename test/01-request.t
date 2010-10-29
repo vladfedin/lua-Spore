@@ -4,7 +4,7 @@ require 'Spore.Request'
 
 require 'Test.More'
 
-plan(19)
+plan(34)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
@@ -53,4 +53,38 @@ req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/usr1/show/value2', "url" )
 is( env.PATH_INFO, '/usr1/show/value2' )
 is( env.QUERY_STRING, '' )
+
+env.PATH_INFO = '/path'
+env.spore.params.prm3 = "Value Z"
+env.spore.form_data = {
+    form1 = 'f(:prm1)',
+    form2 = 'g(:prm2)',
+    form3 = 'h(:prm3)',
+    form7 = 'r(:prm7)',
+}
+req:finalize()
+is( req.url, 'prot://services.org:9999/restapi/path', "url" )
+is( env.PATH_INFO, '/path' )
+is( env.QUERY_STRING, '' )
+is( env.spore.form_data.form1, "f(1)", "form-data" )
+is( env.spore.form_data.form2, "g(value2)" )
+is( env.spore.form_data.form3, "h(Value Z)" )
+is( env.spore.form_data.form7, nil )
+
+env.spore.form_data = nil
+env.spore.headers = {
+    head1 = 'f(:prm1)',
+    head2 = 'g(:prm2)',
+    head3 = 'h(:prm3)',
+    head7 = 'r(:prm7)',
+}
+req:finalize()
+is( req.url, 'prot://services.org:9999/restapi/path', "url" )
+is( env.PATH_INFO, '/path' )
+is( env.QUERY_STRING, '' )
+is( env.spore.form_data, nil )
+is( req.headers.head1, "f(1)", "headers" )
+is( req.headers.head2, "g(value2)" )
+is( req.headers.head3, "h(Value Z)" )
+is( req.headers.head7, nil )
 

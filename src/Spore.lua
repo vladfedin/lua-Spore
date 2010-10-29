@@ -167,7 +167,7 @@ local function wrap (self, name, method, args)
     params.spore_payload = nil
     params.payload = nil
     if method.required_payload then
-        assert(payload, "payload required")
+        assert(payload, "payload is required for method " .. name)
     end
 
     local required_params = method.required_params or {}

@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(16)
+plan(18)
 
 Spore.Core.http_request = function (self, env) return env end -- mock
 
@@ -27,10 +27,16 @@ is( res.spore.params.user, 'john' )
 is( res.spore.params.border, 'border' )
 
 error_like( function () client:get_user_info{} end,
+            "payload is required for method get_user_info" )
+
+error_like( function () client:get_user_info{ payload = '@file' } end,
             "user is required for method get_user_info" )
 
 local res = client:get_info{ user = 'joe' }
 is( res.spore.params.user, 'joe' )
+
+error_like( function () client:get_info{ payload = '@file' } end,
+            "payload is not expected for method get_info" )
 
 error_like( function () client:get_info{ mode = 'raw' } end,
             "mode is not expected for method get_info" )

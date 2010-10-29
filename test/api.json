@@ -18,7 +18,8 @@
             ],
             "optional_params" : [
                 "border"
-            ]
+            ],
+            "required_payload" : true
         }
     }
 }

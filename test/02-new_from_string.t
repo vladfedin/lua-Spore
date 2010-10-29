@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(17)
+plan(19)
 
 error_like( [[Spore.new_from_string(true)]],
             "bad argument #1 to new_from_string %(string expected, got boolean%)" )
@@ -83,6 +83,34 @@ error_like( [=[Spore.new_from_string([[
 }
 ]])]=],
             "optional_params of get_info is not an array" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+            "form-data" : true,
+        }
+    }
+}
+]])]=],
+            "form%-data of get_info is not an hash" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+            headers : true,
+        }
+    }
+}
+]])]=],
+            "headers of get_info is not an hash" )
 
 error_like( [=[Spore.new_from_string([[
 {

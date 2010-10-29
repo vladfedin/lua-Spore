@@ -264,6 +264,9 @@ function new_from_string (...)
 
         assert(spec.methods, "no method in spec")
         for k, v in pairs(spec.methods) do
+            if opts.lowerCamelCase then
+                k = k:gsub('_(%w)', function (c) return c:upper() end)
+            end
             v.authentication = opts.authentication or v.authentication or spec.authentication
             v.base_url = opts.base_url or v.base_url or spec.base_url
             v.expected_status = opts.expected_status or v.expected_status or spec.expected_status

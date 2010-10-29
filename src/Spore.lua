@@ -287,6 +287,9 @@ function new_from_string (...)
             local uri = url.parse(v.base_url)
             assert(uri.host, k .. ": base_url without host")
             assert(uri.scheme, k .. ": base_url without scheme")
+            if v.required_payload or v.optional_payload then
+                assert(not v['form-data'], "payload and form-data are exclusive")
+            end
             obj[k] =  function (self, args)
                           return wrap(self, k, v, args)
                       end

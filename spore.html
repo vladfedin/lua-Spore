@@ -51,6 +51,7 @@
       <ul>
         <li><a href="middleware.html#basic">Auth.Basic</a></li>
         <li><a href="middleware.html#json">Format.JSON</a></li>
+        <li><a href="middleware.html#xml">Format.XML</a></li>
         <li><a href="middleware.html#yaml">Format.YAML</a></li>
         <li><a href="middleware.html#logging">Logging</a></li>
         <li><a href="middleware.html#runtime">Runtime</a></li>
@@ -70,13 +71,138 @@
 
 <h2><a name="reference"></a>Reference</h2>
 
-<h4><code>new_from_spec()</code></h4>
+<h3>Global Functions</h3>
 
-<h4><code>new_from_string()</code></h4>
+<h4><code>new_from_spec( desc1, [desc2, ...][, { options }] )</code></h4>
+
+<p>Instanciate a ReST client from one or more descriptions defined by a filename or an URL.</p>
+
+<p>The optional table <code>options</code> allows to overwrite some parameters of the description: </p>
+
+<ul>
+  <li><code>authentication</code>,</li>
+  <li><code>base_url</code>,</li>
+  <li><code>expected_status</code>,</li>
+  <li><code>formats</code>,</li>
+  <li><code>unattended_params</code></li>
+</ul>
+
+<pre class="example">
+local client = Spore.new_from_spec 'github.json'
+</pre>
+
+<h4><code>new_from_string( desc1, [desc2, ...][, { options }] )</code></h4>
+
+<p>Same as <code>new_from_spec</code>, but works with <em>inline</em> description.</p>
+
+<pre class="example">
+local client = Spore.new_from_string [[
+{
+    "base_url" : "http://smolder.parrot.org",
+    "name" : "smolder",
+    "methods" : {
+        "upload" : {
+            "path" : "/app/projects/process_add_report/:project_id",
+            "method" : "POST",
+            "form-data" : {
+                "architecture"  : ":architecture",
+                "platform"      : ":platform",
+                "tags"          : ":tags",
+                "comments"      : ":comments",
+                "username"      : ":username",
+                "password"      : ":password",
+                "project_id"    : ":project_id",
+                "report_file"   : "@:report_file"
+            },
+            "required_params" : [
+                "project_id",
+                "report_file",
+                "username",
+                "password"
+            ],
+            "optional_params" : [
+                "architecture",
+                "platform",
+                "tags",
+                "comments"
+            ],
+            "expected_status" : [ 302 ]
+        }
+    }
+}
+]]
+
+local r = client:upload{
+    tags         = 'linux, i686-linux-gnu-thread-multi, lua, 5.1',
+    comments     = 'experiment with lua-Spore',
+    username     = 'parrot-autobot',
+    password     = 'qa_rocks',
+    project_id   = 7,
+    report_file  = 'test_lua51.tar.gz',
+}
+print(r.body)
+</pre>
+
+<h3>Instance Methods</h3>
+
+<p>These methods are inherited from <code>Spore.Core</code>.</p>
+
+<h4><code>enable( middleware [, args] )</code></h4>
+
+<p>Enable a middleware with the optional table <code>args<code>.</p>
+
+<h4><code>enable_if( cond, middleware [, args] )</code></h4>
+
+<p>Enable a conditional middleware.</p>
+
+<pre class="example">
+client:enable_if(function (req)
+                     return req.env.spore.caller ~= 'get_attachment'
+                 end,
+                 'Format.JSON')
+</pre>
+
+<h4><code>reset_middlewares()</code></h4>
+
+<p>Removes all middlewares.</p>
+
+<h4><code>http_request( env )</code></h4>
+
+<p>Never directly called.</p>
+
+<h3>Global Variables</h3>
+
+<p>These variables allow to do some configuration.</p>
+
+<h4><code>debug</code></h4>
+
+<p>The default value is <code>nil</code>.
+
+<pre class="example">
+Spore.debug = io.stdout
+</pre>
+
+<h4><code>errors</code></h4>
+
+<p>The default value is <code>io.stderr</code>.
+
+<h4><code>methname_modifier</code></h4>
+
+<p>The default value is <code>nil</code>.
+
+<p>This function allows to alter the name of the method during the instanciation.<p>
+
+<pre class="example">
+Spore.methname_modifier = function (name)
+    local lowerCamelCase = name:gsub('_(%w)', function (c) return c:upper() end)
+    return lowerCamelCase
+end
+</pre>
+
 
 <h2><a name="examples"></a>Examples</h2>
 
-<p>GitHub via http.</p>
+<h3>GitHub via http</h3>
 
 <pre class="example">
 require 'Spore'
@@ -87,13 +213,15 @@ github:enable('Auth.Basic', {
     username = 'schacon/token',
     password = '6ef8395fecf207165f1a82178ae1b984',
 })
-local res = github:user_information{format = 'json', username = 'schacon'}
+local res = github:get_info{format = 'json', username = 'schacon'}
 print(res.status)               --> 200
 print(res.headers['x-runtime']) --> 126ms
 print(res.body.user.name)       --> Scott Chacon
 </pre>
 
-<p>GitHub via https.</p>
+<h3>GitHub via https</h3>
+
+<p>The HTTPS protocol requires <a href="http://luasec.luaforge.net/">LuaSec</a>.</p>
 
 <pre class="example">
 require 'Spore'
@@ -102,10 +230,136 @@ local github = Spore.new_from_spec('http://github.com/SPORE/api-description/raw/
     base_url = "https://github.com/api/v2/",
 })
 github:enable 'Format.JSON'
-local res = github:user_information{format = 'json', username = 'schacon'}
+local res = github:get_info{format = 'json', username = 'schacon'}
 print(res.status)               --> 200
 print(res.headers['x-runtime']) --> 126ms
 print(res.body.user.name)       --> Scott Chacon
+</pre>
+
+<h3>CouchDB</h3>
+
+<p>This example comes from the book
+<a href="http://guide.couchdb.org/draft/api.html">CouchDB, The Definitif Guide</a>.</p>
+
+<pre class="example">
+local base = 'http://github.com/SPORE/api-description/apps/couchdb/'
+local couchdb = Spore.new_from_spec(
+    base .. 'server.json',
+    base .. 'database.json',
+    base .. 'document.json',
+    base .. 'design.json',
+    { base_url = 'http://127.0.0.1:5984/' })
+couchdb:enable_if(function (req) return req.env.spore.caller ~= 'get_attachment' end, 'Format.JSON')
+
+local r = couchdb:get_root()
+print(r.body.couchdb)
+print(r.body.version)
+
+local r = couchdb:create_db{ db = 'albums' }
+assert(r.body.ok)
+local r = couchdb:create_db{ db = 'albums' }
+print("error", r.body.error)
+print("reason", r.body.reason)
+
+local r = couchdb:add_document{
+    db = 'albums',
+    id = '6e1295ed6c29495e54cc05947f18c8af',
+    payload = {
+        title = "There is Nothing Left to Lose",
+        artist = "Foo Fighters",
+    },
+}
+assert(r.body.ok)
+print("id", r.body.id)
+print("rev", r.body.rev)
+
+local r = couchdb:get_uuids()
+assert(#r.body.uuids == 1)
+for i, v in ipairs(r.body.uuids) do print("uuid",i, v) end
+
+local r = couchdb:get_document{
+    db = 'albums',
+    id = '6e1295ed6c29495e54cc05947f18c8af',
+}
+print("_id", r.body._id)
+print("_rev", r.body._rev)
+print("title", r.body.title)
+print("artist", r.body.artist)
+local rev1 = r.body._rev
+
+local r = couchdb:add_document{
+    db = 'albums',
+    id = '6e1295ed6c29495e54cc05947f18c8af',
+    payload = {
+        title = "There is Nothing Left to Lose",
+        artist = "Foo Fighters",
+        year = 1997,
+    },
+}
+print("error", r.body.error)
+print("reason", r.body.reason)
+
+local r = couchdb:add_document{
+    db = 'albums',
+    id = '6e1295ed6c29495e54cc05947f18c8af',
+    payload = {
+        _rev = rev1,
+        title = "There is Nothing Left to Lose",
+        artist = "Foo Fighters",
+        year = 1997,
+    },
+}
+assert(r.body.ok)
+print("id", r.body.id)
+print("rev", r.body.rev)
+local rev2 = r.body.rev
+
+local r = couchdb:add_document{
+    db = 'albums',
+    id = '70b50bfa0a4b3aed1f8aff9e92dc16a0',
+    payload = {
+        title = "Blackened Sky",
+        artist = "Biffy Clyro",
+        year = 2002,
+    },
+}
+print("Location", r.headers['location'])
+assert(r.body.ok)
+print("id", r.body.id)
+print("rev", r.body.rev)
+
+local r = couchdb:add_attachment{
+    db = 'albums',
+    id = '6e1295ed6c29495e54cc05947f18c8af',
+    rev = rev2,
+    file = 'api.png',
+    content_type = 'image/png',
+    payload = '@api.png',
+}
+assert(r.body.ok)
+print("id", r.body.id)
+print("rev", r.body.rev)
+
+local r = couchdb:get_attachment{
+    db = 'albums',
+    id = '6e1295ed6c29495e54cc05947f18c8af',
+    file = 'api.png',
+}
+print("Content-Type", r.headers['content-type'])
+print("Content-Length", r.headers['content-length'])
+
+local r = couchdb:get_document{
+    db = 'albums',
+    id = '6e1295ed6c29495e54cc05947f18c8af',
+}
+print("_id", r.body._id)
+print("_rev", r.body._rev)
+print("title", r.body.title)
+print("artist", r.body.artist)
+for k, v in pairs(r.body._attachments) do
+    print(k)
+    for kk, vv in pairs(v) do print(kk, vv) end
+end
 </pre>
 
 </div> <!-- id="content" -->

@@ -8,7 +8,7 @@ if not pcall(require, 'yaml') then
     skip_all 'no yaml'
 end
 
-plan(12)
+plan(13)
 
 if not require_ok 'Spore.Middleware.Format.YAML' then
     skip_rest "no Spore.Middleware.Format.YAML"
@@ -16,11 +16,19 @@ if not require_ok 'Spore.Middleware.Format.YAML' then
 end
 
 local env = {
-    spore = {},
+    spore = {
+        payload = {
+            lua = 'table',
+        },
+    },
 }
 local req = Spore.Request.new(env)
 local cb = Spore.Middleware.Format.YAML.call({}, req)
 type_ok( cb, 'function', "returns a function" )
+is( env.spore.payload, [[
+--- 
+lua: table
+]], "payload encoded")
 
 local resp = {
     status = 200,

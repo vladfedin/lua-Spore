@@ -224,7 +224,7 @@ local function wrap (self, name, method, args)
             form_data       = method['form-data'],
             headers         = method.headers,
             payload         = payload,
-            errors          = io.stderr,
+            errors          = errors or io.stderr,
             debug           = debug,
             url_scheme      = base_url.scheme,
             format          = method.formats,

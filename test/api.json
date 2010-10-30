@@ -19,7 +19,8 @@
             "optional_params" : [
                 "border"
             ],
-            "required_payload" : true
+            "required_payload" : true,
+            "expected_status" : [ 100, 200 ]
         }
     }
 }

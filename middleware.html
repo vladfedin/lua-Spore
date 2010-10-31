@@ -50,6 +50,7 @@
     <li><strong>module <code>S.Middleware</code></strong>
       <ul>
         <li><a href="middleware.html#basic">Auth.Basic</a></li>
+        <li><a href="middleware.html#oauth">Auth.OAuth</a></li>
         <li><a href="middleware.html#json">Format.JSON</a></li>
         <li><a href="middleware.html#xml">Format.XML</a></li>
         <li><a href="middleware.html#yaml">Format.YAML</a></li>
@@ -87,6 +88,22 @@ end
 client:enable('Auth.Basic', {
     username = 'schacon/token',
     password = '6ef8395fecf207165f1a82178ae1b984',
+})
+</pre>
+
+<h2><a name="oauth"></a>Spore.Middleware.Auth.OAuth</h2>
+
+<p>This middleware requires <a href="http://github.com/ignacio/LuaOAuth">LuaOAuth</a>.</p>
+
+<p>This middleware should be loaded as the last middleware,
+because it requires all parameters to be setted to calculate the signature.</p>
+
+<pre class="example">
+client:enable('Auth.OAuth', {
+    consumer_key    = 'xxx',
+    consumer_secret = 'yyy',
+    token           = '123',
+    token_secret    = '456',
 })
 </pre>
 

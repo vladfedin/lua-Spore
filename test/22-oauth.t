@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-require 'Spore.Request'
+require 'Spore'
 
 require 'Test.More'
 
@@ -8,22 +8,30 @@ if not pcall(require, 'OAuth') then
     skip_all 'no OAuth'
 end
 
-plan(11)
+plan(7)
 
-OAuth.Sign = function () return nil, nil, 'mocked' end -- mock
+local response = { status = 200, headers = {} }
+Spore.request = function (req)
+    is(req.url, "http://services.org:9999/restapi/show?mocked_query")
+    return response
+end -- mock
+Spore.Request.finalize = function (self)
+    self.url = 'http://services.org:9999/restapi/show?dummy'
+end -- mock
+OAuth.Sign = function ()
+    return nil, 'mocked_query'
+end -- mock
 
 if not require_ok 'Spore.Middleware.Auth.OAuth' then
     skip_rest "no Spore.Middleware.Auth.OAuth"
     os.exit()
 end
 
-local req = Spore.Request.new({ spore = {} })
+local req = Spore.Request.new({ spore = { params = {} } })
 type_ok( req, 'table', "Spore.Request.new" )
 type_ok( req.headers, 'table' )
-is( req.headers['authorization'], nil )
 
 local r = Spore.Middleware.Auth.OAuth.call({}, req)
-is( req.headers['authorization'], nil, "authorization is not set" )
 is( r, nil )
 
 local data = {
@@ -33,12 +41,8 @@ local data = {
         token_secret    = '456',
 }
 r = Spore.Middleware.Auth.OAuth.call(data, req)
-is( req.headers['authorization'], nil, "authorization is not set" )
 is( r, nil )
 
 req.env.spore.authentication = true
 r = Spore.Middleware.Auth.OAuth.call(data, req)
-local auth = req.headers['authorization']
-type_ok( auth, 'string', "authorization is set" )
-is( auth, 'mocked' )
-is( r, nil )
+is( r, response )

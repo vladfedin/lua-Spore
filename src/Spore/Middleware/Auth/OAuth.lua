@@ -2,7 +2,6 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
-local assert = assert
 local tostring = tostring
 local math = require 'math'
 local os = require 'os'
@@ -27,8 +26,6 @@ function call (self, req)
     and self.token and self.token_secret then
         local env = req.env
         local spore = env.spore
-        assert(not spore.form_data, "TODO: filter form-data")
-        assert(not spore.headers, "TODO: filter headers")
         local client = OAuth.new(
             self.consumer_key,
             self.consumer_secret,

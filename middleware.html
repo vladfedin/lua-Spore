@@ -96,7 +96,7 @@ client:enable('Auth.Basic', {
 <p>This middleware requires <a href="http://github.com/ignacio/LuaOAuth">LuaOAuth</a>.</p>
 
 <p>This middleware should be loaded as the last middleware,
-because it requires all parameters to be setted to calculate the signature.</p>
+because it directly sends the request.</p>
 
 <pre class="example">
 client:enable('Auth.OAuth', {

@@ -67,6 +67,7 @@ function finalize (self, oauth)
                 local nn
                 vv, nn = vv:gsub(':' .. k, v)
                 if nn > 0 then
+                    headers[kk] = vv
                     self.headers[kk] = vv
                     n = n + 1
                 end
@@ -107,7 +108,23 @@ function finalize (self, oauth)
             path    = (env.SCRIPT_NAME or '/') .. path_info,
             -- no query
         }
-        self.oauth_signature_base_string = self.method:upper() .. '&' .. escape5849(base_url) .. '&' .. escape5849(query_string)
+        for k, v in pairs(env.spore.params) do
+            k = tostring(k)
+            if k:match'^oauth_' and not query_vals[k] then
+                query_keys[#query_keys+1] = k
+                query_vals[k] = escape5849(tostring(v))
+            end
+        end
+        tsort(query_keys)
+        params = {}
+        for i = 1, #query_keys do
+            local k = query_keys[i]
+            local v = query_vals[k]
+            params[#params+1] = k .. '=' .. v
+        end
+        local normalized = tconcat(params, '&')
+        self.oauth_signature_base_string = self.method:upper() .. '&' .. escape5849(base_url)
+                                                               .. '&' .. escape5849(normalized)
     end
     self.url = url.build {
         scheme  = env.spore.url_scheme,

@@ -44,7 +44,13 @@ function call (self, req)
         local hmac_binary = crypto.digest('sha1', req.oauth_signature_base_string, signature_key, true)
         local hmac_b64 = mime.b64(hmac_binary)
         local oauth_signature = escape(hmac_b64)
-        req.url = req.url .. '&oauth_signature=' .. oauth_signature
+        local headers = req.headers
+        local authorization = headers['authorization']
+        if authorization then
+            headers['authorization'] = authorization:gsub(':oauth_signature', (oauth_signature:gsub('%%', '%%%%')))
+        else
+            req.url = req.url .. '&oauth_signature=' .. oauth_signature
+        end
         return Spore.request(req)
     end
 end

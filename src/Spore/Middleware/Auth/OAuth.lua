@@ -29,8 +29,7 @@ end
 
 function call (self, req)
     if req.env.spore.authentication
-    and self.consumer_key and self.consumer_secret
-    and self.token and self.token_secret then
+    and self.consumer_key and self.consumer_secret then
         local env = req.env
         local spore = env.spore
         local params = spore.params
@@ -45,7 +44,7 @@ function call (self, req)
         local base_url = req.url:sub(1, idx - 1)
         local query = req.url:sub(idx + 1)
         local signature_base_string = req.method:upper() .. '&' .. escape(base_url) .. '&' .. escape(query)
-        local signature_key = escape(self.consumer_secret) .. '&' .. escape(self.token_secret)
+        local signature_key = escape(self.consumer_secret) .. '&' .. escape(self.token_secret or '')
         local hmac_binary = crypto.digest('sha1', signature_base_string, signature_key, true)
         local hmac_b64 = mime.b64(hmac_binary)
         local oauth_signature = escape(hmac_b64)

@@ -55,6 +55,7 @@
         <li><a href="middleware.html#xml">Format.XML</a></li>
         <li><a href="middleware.html#yaml">Format.YAML</a></li>
         <li><a href="middleware.html#logging">Logging</a></li>
+        <li><a href="middleware.html#redirection">Redirection</a></li>
         <li><a href="middleware.html#runtime">Runtime</a></li>
         <li><a href="middleware.html#useragent">UserAgent</a></li>
       </ul>
@@ -139,6 +140,14 @@ require 'logging.file'
 client:enable('Logging', {
     logger = logging.file 'test%s.log'
 })
+</pre>
+
+<h2><a name="redirection"></a>Spore.Middleware.Redirection</h2>
+
+<p>This middleware handles the header <code>Location</code>.</p>
+
+<pre class="example">
+client:enable 'Redirection'
 </pre>
 
 <h2><a name="runtime"></a>Spore.Middleware.Runtime</h2>

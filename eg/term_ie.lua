@@ -49,6 +49,6 @@ assert(keys.token_secret == 'accesssecret')
 
 local r = client:echo{ method = 'foo', bar = 'baz' }
 print(r.body)
-assert(r.body, 'bar=baz&method=foo')
+assert(r.body == 'bar=baz&method=foo')
 
 print 'ok - http://term.ie/oauth/example'

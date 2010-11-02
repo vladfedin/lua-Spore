@@ -34,10 +34,10 @@ local r = Spore.Middleware.Auth.OAuth.call({}, req)
 is( r, nil )
 
 local data = {
-        consumer_key    = 'xxx',
-        consumer_secret = 'yyy',
-        token           = '123',
-        token_secret    = '456',
+    oauth_consumer_key    = 'xxx',
+    oauth_consumer_secret = 'yyy',
+    oauth_token           = '123',
+    oauth_token_secret    = '456',
 }
 r = Spore.Middleware.Auth.OAuth.call(data, req)
 is( r, nil )

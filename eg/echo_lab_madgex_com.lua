@@ -7,8 +7,8 @@
 local Spore = require 'Spore'
 
 local keys = {
-    consumer_key    = 'key',
-    consumer_secret = 'secret',
+    oauth_consumer_key    = 'key',
+    oauth_consumer_secret = 'secret',
 }
 local client = Spore.new_from_string [[
 {
@@ -49,16 +49,16 @@ client:enable('Auth.OAuth', keys)
 local r = client:get_request_token()
 assert(#r.body > 0, r.status)
 print(r.body)
-for k, v in r.body:gmatch'([^&=]+)=([^&=]*)&?' do keys[k:sub(7)] = v end
-assert(keys.token == 'requestkey')
-assert(keys.token_secret == 'requestsecret')
+for k, v in r.body:gmatch'([^&=]+)=([^&=]*)&?' do keys[k] = v end
+assert(keys.oauth_token == 'requestkey')
+assert(keys.oauth_token_secret == 'requestsecret')
 
 local r = client:get_access_token()
 assert(#r.body > 0, r.status)
 print(r.body)
-for k, v in r.body:gmatch'([^&=]+)=([^&=]*)&?' do keys[k:sub(7)] = v end
-assert(keys.token == 'accesskey')
-assert(keys.token_secret == 'accesssecret')
+for k, v in r.body:gmatch'([^&=]+)=([^&=]*)&?' do keys[k] = v end
+assert(keys.oauth_token == 'accesskey')
+assert(keys.oauth_token_secret == 'accesssecret')
 
 local r = client:echo{ method = 'foo bar', bar = 'baz' }
 print(r.body)

@@ -4,22 +4,20 @@ require 'Spore'
 
 require 'Test.More'
 
-if not pcall(require, 'OAuth') then
-    skip_all 'no OAuth'
+if not pcall(require, 'crypto') then
+    skip_all 'no crypto'
 end
 
 plan(7)
 
 local response = { status = 200, headers = {} }
 Spore.request = function (req)
-    is(req.url, "http://services.org:9999/restapi/show?mocked_query")
+    like(req.url, "^http://services.org:9999/restapi/show%?dummy&oauth_signature=[%%%w]+$")
     return response
 end -- mock
 Spore.Request.finalize = function (self)
+    self.method = 'GET'
     self.url = 'http://services.org:9999/restapi/show?dummy'
-end -- mock
-OAuth.Sign = function ()
-    return nil, 'mocked_query'
 end -- mock
 
 if not require_ok 'Spore.Middleware.Auth.OAuth' then

@@ -26,7 +26,7 @@ dependencies = {
 --    'luaexpat >= 1.1.0',        -- libexpat1-dev
 --    'luayaml >= 0.5.6',         -- syck 0.55
 --    'lualogging >= 1.1.4',
---    'luaoauth >= 0.0.1',
+--    'luacrypto >= 0.2.0',
     'lua-testmore >= 0.2.1',
 }
 build = {

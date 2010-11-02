@@ -5,7 +5,9 @@
 local pairs = pairs
 local setmetatable = setmetatable
 local tostring = tostring
+local string = string
 local tconcat = require 'table'.concat
+local tsort = require 'table'.sort
 local url = require 'socket.url'
 
 
@@ -26,12 +28,19 @@ function new (env)
     })
 end
 
-function finalize (self)
+function escape5849(s)
+    -- see RFC 5849, Section 3.6
+    return string.gsub(s, '[^-._~%w]', function(c)
+        return string.upper(string.format('%%%02x', string.byte(c)))
+    end)
+end
+
+function finalize (self, normalized)
     local env = self.env
     local path_info = env.PATH_INFO
     local form_data = env.spore.form_data
     local headers = env.spore.headers
-    local query = {}
+    local query, query_keys, query_vals = {}, {}, {}
     local form = {}
     for k, v in pairs(env.spore.params) do
         k = tostring(k)
@@ -64,7 +73,20 @@ function finalize (self)
             end
         end
         if n == 0 then
-            query[#query+1] = url.escape(k) .. '=' .. e
+            if normalized then
+                query_keys[#query_keys+1] = escape5849(k)
+                query_vals[k] = escape5849(v)
+            else
+                query[#query+1] = url.escape(k) .. '=' .. e
+            end
+        end
+    end
+    if normalized then
+        tsort(query_keys)
+        for i = 1, #query_keys do
+            local k = query_keys[i]
+            local v = query_vals[k]
+            query[#query+1] = k .. '=' .. v
         end
     end
     local query_string

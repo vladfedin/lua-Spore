@@ -38,8 +38,10 @@ end
 function finalize (self, oauth)
     local env = self.env
     local path_info = env.PATH_INFO
-    local form_data = env.spore.form_data
-    local headers = env.spore.headers
+    local spore = env.spore
+    local form_data = spore.form_data
+    local headers = spore.headers
+    local payload = spore.payload
     local query, query_keys, query_vals = {}, {}, {}
     local form = {}
     for k, v in pairs(env.spore.params) do
@@ -75,8 +77,10 @@ function finalize (self, oauth)
         end
         if n == 0 then
             if oauth then
-                query_keys[#query_keys+1] = escape5849(k)
-                query_vals[k] = escape5849(v)
+                if not k:match'^oauth_' or payload ~= '@oauth' then
+                    query_keys[#query_keys+1] = escape5849(k)
+                    query_vals[k] = escape5849(v)
+                end
             else
                 query[#query+1] = url.escape(k) .. '=' .. e
             end

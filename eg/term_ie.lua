@@ -27,6 +27,11 @@ local client = Spore.new_from_string [[
             "path" : "/echo_api.php",
             "method" : "GET",
             "unattended_params" : true
+        },
+        "echo_p" : {
+            "path" : "/echo_api.php",
+            "method" : "POST",
+            "required_payload" : true
         }
     },
     "expected_status" : [ 200 ],
@@ -50,5 +55,9 @@ assert(keys.oauth_token_secret == 'accesssecret')
 local r = client:echo{ method = 'foo', bar = 'baz' }
 print(r.body)
 assert(r.body == 'bar=baz&method=foo')
+
+local r = client:echo_p{ payload = '@oauth' }
+print(r.body)
+assert(r.body == '')
 
 print 'ok - http://term.ie/oauth/example'

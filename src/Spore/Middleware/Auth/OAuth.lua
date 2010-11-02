@@ -53,7 +53,17 @@ function call (self, req)
             if www_authenticate then
                 headers['www-authenticate'] = www_authenticate:gsub(':oauth_signature', (oauth_signature:gsub('%%', '%%%%')))
             else
-                req.url = req.url .. '&oauth_signature=' .. oauth_signature
+                if spore.payload == '@oauth' then
+                    spore.payload = 'oauth_consumer_key='     .. params.oauth_consumer_key
+                                .. '&oauth_nonce='            .. params.oauth_nonce
+                                .. '&oauth_signature_method=' .. params.oauth_signature_method
+                                .. '&oauth_timestamp='        .. params.oauth_timestamp
+                                .. '&oauth_token='            .. params.oauth_token
+                                .. '&oauth_version='          .. params.oauth_version
+                                .. '&oauth_signature='        .. oauth_signature
+                else
+                    req.url = req.url .. '&oauth_signature=' .. oauth_signature
+                end
             end
         end
         return Spore.request(req)

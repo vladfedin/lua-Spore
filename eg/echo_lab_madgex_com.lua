@@ -39,6 +39,13 @@ local client = Spore.new_from_string [[
             },
             "unattended_params" : true,
             "expected_status" : [ 200, 400, 401 ]
+        },
+        "echo_p" : {
+            "path" : "/echo.ashx",
+            "method" : "POST",
+            "required_payload" : true,
+            "unattended_params" : true,
+            "expected_status" : [ 200, 400, 401 ]
         }
     },
     "authentication" : true
@@ -65,6 +72,10 @@ print(r.body)
 assert(r.body == 'bar=baz&method=foo bar')
 
 local r = client:echo_h{ method = 'foo bar', bar = 'baz' }
+print(r.body)
+assert(r.body == 'bar=baz&method=foo bar')
+
+local r = client:echo_p{ payload = '@oauth', method = 'foo bar', bar = 'baz' }
 print(r.body)
 assert(r.body == 'bar=baz&method=foo bar')
 

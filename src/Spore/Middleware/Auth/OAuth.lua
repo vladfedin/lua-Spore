@@ -49,7 +49,12 @@ function call (self, req)
         if authorization then
             headers['authorization'] = authorization:gsub(':oauth_signature', (oauth_signature:gsub('%%', '%%%%')))
         else
-            req.url = req.url .. '&oauth_signature=' .. oauth_signature
+            local www_authenticate = headers['www-authenticate']
+            if www_authenticate then
+                headers['www-authenticate'] = www_authenticate:gsub(':oauth_signature', (oauth_signature:gsub('%%', '%%%%')))
+            else
+                req.url = req.url .. '&oauth_signature=' .. oauth_signature
+            end
         end
         return Spore.request(req)
     end

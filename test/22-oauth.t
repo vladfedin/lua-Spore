@@ -18,6 +18,7 @@ end -- mock
 Spore.Request.finalize = function (self)
     self.method = 'GET'
     self.url = 'http://services.org:9999/restapi/show?dummy'
+    self.oauth_signature_base_string = self.url
 end -- mock
 
 if not require_ok 'Spore.Middleware.Auth.OAuth' then

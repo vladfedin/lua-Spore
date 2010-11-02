@@ -40,12 +40,8 @@ function call (self, req)
         params.oauth_token = self.token
         params.oauth_version = '1.0'
         req:finalize(true)
-        local idx = req.url:find('?')
-        local base_url = req.url:sub(1, idx - 1)
-        local query = req.url:sub(idx + 1)
-        local signature_base_string = req.method:upper() .. '&' .. escape(base_url) .. '&' .. escape(query)
         local signature_key = escape(self.consumer_secret) .. '&' .. escape(self.token_secret or '')
-        local hmac_binary = crypto.digest('sha1', signature_base_string, signature_key, true)
+        local hmac_binary = crypto.digest('sha1', req.oauth_signature_base_string, signature_key, true)
         local hmac_b64 = mime.b64(hmac_binary)
         local oauth_signature = escape(hmac_b64)
         req.url = req.url .. '&oauth_signature=' .. oauth_signature

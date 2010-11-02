@@ -35,7 +35,7 @@ function escape5849(s)
     end)
 end
 
-function finalize (self, normalized)
+function finalize (self, oauth)
     local env = self.env
     local path_info = env.PATH_INFO
     local form_data = env.spore.form_data
@@ -73,7 +73,7 @@ function finalize (self, normalized)
             end
         end
         if n == 0 then
-            if normalized then
+            if oauth then
                 query_keys[#query_keys+1] = escape5849(k)
                 query_vals[k] = escape5849(v)
             else
@@ -81,7 +81,7 @@ function finalize (self, normalized)
             end
         end
     end
-    if normalized then
+    if oauth then
         tsort(query_keys)
         for i = 1, #query_keys do
             local k = query_keys[i]
@@ -98,6 +98,17 @@ function finalize (self, normalized)
     if form_data then
         self.env.spore.form_data = form
     end
+    self.method = env.REQUEST_METHOD
+    if oauth then
+        local base_url = url.build {
+            scheme  = env.spore.url_scheme,
+            host    = env.HTTP_HOST or env.SERVER_NAME,
+            port    = env.SERVER_PORT,
+            path    = (env.SCRIPT_NAME or '/') .. path_info,
+            -- no query
+        }
+        self.oauth_signature_base_string = self.method:upper() .. '&' .. escape5849(base_url) .. '&' .. escape5849(query_string)
+    end
     self.url = url.build {
         scheme  = env.spore.url_scheme,
         host    = env.HTTP_HOST or env.SERVER_NAME,
@@ -105,7 +116,6 @@ function finalize (self, normalized)
         path    = (env.SCRIPT_NAME or '/') .. path_info,
         query   = query_string,
     }
-    self.method = env.REQUEST_METHOD
 end
 
 --

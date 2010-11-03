@@ -6,7 +6,7 @@ require 'Test.More'
 
 plan(13)
 
-local client = Spore.new_from_spec '../test/api.json'
+local client = Spore.new_from_spec './test/api.json'
 is( #client.middlewares, 0 )
 
 error_like( function () client:enable_if(true) end,

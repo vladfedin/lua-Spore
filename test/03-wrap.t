@@ -8,7 +8,7 @@ plan(18)
 
 Spore.Core.http_request = function (self, env) return env end -- mock
 
-local client = Spore.new_from_spec('../test/api.json', {})
+local client = Spore.new_from_spec('./test/api.json', {})
 
 error_like( function () client:get_info(true) end,
             "bad argument #2 to get_info %(table expected, got boolean%)" )
@@ -41,5 +41,5 @@ error_like( function () client:get_info{ payload = '@file' } end,
 error_like( function () client:get_info{ mode = 'raw' } end,
             "mode is not expected for method get_info" )
 
-client = Spore.new_from_spec('../test/api.json', { unattended_params = true })
+client = Spore.new_from_spec('./test/api.json', { unattended_params = true })
 lives_ok( function () client:get_info{ mode = 'raw' } end )

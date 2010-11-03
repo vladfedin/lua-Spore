@@ -99,13 +99,15 @@ install-rock: clean dist rockspec
 
 check: test
 
+export LUA_PATH=;;src/?.lua
+
 test:
-	cd src && prove --exec=$(LUA) ../test/*.t
+	prove --exec=$(LUA) ./test/*.t
 
 coverage:
-	rm -f src/luacov.stats.out src/luacov.report.out
-	-cd src && prove --exec="$(LUA) -lluacov" ../test/*.t
-	cd src && luacov
+	rm -f ./luacov.stats.out ./luacov.report.out
+	-prove --exec="$(LUA) -lluacov" ./test/*.t ./eg/*.lua
+	luacov
 
 README.html: README.md
 	Markdown.pl README.md > README.html

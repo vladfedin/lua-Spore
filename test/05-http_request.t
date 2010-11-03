@@ -9,7 +9,7 @@ plan(9)
 local response = { status = 200 }
 Spore.Protocols.request = function (req) return response end -- mock
 
-local client = Spore.new_from_spec '../test/api.json'
+local client = Spore.new_from_spec './test/api.json'
 
 local res = client:get_user_info{ payload = '@file', user = 'john' }
 is( res, response, "without middleware" )

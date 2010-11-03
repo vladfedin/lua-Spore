@@ -2,6 +2,7 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
+local error = error
 local tostring = tostring
 local math = require 'math'
 local os = require 'os'
@@ -35,15 +36,26 @@ function call (self, req)
         local params = spore.params
         params.oauth_consumer_key = self.oauth_consumer_key
         params.oauth_nonce = generate_nonce()
-        params.oauth_signature_method = 'HMAC-SHA1'
+        params.oauth_signature_method = self.oauth_signature_method or 'HMAC-SHA1'
         params.oauth_timestamp = generate_timestamp()
         params.oauth_token = self.oauth_token
         params.oauth_version = '1.0'
         req:finalize(true)
+
         local signature_key = escape(self.oauth_consumer_secret) .. '&' .. escape(self.oauth_token_secret or '')
-        local hmac_binary = crypto.digest('sha1', req.oauth_signature_base_string, signature_key, true)
-        local hmac_b64 = mime.b64(hmac_binary)
-        local oauth_signature = escape(hmac_b64)
+        local oauth_signature
+        if params.oauth_signature_method == 'PLAINTEXT' then
+            oauth_signature = escape(escape(signature_key))
+        else
+            if params.oauth_signature_method == 'HMAC-SHA1' then
+                local hmac_binary = crypto.digest('sha1', req.oauth_signature_base_string, signature_key, true)
+                local hmac_b64 = mime.b64(hmac_binary)
+                oauth_signature = escape(hmac_b64)
+            else
+                error(params.oauth_signature_method .. " is not supported")
+            end
+        end
+
         local headers = req.headers
         local authorization = headers['authorization']
         if authorization then

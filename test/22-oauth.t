@@ -8,7 +8,7 @@ if not pcall(require, 'crypto') then
     skip_all 'no crypto'
 end
 
-plan(7)
+plan(8)
 
 local response = { status = 200, headers = {} }
 Spore.request = function (req)
@@ -45,3 +45,9 @@ is( r, nil )
 req.env.spore.authentication = true
 r = Spore.Middleware.Auth.OAuth.call(data, req)
 is( r, response )
+
+error_like( function ()
+    data.oauth_signature_method = 'UNKNOWN'
+    Spore.Middleware.Auth.OAuth.call(data, req)
+end, "UNKNOWN is not supported" )
+

@@ -101,10 +101,11 @@ because it directly sends the request.</p>
 
 <pre class="example">
 client:enable('Auth.OAuth', {
-    oauth_consumer_key    = 'key',
-    oauth_consumer_secret = 'secret',
-    oauth_token           = 'accesskey',
-    oauth_token_secret    = 'accesssecret',
+    oauth_consumer_key     = 'key',
+    oauth_consumer_secret  = 'secret',
+    oauth_token            = 'accesskey',
+    oauth_token_secret     = 'accesssecret',
+    oauth_signature_method = 'HMAC-SHA1',
 })
 </pre>
 

@@ -66,3 +66,4 @@ print(r.body)
 assert(r.body == 'bar=baz&method=foo')
 
 print 'ok - http://term.ie/oauth/example'
+print '1..1'

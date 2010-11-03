@@ -80,3 +80,4 @@ print(r.body)
 assert(r.body == 'bar=baz&method=foo bar')
 
 print 'ok - http://echo.lab.madgex.com'
+print '1..1'

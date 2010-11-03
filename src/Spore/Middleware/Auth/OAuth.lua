@@ -8,8 +8,8 @@ local math = require 'math'
 local os = require 'os'
 local crypto = require 'crypto'.hmac
 local mime = require 'mime'
-local Spore = require 'Spore'
-local escape = Spore.Request.escape5849
+local escape = require 'Spore.Request'.escape5849
+local request = require 'Spore.Protocols'.request
 
 
 module 'Spore.Middleware.Auth.OAuth'
@@ -78,7 +78,7 @@ function call (self, req)
                 end
             end
         end
-        return Spore.request(req)
+        return request(req)
     end
 end
 

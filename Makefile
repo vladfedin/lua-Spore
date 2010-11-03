@@ -16,6 +16,7 @@ install:
 	mkdir -p $(LIBDIR)/Spore/Middleware/Format
 	cp src/Spore.lua                            $(LIBDIR)
 	cp src/Spore/Core.lua                       $(LIBDIR)/Spore
+	cp src/Spore/Protocols.lua                  $(LIBDIR)/Spore
 	cp src/Spore/Request.lua                    $(LIBDIR)/Spore
 	cp src/Spore/Middleware/Logging.lua         $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Redirection.lua     $(LIBDIR)/Spore/Middleware

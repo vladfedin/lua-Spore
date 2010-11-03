@@ -1,14 +1,14 @@
 #!/usr/bin/env lua
 
 require 'Spore.Request'
-require 'Spore'
+require 'Spore.Protocols'
 
 require 'Test.More'
 
 plan(5)
 
 local response = { status = 222, headers = {} }
-Spore.request = function (req) return response end -- mock
+Spore.Protocols.request = function (req) return response end -- mock
 
 if not require_ok 'Spore.Middleware.Redirection' then
     skip_rest "no Spore.Middleware.Redirection"

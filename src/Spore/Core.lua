@@ -9,6 +9,7 @@ local tonumber = tonumber
 local type = type
 local ltn12 = require 'ltn12'
 local Request = require 'Spore.Request'
+local Protocols = require 'Spore.Protocols'
 
 
 module 'Spore.Core'
@@ -70,7 +71,7 @@ function http_request (self, env)
 
     if response == nil then
         req:finalize()
-        response = require 'Spore'.request(req)
+        response = Protocols.request(req)
     end
 
     for i = #callbacks, 1, -1 do

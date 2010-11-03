@@ -11,7 +11,7 @@ end
 plan(8)
 
 local response = { status = 200, headers = {} }
-Spore.request = function (req)
+Spore.Protocols.request = function (req)
     like(req.url, "^http://services.org:9999/restapi/show%?dummy&oauth_signature=[%%%w]+$")
     return response
 end -- mock

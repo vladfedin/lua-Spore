@@ -7,7 +7,7 @@ require 'Test.More'
 plan(9)
 
 local response = { status = 200 }
-Spore.request = function (req) return response end -- mock
+Spore.Protocols.request = function (req) return response end -- mock
 
 local client = Spore.new_from_spec '../test/api.json'
 

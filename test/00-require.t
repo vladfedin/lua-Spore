@@ -2,7 +2,7 @@
 
 require 'Test.More'
 
-plan(14)
+plan(17)
 
 if not require_ok 'Spore' then
     BAIL_OUT "no lib"
@@ -22,6 +22,11 @@ m = require 'Spore.Core'
 type_ok( m, 'table', "Spore.Core" )
 is( m, Spore.Core )
 is( m, package.loaded['Spore.Core'] )
+
+m = require 'Spore.Protocols'
+type_ok( m, 'table', "Spore.Protocols" )
+is( m, Spore.Protocols )
+is( m, package.loaded['Spore.Protocols'] )
 
 m = require 'Spore.Request'
 type_ok( m, 'table', "Spore.Request" )

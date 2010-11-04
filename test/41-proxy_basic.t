@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(7)
+plan(20)
 
 if not require_ok 'Spore.Middleware.Proxy.Basic' then
     skip_rest "no Spore.Middleware.Proxy.Basic"
@@ -34,3 +34,17 @@ client:enable('Proxy.Basic', {
 local r = client:get_info()
 is( r.body, 'dummy' )
 
+client:reset_middlewares()
+client:enable 'Proxy.Basic'
+
+error_like( function ()
+    client:get_info()
+end, "no HTTP_PROXY", "no HTTP_PROXY" )
+
+os.getenv = function () return 'http://john:s3kr3t@proxy.myorg:8080' end --mock
+
+local r = client:get_info()
+is( r.body, 'dummy' )
+
+local r = client:get_info()
+is( r.body, 'dummy' )

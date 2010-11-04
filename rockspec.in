@@ -37,6 +37,7 @@ build = {
         ['Spore.Protocols']                     = 'src/Spore/Protocols.lua',
         ['Spore.Request']                       = 'src/Spore/Request.lua',
         ['Spore.Middleware.Logging']            = 'src/Spore/Middleware/Logging.lua',
+        ['Spore.Middleware.Mock']               = 'src/Spore/Middleware/Mock.lua',
         ['Spore.Middleware.Redirection']        = 'src/Spore/Middleware/Redirection.lua',
         ['Spore.Middleware.Runtime']            = 'src/Spore/Middleware/Runtime.lua',
         ['Spore.Middleware.UserAgent']          = 'src/Spore/Middleware/UserAgent.lua',

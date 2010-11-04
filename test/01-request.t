@@ -4,7 +4,7 @@ require 'Spore.Request'
 
 require 'Test.More'
 
-plan(34)
+plan(37)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
@@ -74,7 +74,7 @@ is( env.spore.form_data.form7, nil )
 env.spore.form_data = nil
 env.spore.headers = {
     head1 = 'f(:prm1)',
-    head2 = 'g(:prm2)',
+    head2 = 'g(:prm2); :prm1',
     head3 = 'h(:prm3)',
     head7 = 'r(:prm7)',
 }
@@ -84,7 +84,13 @@ is( env.PATH_INFO, '/path' )
 is( env.QUERY_STRING, '' )
 is( env.spore.form_data, nil )
 is( req.headers.head1, "f(1)", "headers" )
-is( req.headers.head2, "g(value2)" )
+is( req.headers.head2, "g(value2); 1" )
 is( req.headers.head3, "h(Value Z)" )
 is( req.headers.head7, nil )
 
+env.spore.params.prm1 = 2
+env.spore.params.prm2 = 'VALUE2'
+req:finalize()
+is( req.headers.head1, "f(2)", "headers" )
+is( req.headers.head2, "g(VALUE2); 2" )
+is( req.headers.head3, "h(Value Z)" )

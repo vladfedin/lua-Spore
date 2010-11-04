@@ -37,10 +37,12 @@ end
 
 function finalize (self, oauth)
     local env = self.env
-    local path_info = env.PATH_INFO
     local spore = env.spore
-    local form_data = spore.form_data
-    local headers = spore.headers
+    local path_info = env.PATH_INFO
+    local form_data = {}
+    for k, v in pairs(spore.form_data or {}) do form_data[k] = v end
+    local headers = {}
+    for k, v in pairs(spore.headers or {}) do headers[k] = v end
     local payload = spore.payload
     local query, query_keys, query_vals = {}, {}, {}
     local form = {}
@@ -50,29 +52,26 @@ function finalize (self, oauth)
         local e = url.escape(v)
         local n
         path_info, n = path_info:gsub(':' .. k, (e:gsub('%%', '%%%%')))
-        if form_data then
-            for kk, vv in pairs(form_data or {}) do
-                kk = tostring(kk)
-                vv = tostring(vv)
-                local nn
-                vv, nn = vv:gsub(':' .. k, v)
-                if nn > 0 then
-                    form[kk] = vv
-                    n = n + 1
-                end
+        for kk, vv in pairs(form_data) do
+            kk = tostring(kk)
+            vv = tostring(vv)
+            local nn
+            vv, nn = vv:gsub(':' .. k, v)
+            if nn > 0 then
+                form_data[kk] = vv
+                form[kk] = vv
+                n = n + 1
             end
         end
-        if headers then
-            for kk, vv in pairs(headers or {}) do
-                kk = tostring(kk)
-                vv = tostring(vv)
-                local nn
-                vv, nn = vv:gsub(':' .. k, v)
-                if nn > 0 then
-                    headers[kk] = vv
-                    self.headers[kk] = vv
-                    n = n + 1
-                end
+        for kk, vv in pairs(headers) do
+            kk = tostring(kk)
+            vv = tostring(vv)
+            local nn
+            vv, nn = vv:gsub(':' .. k, v)
+            if nn > 0 then
+                headers[kk] = vv
+                self.headers[kk] = vv
+                n = n + 1
             end
         end
         if n == 0 then
@@ -100,8 +99,8 @@ function finalize (self, oauth)
     end
     env.PATH_INFO = path_info
     env.QUERY_STRING = query_string or ''
-    if form_data then
-        self.env.spore.form_data = form
+    if spore.form_data then
+        spore.form_data = form
     end
     self.method = env.REQUEST_METHOD
     if oauth then

@@ -46,6 +46,7 @@ build = {
         ['Spore.Middleware.Format.JSON']        = 'src/Spore/Middleware/Format/JSON.lua',
         ['Spore.Middleware.Format.XML']         = 'src/Spore/Middleware/Format/XML.lua',
         ['Spore.Middleware.Format.YAML']        = 'src/Spore/Middleware/Format/YAML.lua',
+        ['Spore.Middleware.Proxy.Basic']        = 'src/Spore/Middleware/Proxy/Basic.lua',
     },
     copy_directories = { 'doc', 'test' },
 }

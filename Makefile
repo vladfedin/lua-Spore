@@ -14,6 +14,7 @@ LIBDIR  := $(DESTDIR)/share/lua/5.1
 install:
 	mkdir -p $(LIBDIR)/Spore/Middleware/Auth
 	mkdir -p $(LIBDIR)/Spore/Middleware/Format
+	mkdir -p $(LIBDIR)/Spore/Middleware/Proxy
 	cp src/Spore.lua                            $(LIBDIR)
 	cp src/Spore/Core.lua                       $(LIBDIR)/Spore
 	cp src/Spore/Protocols.lua                  $(LIBDIR)/Spore
@@ -29,6 +30,7 @@ install:
 	cp src/Spore/Middleware/Format/JSON.lua     $(LIBDIR)/Spore/Middleware/Format
 	cp src/Spore/Middleware/Format/XML.lua      $(LIBDIR)/Spore/Middleware/Format
 	cp src/Spore/Middleware/Format/YAML.lua     $(LIBDIR)/Spore/Middleware/Format
+	cp src/Spore/Middleware/Proxy/Basic.lua     $(LIBDIR)/Spore/Middleware/Proxy
 
 uninstall:
 	rm -f $(LIBDIR)/Spore.lua

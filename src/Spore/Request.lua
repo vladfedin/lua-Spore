@@ -106,7 +106,7 @@ function finalize (self, oauth)
     if oauth then
         local base_url = url.build {
             scheme  = env.spore.url_scheme,
-            host    = env.HTTP_HOST or env.SERVER_NAME,
+            host    = env.SERVER_NAME,
             port    = env.SERVER_PORT,
             path    = (env.SCRIPT_NAME or '/') .. path_info,
             -- no query
@@ -131,7 +131,7 @@ function finalize (self, oauth)
     end
     self.url = url.build {
         scheme  = env.spore.url_scheme,
-        host    = env.HTTP_HOST or env.SERVER_NAME,
+        host    = env.SERVER_NAME,
         port    = env.SERVER_PORT,
         path    = (env.SCRIPT_NAME or '/') .. path_info,
         query   = query_string,

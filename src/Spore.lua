@@ -38,6 +38,7 @@ local function wrap (self, name, method, args)
     local params = {}
     for k, v in pairs(args) do
         if type(k) == 'number' then
+            v = tostring(v)
             params[v] = v
         else
             params[tostring(k)] = v
@@ -49,6 +50,9 @@ local function wrap (self, name, method, args)
     if method.required_payload then
         assert(payload, "payload is required for method " .. name)
     end
+    if payload then
+        assert(method.required_payload or method.optional_payload, "payload is not expected for method " .. name)
+    end
 
     local required_params = method.required_params or {}
     for i = 1, #required_params do
@@ -57,9 +61,6 @@ local function wrap (self, name, method, args)
     end
 
     if not method.unattended_params then
-        if payload then
-            assert(method.required_payload or method.optional_payload, "payload is not expected for method " .. name)
-        end
         local optional_params = method.optional_params or {}
         for param in pairs(params) do
             local found = false

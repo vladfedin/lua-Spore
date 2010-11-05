@@ -19,25 +19,25 @@ end
 
 local client = Spore.new_from_spec './test/api.json'
 
-local r = client:get_info()
+r = client:get_info()
 is( r.body, '1' )
-local r = client:get_info()
+r = client:get_info()
 is( r.body, '2', "not cached" )
 
 client:enable 'Cache'
-local r = client:get_info()
+r = client:get_info()
 is( r.body, '3' )
 
-local r = client:get_info{ user = 'john' }
+r = client:get_info{ user = 'john' }
 is( r.body, '4' )
 
-local r = client:get_info()
+r = client:get_info()
 is( r.body, '3', "cached" )
 
-local r = client:get_info{ user = 'john' }
+r = client:get_info{ user = 'john' }
 is( r.body, '4', "cached" )
 
 Spore.Middleware.Cache.reset()
 
-local r = client:get_info()
+r = client:get_info()
 is( r.body, '5', "reset" )

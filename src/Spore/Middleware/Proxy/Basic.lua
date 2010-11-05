@@ -22,8 +22,6 @@ local function _env_proxy (scheme)
             port    = proxy.port,
         },
         userinfo    = proxy.userinfo,
-        username    = proxy.user,
-        password    = proxy.password,
     }
 end
 
@@ -39,10 +37,10 @@ local function env_proxy (scheme)
 end
 
 function call (self, req)
-    if not self.proxy then
-        self = env_proxy(req.env.spore.url_scheme)
-    end
     local env = req.env
+    if not self.proxy then
+        self = env_proxy(env.spore.url_scheme)
+    end
     req.headers['host'] = env.SERVER_NAME
 
     local proxy = url.parse(self.proxy)

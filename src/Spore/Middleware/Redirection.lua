@@ -3,7 +3,7 @@
 --
 
 local url = require 'socket.url'
-local request = require 'Spore.Protocols'.request
+local Protocols = require 'Spore.Protocols'
 
 
 module 'Spore.Middleware.Redirection'
@@ -19,11 +19,21 @@ function call (self, req)
                     local status = res.status
                     if location and (status == 301 or status == 302
                                   or status == 303 or status == 307) then
-                        req.headers['host'] = nil
+                        local host = req.headers['host']
+                        if host then
+                            local uri = url.parse(location)
+                            req.headers['host'] = uri.host
+                            local proxy = url.parse(req.url)
+                            uri.host = proxy.host
+                            uri.port = proxy.port
+                            req.url = url.build(uri)
+                            req.env.spore.url_scheme = uri.scheme
+                        else
+                            req.url = location
+                            req.env.spore.url_scheme = url.parse(location).scheme
+                        end
                         req.headers['cookie'] = nil
-                        req.url = url.absolute(req.url, location)
-                        req.env.spore.url_scheme = url.parse(location).scheme
-                        res = request(req)
+                        res = Protocols.request(req)
                         nredirect = nredirect + 1
                     else
                         break

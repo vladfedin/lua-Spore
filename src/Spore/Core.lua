@@ -5,7 +5,6 @@
 
 local assert = assert
 local require = require
-local tonumber = tonumber
 local type = type
 local ltn12 = require 'ltn12'
 local Request = require 'Spore.Request'
@@ -79,24 +78,6 @@ function http_request (self, env)
         response = cb(response)
     end
 
-    local expected = spore.expected
-    if expected then
-        local status = response.status
-        local found = false
-        for i = 1, #expected do
-            if status == tonumber(expected[i]) then
-                found = true
-                break
-            end
-        end
-        if not found then
-            if spore.errors then
-                spore.errors:write(req.method, " ", req.url, "\n")
-                spore.errors:write(status, "\n")
-            end
-            require 'Spore'.raises(response, status .. ' not expected')
-        end
-    end
     return response
 end
 

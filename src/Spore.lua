@@ -7,6 +7,7 @@ local assert = assert
 local error = error
 local pairs = pairs
 local setmetatable = setmetatable
+local tonumber = tonumber
 local tostring = tostring
 local type = type
 local unpack = require 'table'.unpack or unpack
@@ -115,7 +116,29 @@ local function wrap (self, name, method, args)
     if method.deprecated and debug then
         debug:write(name, " is deprecated\n")
     end
-    return self:http_request(env)
+    local response = self:http_request(env)
+
+    local expected_status = method.expected_status
+    if expected_status then
+        local status = response.status
+        local found = false
+        for i = 1, #expected_status do
+            if status == tonumber(expected_status[i]) then
+                found = true
+                break
+            end
+        end
+        if not found then
+            local spore = env.spore
+            if spore.errors then
+                local req = response.request
+                spore.errors:write(req.method, " ", req.url, "\n")
+                spore.errors:write(status, "\n")
+            end
+            raises(response, status .. ' not expected')
+        end
+    end
+    return response
 end
 
 local function new ()

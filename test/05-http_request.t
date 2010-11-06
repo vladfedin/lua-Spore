@@ -4,7 +4,7 @@ require 'Spore'
 
 require 'Test.More'
 
-plan(9)
+plan(5)
 
 local response = { status = 200 }
 Spore.Protocols.request = function (req) return response end -- mock
@@ -21,20 +21,6 @@ is( res, response, "with middleware" )
 client:enable 'UserAgent'
 local res = client:get_info()
 is( res, response, "with middleware" )
-
-Spore.errors = io.tmpfile()
-response.status = 404
-r, ex = pcall( function ()
-    local res = client:get_user_info{ payload = '@file', user = 'john' }
-end)
-is( r, false, "exception" )
-is( tostring(ex), "404 not expected", "404 not expected" )
-
-Spore.errors:seek'set'
-local msg = Spore.errors:read '*l'
-is( msg, "GET http://services.org:9999/restapi/show?user=john" )
-local msg = Spore.errors:read '*l'
-is( msg, "404" )
 
 package.loaded['Spore.Middleware.Dummy'] = {}
 local dummy_resp = { status = 200 }

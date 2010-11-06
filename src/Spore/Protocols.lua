@@ -127,6 +127,7 @@ function request (req)
         spore.debug:write(line or status, "\n")
     end
     return {
+        request = req,
         status = status,
         headers = headers,
         body = tconcat(t),

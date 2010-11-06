@@ -92,7 +92,7 @@ function http_request (self, env)
         if not found then
             if spore.errors then
                 spore.errors:write(req.method, " ", req.url, "\n")
-                spore.errors:write(line or status, "\n")
+                spore.errors:write(status, "\n")
             end
             require 'Spore'.raises(response, status .. ' not expected')
         end

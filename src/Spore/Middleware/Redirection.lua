@@ -29,7 +29,7 @@ function call (self, req)
                             req.url = url.build(uri)
                             req.env.spore.url_scheme = uri.scheme
                         else
-                            req.url = location
+                            req.url = url.absolute(req.url, location)
                             req.env.spore.url_scheme = url.parse(location).scheme
                         end
                         req.headers['cookie'] = nil

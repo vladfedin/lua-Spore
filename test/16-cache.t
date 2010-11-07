@@ -1,13 +1,13 @@
 #!/usr/bin/env lua
 
-require 'Spore'
+local Spore = require 'Spore'
 
 require 'Test.More'
 
 plan(8)
 
 local i = 0
-Spore.Protocols.request = function (req)
+require 'Spore.Protocols'.request = function (req)
     i = i + 1
     return { body = tostring(i) }
 end -- mock
@@ -37,7 +37,7 @@ is( r.body, '3', "cached" )
 r = client:get_info{ user = 'john' }
 is( r.body, '4', "cached" )
 
-Spore.Middleware.Cache.reset()
+require 'Spore.Middleware.Cache'.reset()
 
 r = client:get_info()
 is( r.body, '5', "reset" )

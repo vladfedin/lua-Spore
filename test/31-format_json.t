@@ -1,7 +1,5 @@
 #!/usr/bin/env lua
 
-require 'Spore.Request'
-
 require 'Test.More'
 
 plan(13)
@@ -10,6 +8,7 @@ if not require_ok 'Spore.Middleware.Format.JSON' then
     skip_rest "no Spore.Middleware.Format.JSON"
     os.exit()
 end
+local mw = require 'Spore.Middleware.Format.JSON'
 
 local env = {
     spore = {
@@ -18,8 +17,8 @@ local env = {
         },
     },
 }
-local req = Spore.Request.new(env)
-local cb = Spore.Middleware.Format.JSON.call({}, req)
+local req = require 'Spore.Request'.new(env)
+local cb = mw.call({}, req)
 type_ok( cb, 'function', "returns a function" )
 is( env.spore.payload, [[{"lua":"table"}]], "payload encoded")
 

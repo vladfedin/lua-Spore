@@ -1,7 +1,5 @@
 #!/usr/bin/env lua
 
-require 'Spore.Request'
-
 require 'Test.More'
 
 if not pcall(require, 'lxp.lom') then
@@ -14,12 +12,13 @@ if not require_ok 'Spore.Middleware.Format.XML' then
     skip_rest "no Spore.Middleware.Format.XML"
     os.exit()
 end
+local mw = require 'Spore.Middleware.Format.XML'
 
 local env = {
     spore = {},
 }
-local req = Spore.Request.new(env)
-local cb = Spore.Middleware.Format.XML.call({}, req)
+local req = require 'Spore.Request'.new(env)
+local cb = mw.call({}, req)
 type_ok( cb, 'function', "returns a function" )
 
 local resp = {

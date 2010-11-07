@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-require 'Spore'
+local Spore = require 'Spore'
 
 require 'Test.More'
 
@@ -16,7 +16,7 @@ if not require_ok 'Spore.Middleware.Proxy.Basic' then
     os.exit()
 end
 
-Spore.Protocols.request = function (req)
+require 'Spore.Protocols'.request = function (req)
     if req.url:match "^http://proxy.myorg:8080/restapi/show" then
         like(req.url, "^http://proxy.myorg:8080/restapi/show", "proxy initial")
         local host = req.headers['host']

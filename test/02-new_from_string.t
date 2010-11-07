@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-require 'Spore'
+Spore = require 'Spore'
 
 require 'Test.More'
 

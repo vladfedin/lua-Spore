@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-require 'Spore'
+local Spore = require 'Spore'
 local url = require 'socket.url'
 
 require 'Test.More'

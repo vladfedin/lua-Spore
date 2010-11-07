@@ -1,7 +1,5 @@
 #!/usr/bin/env lua
 
-require 'Spore.Request'
-
 require 'Test.More'
 
 if not pcall(require, 'yaml') then
@@ -14,6 +12,7 @@ if not require_ok 'Spore.Middleware.Format.YAML' then
     skip_rest "no Spore.Middleware.Format.YAML"
     os.exit()
 end
+local mw = require 'Spore.Middleware.Format.YAML'
 
 local env = {
     spore = {
@@ -22,8 +21,8 @@ local env = {
         },
     },
 }
-local req = Spore.Request.new(env)
-local cb = Spore.Middleware.Format.YAML.call({}, req)
+local req = require 'Spore.Request'.new(env)
+local cb = mw.call({}, req)
 type_ok( cb, 'function', "returns a function" )
 is( env.spore.payload, [[
 --- 

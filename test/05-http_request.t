@@ -1,13 +1,13 @@
 #!/usr/bin/env lua
 
-require 'Spore'
+local Spore = require 'Spore'
 
 require 'Test.More'
 
 plan(5)
 
 local response = { status = 200 }
-Spore.Protocols.request = function (req) return response end -- mock
+require 'Spore.Protocols'.request = function (req) return response end -- mock
 
 local client = Spore.new_from_spec './test/api.json'
 

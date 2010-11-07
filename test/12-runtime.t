@@ -1,7 +1,5 @@
 #!/usr/bin/env lua
 
-require 'Spore.Request'
-
 require 'Test.More'
 
 plan(6)
@@ -10,11 +8,12 @@ if not require_ok 'Spore.Middleware.Runtime' then
     skip_rest "no Spore.Middleware.Runtime"
     os.exit()
 end
+local mw = require 'Spore.Middleware.Runtime'
 
-local req = Spore.Request.new({})
+local req = require 'Spore.Request'.new({})
 type_ok( req, 'table', "Spore.Request.new" )
 
-local cb = Spore.Middleware.Runtime.call( {}, req )
+local cb = mw.call( {}, req )
 type_ok( cb, 'function' )
 
 for i = 1, 1000000 do end

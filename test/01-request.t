@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-require 'Spore.Request'
+local Request = require 'Spore.Request'
 
 require 'Test.More'
 
@@ -22,7 +22,7 @@ local env = {
         },
     },
 }
-local req = Spore.Request.new(env)
+local req = Request.new(env)
 type_ok( req, 'table', "Spore.Request.new" )
 is( req.env, env )
 is( req.redirect, false )

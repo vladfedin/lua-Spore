@@ -1,7 +1,5 @@
 #!/usr/bin/env lua
 
-require 'Spore'
-
 require 'Test.More'
 
 if not pcall(require, 'crypto') then
@@ -11,11 +9,11 @@ end
 plan(8)
 
 local response = { status = 200, headers = {} }
-Spore.Protocols.request = function (req)
+require 'Spore.Protocols'.request = function (req)
     like(req.url, "^http://services.org:9999/restapi/show%?dummy&oauth_signature=[%%%w]+$")
     return response
 end -- mock
-Spore.Request.finalize = function (self)
+require 'Spore.Request'.finalize = function (self)
     self.method = 'GET'
     self.url = 'http://services.org:9999/restapi/show?dummy'
     self.oauth_signature_base_string = self.url
@@ -25,12 +23,13 @@ if not require_ok 'Spore.Middleware.Auth.OAuth' then
     skip_rest "no Spore.Middleware.Auth.OAuth"
     os.exit()
 end
+local mw = require 'Spore.Middleware.Auth.OAuth'
 
-local req = Spore.Request.new({ spore = { params = {} } })
+local req = require 'Spore.Request'.new({ spore = { params = {} } })
 type_ok( req, 'table', "Spore.Request.new" )
 type_ok( req.headers, 'table' )
 
-local r = Spore.Middleware.Auth.OAuth.call({}, req)
+local r = mw.call({}, req)
 is( r, nil )
 
 local data = {
@@ -39,15 +38,15 @@ local data = {
     oauth_token           = '123',
     oauth_token_secret    = '456',
 }
-r = Spore.Middleware.Auth.OAuth.call(data, req)
+r = mw.call(data, req)
 is( r, nil )
 
 req.env.spore.authentication = true
-r = Spore.Middleware.Auth.OAuth.call(data, req)
+r = mw.call(data, req)
 is( r, response )
 
 error_like( function ()
     data.oauth_signature_method = 'UNKNOWN'
-    Spore.Middleware.Auth.OAuth.call(data, req)
+    mw.call(data, req)
 end, "UNKNOWN is not supported" )
 

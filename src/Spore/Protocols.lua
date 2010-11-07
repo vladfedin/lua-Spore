@@ -18,7 +18,8 @@ local tconcat = require 'table'.concat
 math.randomseed(os.time())
 
 
-module 'Spore.Protocols'
+_ENV = nil
+local m = {}
 
 local r, m = pcall(require, 'ssl.https')
 if not r then
@@ -29,7 +30,7 @@ local protocol = {
     https   = m,
 }
 
-function slurp (name)
+function m.slurp (name)
     local uri = url.parse(name)
     if not uri.scheme or uri.scheme == 'file' then
         local f, msg = io.open(uri.path)
@@ -92,7 +93,7 @@ local function _form_data (data)
     return tconcat(t), b
 end
 
-function request (req)
+function m.request (req)
     local spore = req.env.spore
     local prot = protocol[spore.url_scheme]
     assert(prot, "not protocol " .. spore.url_scheme)
@@ -134,6 +135,7 @@ function request (req)
     }
 end
 
+return m
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

@@ -18,20 +18,23 @@ local core = require 'Spore.Core'
 local slurp = require 'Spore.Protocols'.slurp
 
 
-module 'Spore'
+_ENV = nil
+local m = {}
 
 local version = '0.0.1'
 
-function raises (response, reason)
+local function raises (response, reason)
     local ex = { response = response, reason = reason }
     local mt = { __tostring = function (self) return self.reason end }
     error(setmetatable(ex, mt))
 end
+m.raises = raises
 
-function checktype (caller, narg, arg, tname)
+local function checktype (caller, narg, arg, tname)
     assert(type(arg) == tname, "bad argument #" .. tostring(narg) .. " to "
           .. caller .. " (" .. tname .. " expected, got " .. type(arg) .. ")")
 end
+m.checktype = checktype
 
 local function wrap (self, name, method, args)
     args = args or {}
@@ -106,8 +109,8 @@ local function wrap (self, name, method, args)
             form_data       = method['form-data'],
             headers         = method.headers,
             payload         = payload,
-            errors          = errors or io.stderr,
-            debug           = debug,
+            errors          = m.errors or io.stderr,
+            debug           = m.debug,
             url_scheme      = base_url.scheme,
             format          = method.formats,
         },
@@ -151,7 +154,7 @@ local function new ()
     return setmetatable(obj, mt)
 end
 
-function new_from_string (...)
+local function new_from_string (...)
     local args = {...}
     local opts = {}
     local nb
@@ -171,6 +174,7 @@ function new_from_string (...)
 
         assert(spec.methods, "no method in spec")
         for k, v in pairs(spec.methods) do
+            local methname_modifier = m.methname_modifier
             if type(methname_modifier) == 'function' then
                 k = methname_modifier(k)
             end
@@ -202,8 +206,9 @@ function new_from_string (...)
 
     return obj
 end
+m.new_from_string = new_from_string
 
-function new_from_spec (...)
+local function new_from_spec (...)
     local args = {...}
     local opts = {}
     local t = {}
@@ -219,10 +224,12 @@ function new_from_spec (...)
     t[#t+1] = opts
     return new_from_string(unpack(t))
 end
+m.new_from_spec = new_from_spec
 
-_VERSION = version
-_DESCRIPTION = "lua-Spore : a generic ReST client"
-_COPYRIGHT = "Copyright (c) 2010 Francois Perrad"
+m._VERSION = version
+m._DESCRIPTION = "lua-Spore : a generic ReST client"
+m._COPYRIGHT = "Copyright (c) 2010 Francois Perrad"
+return m
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

@@ -6,15 +6,16 @@ local collectgarbage = collectgarbage
 local setmetatable = setmetatable
 
 
-module 'Spore.Middleware.Cache'
+_ENV = nil
+local m = {}
 
 local cache = setmetatable({}, {__mode = 'v'})
 
-function reset ()
+function m.reset ()
     collectgarbage 'collect'
 end
 
-function call (self, req)
+function m:call (req)
     req:finalize()
     local key = req.url
     local res = cache[key]
@@ -28,6 +29,7 @@ function call (self, req)
     end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

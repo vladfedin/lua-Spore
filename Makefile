@@ -1,6 +1,6 @@
 
 LUA     := lua
-VERSION := $(shell cd src && $(LUA) -e "require [[Spore]]; print(Spore._VERSION)")
+VERSION := $(shell cd src && $(LUA) -e "m = require [[Spore]]; print(m._VERSION)")
 TARBALL := lua-spore-$(VERSION).tar.gz
 ifndef REV
   REV   := 1

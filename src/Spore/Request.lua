@@ -11,31 +11,33 @@ local tsort = require 'table'.sort
 local url = require 'socket.url'
 
 
-module 'Spore.Request'
+_ENV = nil
+local m = {}
 
-redirect = false
+m.redirect = false
 
-function new (env)
+function m.new (env)
     local obj = {
         env = env,
-        redirect = redirect,
+        redirect = m.redirect,
         headers = {
             ['user-agent'] = env.HTTP_USER_AGENT,
         },
     }
     return setmetatable(obj, {
-        __index = _M,
+        __index = m,
     })
 end
 
-function escape5849(s)
+local function escape5849(s)
     -- see RFC 5849, Section 3.6
     return string.gsub(s, '[^-._~%w]', function(c)
         return string.upper(string.format('%%%02x', string.byte(c)))
     end)
 end
+m.escape5849 = escape5849
 
-function finalize (self, oauth)
+function m:finalize (oauth)
     local env = self.env
     local spore = env.spore
     local path_info = env.PATH_INFO
@@ -138,6 +140,7 @@ function finalize (self, oauth)
     }
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

@@ -8,7 +8,8 @@ local mime = require 'mime'
 local url = require 'socket.url'
 
 
-module 'Spore.Middleware.Proxy.Basic'
+_ENV = nil
+local m = {}
 
 local function _env_proxy (scheme)
     local name = scheme:upper() .. '_PROXY'
@@ -36,7 +37,7 @@ local function env_proxy (scheme)
     return r
 end
 
-function call (self, req)
+function m:call (req)
     local env = req.env
     if not self.proxy then
         self = env_proxy(env.spore.url_scheme)
@@ -58,6 +59,7 @@ function call (self, req)
     end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

@@ -3,12 +3,14 @@
 --
 
 
-module 'Spore.Middleware.Logging'
+_ENV = nil
+local m = {}
 
-function call (self, req)
+function m:call (req)
     req.env.sporex.logger = self.logger
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

@@ -9,9 +9,10 @@ require 'yaml'
 local yaml = yaml
 
 
-module 'Spore.Middleware.Format.YAML'
+_ENV = nil
+local m = {}
 
-function call (self, req)
+function m:call (req)
     local spore = req.env.spore
     if spore.payload and type(spore.payload) == 'table' then
         spore.payload = yaml.dump(spore.payload)
@@ -35,6 +36,7 @@ function call (self, req)
             end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

@@ -5,9 +5,10 @@
 local type = type
 
 
-module 'Spore.Middleware.Mock'
+_ENV = nil
+local m = {}
 
-function call (self, req)
+function m:call (req)
     req:finalize()
     for i = 1, #self, 2 do
         local cond, func, r = self[i], self[i+1]
@@ -22,6 +23,7 @@ function call (self, req)
     end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

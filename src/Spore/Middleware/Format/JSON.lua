@@ -8,9 +8,10 @@ local type = type
 local raises = require 'Spore'.raises
 
 
-module 'Spore.Middleware.Format.JSON'
+_ENV = nil
+local m = {}
 
-function call (self, req)
+function m:call (req)
     local spore = req.env.spore
     if spore.payload and type(spore.payload) == 'table' then
         local encode = require 'json.encode'.encode
@@ -36,6 +37,7 @@ function call (self, req)
             end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

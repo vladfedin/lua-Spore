@@ -12,7 +12,8 @@ local escape = require 'Spore.Request'.escape5849
 local request = require 'Spore.Protocols'.request
 
 
-module 'Spore.Middleware.Auth.OAuth'
+_ENV = nil
+local m = {}
 
 --[[
         Homepage: http://oauth.net/
@@ -28,7 +29,7 @@ local function generate_nonce()
     return crypto.digest('sha1', tostring(math.random()) .. 'random' .. tostring(os.time()), 'keyyyy')
 end
 
-function call (self, req)
+function m:call (req)
     if req.env.spore.authentication
     and self.oauth_consumer_key and self.oauth_consumer_secret then
         local env = req.env
@@ -82,6 +83,7 @@ function call (self, req)
     end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

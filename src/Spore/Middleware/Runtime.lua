@@ -5,9 +5,10 @@
 local string = string
 local socket = require 'socket' -- See http://lua-users.org/wiki/HiResTimers
 
-module 'Spore.Middleware.Runtime'
+_ENV = nil
+local m = {}
 
-function call (self, req)
+function m:call (req)
     local start_time = socket.gettime()
 
     return  function (res)
@@ -17,6 +18,7 @@ function call (self, req)
             end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

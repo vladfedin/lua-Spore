@@ -6,15 +6,16 @@ local url = require 'socket.url'
 local Protocols = require 'Spore.Protocols'
 
 
-module 'Spore.Middleware.Redirection'
+_ENV = nil
+local m = {}
 
-max_redirect = 5
+m.max_redirect = 5
 
-function call (self, req)
+function m:call (req)
     local nredirect = 0
 
     return  function (res)
-                while nredirect < max_redirect do
+                while nredirect < m.max_redirect do
                     local location = res.headers['location']
                     local status = res.status
                     if location and (status == 301 or status == 302
@@ -43,6 +44,7 @@ function call (self, req)
             end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

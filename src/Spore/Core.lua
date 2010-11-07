@@ -11,7 +11,8 @@ local Request = require 'Spore.Request'
 local Protocols = require 'Spore.Protocols'
 
 
-module 'Spore.Core'
+_ENV = nil
+local m = {}
 
 local function _enable_if (self, cond, mw, args)
     if not mw:match'^Spore%.Middleware%.' then
@@ -25,7 +26,7 @@ local function _enable_if (self, cond, mw, args)
     local t = self.middlewares; t[#t+1] = { cond = cond, code = f }
 end
 
-function enable_if (self, cond, mw, args)
+function m:enable_if (cond, mw, args)
     local checktype = require 'Spore'.checktype
     checktype('enable_if', 2, cond, 'function')
     checktype('enable_if', 3, mw, 'string')
@@ -34,7 +35,7 @@ function enable_if (self, cond, mw, args)
     return _enable_if(self, cond, mw, args)
 end
 
-function enable (self, mw, args)
+function m:enable (mw, args)
     local checktype = require 'Spore'.checktype
     checktype('enable', 2, mw, 'string')
     args = args or {}
@@ -42,11 +43,11 @@ function enable (self, mw, args)
     return _enable_if(self, function () return true end, mw, args)
 end
 
-function reset_middlewares (self)
+function m:reset_middlewares ()
     self.middlewares = {}
 end
 
-function http_request (self, env)
+function m:http_request (env)
     local spore = env.spore
     local req = Request.new(env)
     local callbacks = {}
@@ -81,6 +82,7 @@ function http_request (self, env)
     return response
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

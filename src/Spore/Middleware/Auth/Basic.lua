@@ -5,15 +5,17 @@
 local mime = require 'mime'
 
 
-module 'Spore.Middleware.Auth.Basic'
+_ENV = nil
+local m = {}
 
-function call (self, req)
+function m:call (req)
     if req.env.spore.authentication and self.username and self.password then
         req.headers['authorization'] =
             'Basic ' .. mime.b64(self.username .. ':' .. self.password)
     end
 end
 
+return m
 --
 -- Copyright (c) 2010 Francois Perrad
 --

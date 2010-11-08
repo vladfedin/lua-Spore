@@ -21,13 +21,13 @@ math.randomseed(os.time())
 _ENV = nil
 local m = {}
 
-local r, m = pcall(require, 'ssl.https')
+local r, https = pcall(require, 'ssl.https')
 if not r then
-    m = nil
+    https = nil
 end
 local protocol = {
     http    = require 'socket.http',
-    https   = m,
+    https   = https,
 }
 
 function m.slurp (name)

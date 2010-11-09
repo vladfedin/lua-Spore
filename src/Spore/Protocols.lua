@@ -30,7 +30,7 @@ local protocol = {
     https   = https,
 }
 
-function m.slurp (name)
+local function slurp (name)
     local uri = url.parse(name)
     if not uri.scheme or uri.scheme == 'file' then
         local f, msg = io.open(uri.path)
@@ -53,6 +53,7 @@ function m.slurp (name)
         return res.body
     end
 end
+m.slurp = slurp
 
 local function boundary (size)
     local t = {}
@@ -93,7 +94,7 @@ local function _form_data (data)
     return tconcat(t), b
 end
 
-function m.request (req)
+local function request (req)
     local spore = req.env.spore
     local prot = protocol[spore.url_scheme]
     assert(prot, "not protocol " .. spore.url_scheme)
@@ -134,6 +135,7 @@ function m.request (req)
         body = tconcat(t),
     }
 end
+m.request = request
 
 return m
 --

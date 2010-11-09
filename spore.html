@@ -148,6 +148,31 @@ local r = client:upload{
 print(r.body)
 </pre>
 
+<h4><code>new_from_lua( desc )</code></h4>
+
+<p>Instanciate a ReST client from a Lua table.</p>
+
+<pre class="example">
+local client = require 'Spore'.new_from_lua{
+    base_url = 'http://services.org/restapi/',
+    methods = {
+        get_info = {
+            path = '/show',
+            method = 'GET',
+        },
+        get_user_info = {
+            path = '/show',
+            method = 'GET',
+            required_params = {
+                'user',
+            },
+        },
+    },
+}
+
+local r = client:get_user_info{ user = 'John' }
+</pre>
+
 <h3>Instance Methods</h3>
 
 <p>These methods are inherited from <code>Spore.Core</code>.</p>

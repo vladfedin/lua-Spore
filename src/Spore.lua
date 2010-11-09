@@ -152,6 +152,47 @@ local function new ()
     return setmetatable(obj, mt)
 end
 
+local function populate (obj, spec, opts)
+    assert(spec.methods, "no method in spec")
+    for k, v in pairs(spec.methods) do
+        local methname_modifier = m.methname_modifier
+        if type(methname_modifier) == 'function' then
+            k = methname_modifier(k)
+        end
+        v.authentication = opts.authentication or v.authentication or spec.authentication
+        v.base_url = opts.base_url or v.base_url or spec.base_url
+        v.expected_status = opts.expected_status or v.expected_status or spec.expected_status
+        v.formats = opts.formats or v.formats or spec.formats
+        v.unattended_params = opts.unattended_params or v.unattended_params or spec.unattended_params
+        assert(obj[k] == nil, k .. " duplicated")
+        assert(v.method, k .. " without field method")
+        assert(v.path, k .. " without field path")
+        assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
+        assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
+        assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
+        assert(type(v['form-data'] or {}) == 'table', "form-data of " .. k .. " is not an hash")
+        assert(type(v.headers or {}) == 'table', "headers of " .. k .. " is not an hash")
+        assert(v.base_url, k .. ": base_url is missing")
+        local uri = url.parse(v.base_url)
+        assert(uri.host, k .. ": base_url without host")
+        assert(uri.scheme, k .. ": base_url without scheme")
+        if v.required_payload or v.optional_payload then
+            assert(not v['form-data'], "payload and form-data are exclusive")
+        end
+        obj[k] =  function (self, args)
+                      return wrap(self, k, v, args)
+                  end
+    end
+end
+
+local function new_from_lua (spec)
+    checktype('new_from_lua', 1, spec, 'table')
+    local obj = new()
+    populate(obj, spec, {})
+    return obj
+end
+m.new_from_lua = new_from_lua
+
 local function new_from_string (...)
     local args = {...}
     local opts = {}
@@ -169,39 +210,8 @@ local function new_from_string (...)
     local obj = new()
     for i = 1, nb do
         local spec = json.decode(args[i])
-
-        assert(spec.methods, "no method in spec")
-        for k, v in pairs(spec.methods) do
-            local methname_modifier = m.methname_modifier
-            if type(methname_modifier) == 'function' then
-                k = methname_modifier(k)
-            end
-            v.authentication = opts.authentication or v.authentication or spec.authentication
-            v.base_url = opts.base_url or v.base_url or spec.base_url
-            v.expected_status = opts.expected_status or v.expected_status or spec.expected_status
-            v.formats = opts.formats or v.formats or spec.formats
-            v.unattended_params = opts.unattended_params or v.unattended_params or spec.unattended_params
-            assert(obj[k] == nil, k .. " duplicated")
-            assert(v.method, k .. " without field method")
-            assert(v.path, k .. " without field path")
-            assert(type(v.expected_status or {}) == 'table', "expected_status of " .. k .. " is not an array")
-            assert(type(v.required_params or {}) == 'table', "required_params of " .. k .. " is not an array")
-            assert(type(v.optional_params or {}) == 'table', "optional_params of " .. k .. " is not an array")
-            assert(type(v['form-data'] or {}) == 'table', "form-data of " .. k .. " is not an hash")
-            assert(type(v.headers or {}) == 'table', "headers of " .. k .. " is not an hash")
-            assert(v.base_url, k .. ": base_url is missing")
-            local uri = url.parse(v.base_url)
-            assert(uri.host, k .. ": base_url without host")
-            assert(uri.scheme, k .. ": base_url without scheme")
-            if v.required_payload or v.optional_payload then
-                assert(not v['form-data'], "payload and form-data are exclusive")
-            end
-            obj[k] =  function (self, args)
-                          return wrap(self, k, v, args)
-                      end
-        end
+        populate(obj, spec, opts)
     end
-
     return obj
 end
 m.new_from_string = new_from_string

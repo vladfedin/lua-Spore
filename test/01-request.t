@@ -8,9 +8,8 @@ plan(40)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
-    PATH_INFO       = '',
+    PATH_INFO       = '/restapi',
     REQUEST_METHOD  = 'PET',
-    SCRIPT_NAME     = '/restapi',
     SERVER_NAME     = 'services.org',
     SERVER_PORT     = 9999,
     spore = {
@@ -32,39 +31,39 @@ type_ok( req.finalize, 'function' )
 is( req.url, nil )
 is( req.method, nil )
 
-env.PATH_INFO = '/usr:prm1/show/:prm2'
+env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
 env.QUERY_STRING = nil
 req:finalize()
 is( req.method, 'PET', "method" )
 is( req.url, 'prot://services.org:9999/restapi/usr1/show/value2?prm3=Value%20Z', "url" )
-is( env.PATH_INFO, '/usr1/show/value2' )
+is( env.PATH_INFO, '/restapi/usr1/show/value2' )
 is( env.QUERY_STRING, 'prm3=Value%20Z' )
 
-env.PATH_INFO = '/:prm3/show'
+env.PATH_INFO = '/restapi/:prm3/show'
 env.QUERY_STRING = nil
 env.REQUEST_METHOD = 'TEP'
 req:finalize()
 is( req.method, 'TEP', "method" )
 is( req.url, 'prot://services.org:9999/restapi/Value%20Z/show?prm1=1&prm2=value2', "url" )
-is( env.PATH_INFO, '/Value%20Z/show' )
+is( env.PATH_INFO, '/restapi/Value%20Z/show' )
 is( env.QUERY_STRING, 'prm1=1&prm2=value2' )
 
-env.PATH_INFO = '/usr:prm1/show/:prm2'
+env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
 env.QUERY_STRING = nil
 env.spore.params.prm3 = nil
 req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/usr1/show/value2', "url" )
-is( env.PATH_INFO, '/usr1/show/value2' )
+is( env.PATH_INFO, '/restapi/usr1/show/value2' )
 is( env.QUERY_STRING, nil )
 
-env.PATH_INFO = '/doit'
+env.PATH_INFO = '/restapi/doit'
 env.QUERY_STRING = 'action=action1'
 req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/doit?action=action1&prm1=1&prm2=value2', "url" )
-is( env.PATH_INFO, '/doit' )
+is( env.PATH_INFO, '/restapi/doit' )
 is( env.QUERY_STRING, 'action=action1&prm1=1&prm2=value2' )
 
-env.PATH_INFO = '/path'
+env.PATH_INFO = '/restapi/path'
 env.QUERY_STRING = nil
 env.spore.params.prm3 = "Value Z"
 env.spore.form_data = {
@@ -75,7 +74,7 @@ env.spore.form_data = {
 }
 req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/path', "url" )
-is( env.PATH_INFO, '/path' )
+is( env.PATH_INFO, '/restapi/path' )
 is( env.QUERY_STRING, nil )
 is( env.spore.form_data.form1, "f(1)", "form-data" )
 is( env.spore.form_data.form2, "g(value2)" )
@@ -92,7 +91,7 @@ env.spore.headers = {
 }
 req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/path', "url" )
-is( env.PATH_INFO, '/path' )
+is( env.PATH_INFO, '/restapi/path' )
 is( env.QUERY_STRING, nil )
 is( env.spore.form_data, nil )
 is( req.headers.head1, "f(1)", "headers" )

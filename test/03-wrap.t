@@ -4,7 +4,7 @@ local Spore = require 'Spore'
 
 require 'Test.More'
 
-plan(22)
+plan(21)
 
 local status = 200
 require 'Spore.Protocols'.request = function (req) return { request = req, status = status } end -- mock
@@ -20,8 +20,7 @@ type_ok( res, 'table' )
 is( env.REQUEST_METHOD, 'GET' )
 is( env.SERVER_NAME, 'services.org' )
 is( env.SERVER_PORT, '9999' )
-is( env.SCRIPT_NAME, '/restapi/' )
-is( env.PATH_INFO, '/show' )
+is( env.PATH_INFO, '/restapi/show' )
 like( env.HTTP_USER_AGENT, '^lua%-Spore' )
 type_ok( env.spore, 'table' )
 is( env.spore.url_scheme, 'http' )

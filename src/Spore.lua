@@ -87,18 +87,15 @@ local function wrap (self, name, method, args)
     end
 
     local base_url = url.parse(method.base_url)
-    local script = base_url.path
-    if script == '/' then
-        script = nil
-    end
     local path_url = url.parse(method.path)
+    local path_info = (base_url.path or '') .. path_url.path
+    path_info = path_info:gsub('//', '/')
 
     local env = {
         REQUEST_METHOD  = method.method,
         SERVER_NAME     = base_url.host,
         SERVER_PORT     = base_url.port,
-        SCRIPT_NAME     = script,
-        PATH_INFO       = path_url.path,
+        PATH_INFO       = path_info,
         REQUEST_URI     = '',
         QUERY_STRING    = path_url.query,
         HTTP_USER_AGENT = 'lua-Spore v' .. version,

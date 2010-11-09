@@ -120,7 +120,7 @@ function m:finalize (oauth)
             scheme  = env.spore.url_scheme,
             host    = env.SERVER_NAME,
             port    = env.SERVER_PORT,
-            path    = (env.SCRIPT_NAME or '/') .. path_info,
+            path    = path_info,
             -- no query
         }
         for k, v in pairs(env.spore.params) do
@@ -145,7 +145,7 @@ function m:finalize (oauth)
         scheme  = env.spore.url_scheme,
         host    = env.SERVER_NAME,
         port    = env.SERVER_PORT,
-        path    = (env.SCRIPT_NAME or '/') .. path_info,
+        path    = path_info,
         query   = query_string,
     }
 end

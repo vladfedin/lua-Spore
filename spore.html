@@ -93,7 +93,7 @@
 </ul>
 
 <pre class="example">
-local client = Spore.new_from_spec 'github.json'
+local client = require 'Spore'.new_from_spec 'github.json'
 </pre>
 
 <h4><code>new_from_string( desc1, [desc2, ...][, { options }] )</code></h4>
@@ -101,7 +101,7 @@ local client = Spore.new_from_spec 'github.json'
 <p>Same as <code>new_from_spec</code>, but works with <em>inline</em> description.</p>
 
 <pre class="example">
-local client = Spore.new_from_string [[
+local client = require 'Spore'.new_from_string [[
 {
     "base_url" : "http://smolder.parrot.org",
     "name" : "smolder",
@@ -184,7 +184,7 @@ client:enable_if(function (req)
 <p>The default value is <code>nil</code>.</p>
 
 <pre class="example">
-Spore.debug = io.stdout
+require 'Spore'.debug = io.stdout
 </pre>
 
 <h4><code>errors</code></h4>
@@ -198,7 +198,7 @@ Spore.debug = io.stdout
 <p>This function allows to alter the name of the method during the instanciation.</p>
 
 <pre class="example">
-Spore.methname_modifier = function (name)
+require 'Spore'.methname_modifier = function (name)
     local lowerCamelCase = name:gsub('_(%w)', function (c) return c:upper() end)
     return lowerCamelCase
 end
@@ -210,7 +210,7 @@ end
 <h3>GitHub via http</h3>
 
 <pre class="example">
-require 'Spore'
+local Spore = require 'Spore'
 
 local github = Spore.new_from_spec 'http://github.com/SPORE/api-description/raw/master/services/github.json'
 github:enable 'Format.JSON'
@@ -229,7 +229,7 @@ print(res.body.user.name)       --> Scott Chacon
 <p>The HTTPS protocol requires <a href="http://luasec.luaforge.net/">LuaSec</a>.</p>
 
 <pre class="example">
-require 'Spore'
+local Spore = require 'Spore'
 
 local github = Spore.new_from_spec('http://github.com/SPORE/api-description/raw/master/services/github.json', {
     base_url = "https://github.com/api/v2/",
@@ -248,7 +248,7 @@ print(res.body.user.name)       --> Scott Chacon
 
 <pre class="example">
 local base = 'http://github.com/SPORE/api-description/apps/couchdb/'
-local couchdb = Spore.new_from_spec(
+local couchdb = require 'Spore'.new_from_spec(
     base .. 'server.json',
     base .. 'database.json',
     base .. 'document.json',

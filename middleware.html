@@ -79,11 +79,13 @@
 <p>A middleware must use the namespace <code>Spore.Middleware</code> and follow this caveat:</p>
 
 <pre class="example">
-module 'Spore.Middleware.MyMW'
+local m = {}
 
-function call (self, req)
+function m:call (req)
     ... something useful
 end
+
+return m
 </pre>
 
 <h2><a name="basic"></a>Spore.Middleware.Auth.Basic</h2>

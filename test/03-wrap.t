@@ -4,7 +4,7 @@ local Spore = require 'Spore'
 
 require 'Test.More'
 
-plan(21)
+plan(27)
 
 local status = 200
 require 'Spore.Protocols'.request = function (req) return { request = req, status = status } end -- mock
@@ -59,3 +59,13 @@ local msg = Spore.errors:read '*l'
 is( msg, "GET http://services.org:9999/restapi/show?user=john" )
 local msg = Spore.errors:read '*l'
 is( msg, "404" )
+
+local res = client:action1{ user = 'john' }
+local env = res.request.env
+is( env.REQUEST_METHOD, 'GET' )
+is( env.SERVER_NAME, 'services.org' )
+is( env.SERVER_PORT, '9999' )
+is( env.PATH_INFO, '/restapi/doit' )
+is( env.QUERY_STRING, 'action=action1&user=john' )
+is( res.request.url, 'http://services.org:9999/restapi/doit?action=action1&user=john' )
+

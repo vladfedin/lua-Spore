@@ -21,6 +21,11 @@
             ],
             "required_payload" : true,
             "expected_status" : [ 100, 200 ]
+        },
+        "action1" : {
+            "path" : "/doit?action=action1",
+            "method" : "GET",
+            "unattended_params" : true
         }
     }
 }

@@ -6,13 +6,13 @@
 local assert = assert
 local error = error
 local pairs = pairs
+local require = require
 local setmetatable = setmetatable
 local tonumber = tonumber
 local tostring = tostring
 local type = type
 local unpack = require 'table'.unpack or unpack
 local io = require 'io'
-local json = require 'json.decode'
 local url = require 'socket.url'
 local core = require 'Spore.Core'
 local slurp = require 'Spore.Protocols'.slurp
@@ -208,6 +208,7 @@ local function new_from_string (...)
     end
 
     local obj = new()
+    local json = require 'json.decode'
     for i = 1, nb do
         local spec = json.decode(args[i])
         populate(obj, spec, opts)

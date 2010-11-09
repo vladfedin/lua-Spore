@@ -41,12 +41,23 @@ function m:finalize (oauth)
     local env = self.env
     local spore = env.spore
     local path_info = env.PATH_INFO
+    local query_string = env.QUERY_STRING
     local form_data = {}
     for k, v in pairs(spore.form_data or {}) do form_data[k] = v end
     local headers = {}
     for k, v in pairs(spore.headers or {}) do headers[k] = v end
     local payload = spore.payload
     local query, query_keys, query_vals = {}, {}, {}
+    if query_string then
+        if oauth then
+            for k, v in query_string:gmatch '([^=]+)=([^&])&?' do
+                query_keys[#query_keys+1] = k
+                query_vals[k] = v
+            end
+        else
+            query[1] = query_string
+        end
+    end
     local form = {}
     for k, v in pairs(env.spore.params) do
         k = tostring(k)
@@ -95,12 +106,11 @@ function m:finalize (oauth)
             query[#query+1] = k .. '=' .. v
         end
     end
-    local query_string
     if #query > 0 then
         query_string = tconcat(query, '&')
     end
     env.PATH_INFO = path_info
-    env.QUERY_STRING = query_string or ''
+    env.QUERY_STRING = query_string
     if spore.form_data then
         spore.form_data = form
     end

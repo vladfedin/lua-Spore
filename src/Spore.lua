@@ -88,7 +88,7 @@ local function wrap (self, name, method, args)
 
     local base_url = url.parse(method.base_url)
     local path_url = url.parse(method.path)
-    local path_info = (base_url.path or '') .. path_url.path
+    local path_info = (base_url.path or '') .. (path_url.path or '')
     path_info = path_info:gsub('//', '/')
 
     local env = {

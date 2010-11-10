@@ -20,8 +20,7 @@ function m:call (req)
                     local status = res.status
                     if location and (status == 301 or status == 302
                                   or status == 303 or status == 307) then
-                        local host = req.headers['host']
-                        if host then
+                        if req.headers['host'] then
                             local uri = url.parse(location)
                             req.headers['host'] = uri.host
                             local proxy = url.parse(req.url)

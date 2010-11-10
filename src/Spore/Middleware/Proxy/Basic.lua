@@ -29,11 +29,10 @@ end
 local cache = {}
 local function env_proxy (scheme)
     local r = cache[scheme]
-    if r then
-        return r
+    if not r then
+        r = _env_proxy(scheme)
+        cache[scheme] = r
     end
-    r = _env_proxy(scheme)
-    cache[scheme] = r
     return r
 end
 

@@ -21,6 +21,8 @@ local slurp = require 'Spore.Protocols'.slurp
 _ENV = nil
 local m = {}
 
+m.early_validate = true
+
 local version = '0.0.1'
 
 local function raises (response, reason)
@@ -72,6 +74,7 @@ local function validate (caller, method, params, payload)
         end
     end
 end
+m.validate = validate
 
 local function wrap (self, name, method, args)
     args = args or {}
@@ -88,7 +91,9 @@ local function wrap (self, name, method, args)
     local payload = params.spore_payload or params.payload
     params.spore_payload = nil
     params.payload = nil
-    validate(name, method, params, payload)
+    if m.early_validate then
+        validate(name, method, params, payload)
+    end
 
     local base_url = url.parse(method.base_url)
     local path_url = url.parse(method.path)
@@ -105,6 +110,7 @@ local function wrap (self, name, method, args)
         HTTP_USER_AGENT = 'lua-Spore v' .. version,
         spore = {
             caller          = name,
+            method          = method,
             expected        = method.expected_status,
             authentication  = method.authentication,
             params          = params,

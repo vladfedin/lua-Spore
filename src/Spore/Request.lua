@@ -40,6 +40,9 @@ m.escape5849 = escape5849
 function m:finalize (oauth)
     local env = self.env
     local spore = env.spore
+    if not require 'Spore'.early_validate then
+        require 'Spore'.validate(spore.caller, spore.method, spore.params, spore.payload)
+    end
     local path_info = env.PATH_INFO
     local query_string = env.QUERY_STRING
     local form_data = {}

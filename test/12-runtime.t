@@ -16,7 +16,11 @@ type_ok( req, 'table', "Spore.Request.new" )
 local cb = mw.call( {}, req )
 type_ok( cb, 'function' )
 
-for i = 1, 1000000 do end
+local n = 1000000
+if package.loaded['luacov'] then
+    n = n / 200
+end
+for i = 1, n do end
 local res = { headers = {} }
 is( res, cb(res) )
 local header = res.headers['x-spore-runtime']

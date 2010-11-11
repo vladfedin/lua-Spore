@@ -36,32 +36,18 @@ local function checktype (caller, narg, arg, tname)
 end
 m.checktype = checktype
 
-local function wrap (self, name, method, args)
-    args = args or {}
-    checktype(name, 2, args, 'table')
-    local params = {}
-    for k, v in pairs(args) do
-        if type(k) == 'number' then
-            v = tostring(v)
-            params[v] = v
-        else
-            params[tostring(k)] = v
-        end
-    end
-    local payload = params.spore_payload or params.payload
-    params.spore_payload = nil
-    params.payload = nil
+local function validate (caller, method, params, payload)
     if method.required_payload then
-        assert(payload, "payload is required for method " .. name)
+        assert(payload, "payload is required for method " .. caller)
     end
     if payload then
-        assert(method.required_payload or method.optional_payload, "payload is not expected for method " .. name)
+        assert(method.required_payload or method.optional_payload, "payload is not expected for method " .. caller)
     end
 
     local required_params = method.required_params or {}
     for i = 1, #required_params do
         local v = required_params[i]
-        assert(params[v], v .. " is required for method " .. name)
+        assert(params[v], v .. " is required for method " .. caller)
     end
 
     if not method.unattended_params then
@@ -82,9 +68,27 @@ local function wrap (self, name, method, args)
                     end
                 end
             end
-            assert(found, param .. " is not expected for method " .. name)
+            assert(found, param .. " is not expected for method " .. caller)
         end
     end
+end
+
+local function wrap (self, name, method, args)
+    args = args or {}
+    checktype(name, 2, args, 'table')
+    local params = {}
+    for k, v in pairs(args) do
+        if type(k) == 'number' then
+            v = tostring(v)
+            params[v] = v
+        else
+            params[tostring(k)] = v
+        end
+    end
+    local payload = params.spore_payload or params.payload
+    params.spore_payload = nil
+    params.payload = nil
+    validate(name, method, params, payload)
 
     local base_url = url.parse(method.base_url)
     local path_url = url.parse(method.path)

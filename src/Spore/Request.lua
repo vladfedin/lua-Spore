@@ -62,7 +62,7 @@ function m:finalize (oauth)
         end
     end
     local form = {}
-    for k, v in pairs(env.spore.params) do
+    for k, v in pairs(spore.params) do
         k = tostring(k)
         v = tostring(v)
         local e = url.escape(v)
@@ -126,7 +126,7 @@ function m:finalize (oauth)
             path    = path_info,
             -- no query
         }
-        for k, v in pairs(env.spore.params) do
+        for k, v in pairs(spore.params) do
             k = tostring(k)
             if k:match'^oauth_' and not query_vals[k] then
                 query_keys[#query_keys+1] = k
@@ -145,7 +145,7 @@ function m:finalize (oauth)
                                                                .. '&' .. escape5849(normalized)
     end
     self.url = url.build {
-        scheme  = env.spore.url_scheme,
+        scheme  = spore.url_scheme,
         host    = env.SERVER_NAME,
         port    = env.SERVER_PORT,
         path    = path_info,

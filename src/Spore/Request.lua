@@ -5,6 +5,7 @@
 local pairs = pairs
 local setmetatable = setmetatable
 local tostring = tostring
+local require = require
 local string = string
 local tconcat = require 'table'.concat
 local tsort = require 'table'.sort

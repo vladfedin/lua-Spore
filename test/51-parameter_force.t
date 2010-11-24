@@ -4,11 +4,11 @@ require 'Test.More'
 
 plan(6)
 
-if not require_ok 'Spore.Middleware.SetParameters' then
-    skip_rest "no Spore.Middleware.SetParameters"
+if not require_ok 'Spore.Middleware.Parameter.Force' then
+    skip_rest "no Spore.Middleware.Parameter.Force"
     os.exit()
 end
-local mw = require 'Spore.Middleware.SetParameters'
+local mw = require 'Spore.Middleware.Parameter.Force'
 
 is( require 'Spore'.early_validate, false, "early_validate" )
 

@@ -4,8 +4,8 @@ require 'Test.More'
 
 plan(9)
 
-if not require_ok 'Spore.Middleware.DefaultParameters' then
-    skip_rest "no Spore.Middleware.DefaultParameters"
+if not require_ok 'Spore.Middleware.Parameter.Default' then
+    skip_rest "no Spore.Middleware.Parameter.Default"
     os.exit()
 end
 
@@ -14,7 +14,7 @@ require 'Spore.Protocols'.request = function (req) return { request = req, statu
 
 local Spore = require 'Spore'
 local client = Spore.new_from_spec('./test/api.json', {})
-client:enable('DefaultParameters', {
+client:enable('Parameter.Default', {
     user = 'John',
     border = 0,
     dummy = 1,

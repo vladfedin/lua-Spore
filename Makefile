@@ -14,24 +14,25 @@ LIBDIR  := $(DESTDIR)/share/lua/5.1
 install:
 	mkdir -p $(LIBDIR)/Spore/Middleware/Auth
 	mkdir -p $(LIBDIR)/Spore/Middleware/Format
+	mkdir -p $(LIBDIR)/Spore/Middleware/Parameter
 	mkdir -p $(LIBDIR)/Spore/Middleware/Proxy
 	cp src/Spore.lua                                $(LIBDIR)
 	cp src/Spore/Core.lua                           $(LIBDIR)/Spore
 	cp src/Spore/Protocols.lua                      $(LIBDIR)/Spore
 	cp src/Spore/Request.lua                        $(LIBDIR)/Spore
 	cp src/Spore/Middleware/Cache.lua               $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/DefaultParameters.lua   $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Logging.lua             $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Mock.lua                $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Redirection.lua         $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Runtime.lua             $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/SetParameters.lua       $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/UserAgent.lua           $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Auth/Basic.lua          $(LIBDIR)/Spore/Middleware/Auth
 	cp src/Spore/Middleware/Auth/OAuth.lua          $(LIBDIR)/Spore/Middleware/Auth
 	cp src/Spore/Middleware/Format/JSON.lua         $(LIBDIR)/Spore/Middleware/Format
 	cp src/Spore/Middleware/Format/XML.lua          $(LIBDIR)/Spore/Middleware/Format
 	cp src/Spore/Middleware/Format/YAML.lua         $(LIBDIR)/Spore/Middleware/Format
+	cp src/Spore/Middleware/Parameter/Default.lua   $(LIBDIR)/Spore/Middleware/Parameter
+	cp src/Spore/Middleware/Parameter/Force.lua     $(LIBDIR)/Spore/Middleware/Parameter
 	cp src/Spore/Middleware/Proxy/Basic.lua         $(LIBDIR)/Spore/Middleware/Proxy
 
 uninstall:

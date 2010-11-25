@@ -130,6 +130,16 @@ client:enable 'Format.JSON'
 client:enable 'Format.XML'
 </pre>
 
+<pre class="example">
+client:enable('Format.XML', {
+    indent      = '  ',
+    key_attr    = {
+        tagname = attrname,
+        ...
+    },
+},
+</pre>
+
 <h2><a name="yaml"></a>Spore.Middleware.Format.YAML</h2>
 
 <p>This middleware requires <a href="http://luaforge.net/projects/luayaml/">luaYAML</a>.</p>

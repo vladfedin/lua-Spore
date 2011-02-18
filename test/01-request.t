@@ -4,7 +4,7 @@ local Request = require 'Spore.Request'
 
 require 'Test.More'
 
-plan(40)
+plan(44)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
@@ -106,3 +106,14 @@ req:finalize()
 is( req.headers.head1, "f(2)", "headers" )
 is( req.headers.head2, "g(VALUE2); 2" )
 is( req.headers.head3, "h(Value Z)" )
+
+env.SERVER_NAME = ':prm2.cloud.com'
+env.PATH_INFO = '/restapi/path:prm1'
+env.QUERY_STRING = nil
+env.spore.params.prm3 = nil
+env.spore.headers = nil
+req:finalize()
+is( env.SERVER_NAME, 'VALUE2.cloud.com' )
+is( env.PATH_INFO, '/restapi/path2' )
+is( env.QUERY_STRING, nil )
+is( req.url, 'prot://VALUE2.cloud.com:9999/restapi/path2', "url" )

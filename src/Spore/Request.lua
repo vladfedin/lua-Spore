@@ -53,6 +53,7 @@ function m:finalize (oauth)
     if not require 'Spore'.early_validate then
         require 'Spore'.validate(spore.caller, spore.method, spore.params, spore.payload)
     end
+    local server = env.SERVER_NAME
     local path_info = env.PATH_INFO
     local query_string = env.QUERY_STRING
     local form_data = {}
@@ -76,8 +77,10 @@ function m:finalize (oauth)
         k = tostring(k)
         v = tostring(v)
         local e = escape(v)
-        local n
-        path_info, n = path_info:gsub(':' .. k, (e:gsub('%%', '%%%%')))
+        local n, nn
+        server, n = server:gsub(':' .. k, (e:gsub('%%', '%%%%')))
+        path_info, nn = path_info:gsub(':' .. k, (e:gsub('%%', '%%%%')))
+        n = n + nn
         for kk, vv in pairs(form_data) do
             kk = tostring(kk)
             vv = tostring(vv)
@@ -122,6 +125,7 @@ function m:finalize (oauth)
     if #query > 0 then
         query_string = tconcat(query, '&')
     end
+    env.SERVER_NAME = server
     env.PATH_INFO = path_info
     env.QUERY_STRING = query_string
     if spore.form_data then
@@ -131,7 +135,7 @@ function m:finalize (oauth)
     if oauth then
         local base_url = url.build {
             scheme  = env.spore.url_scheme,
-            host    = env.SERVER_NAME,
+            host    = server,
             port    = env.SERVER_PORT,
             path    = path_info,
             -- no query
@@ -156,7 +160,7 @@ function m:finalize (oauth)
     end
     self.url = url.build {
         scheme  = spore.url_scheme,
-        host    = env.SERVER_NAME,
+        host    = server,
         port    = env.SERVER_PORT,
         path    = path_info,
         query   = query_string,

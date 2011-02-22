@@ -25,6 +25,55 @@ m.early_validate = true
 
 local version = '0.1.0'
 
+local parse = function(url, default) -- lua-socket url parse function copy
+local base = _G
+    -- initialize default parameters
+    local parsed = {}
+    for i,v in base.pairs(default or parsed) do parsed[i] = v end
+    -- empty url is parsed to nil
+    if not url or url == "" then return nil, "invalid url" end
+    -- remove whitespace
+    -- url = string.gsub(url, "%s", "")
+    -- get fragment
+    url = string.gsub(url, "#(.*)$", function(f)
+        parsed.fragment = f
+        return ""
+    end)
+    -- get scheme
+    url = string.gsub(url, "^([%w][%w%+%-%.]*)%:",
+        function(s) parsed.scheme = s; return "" end)
+    -- get authority
+    url = string.gsub(url, "^//([^/]*)", function(n)
+        parsed.authority = n
+        return ""
+    end)
+    -- get query stringing
+    url = string.gsub(url, "%?(.*)", function(q)
+        parsed.query = q
+        return ""
+    end)
+    -- get params
+    url = string.gsub(url, "%;(.*)", function(p)
+        parsed.params = p
+        return ""
+    end)
+    -- path is whatever was left
+    if url ~= "" then parsed.path = url end
+    local authority = parsed.authority
+    if not authority then return parsed end
+    authority = string.gsub(authority,"^([^@]*)@",
+        function(u) parsed.userinfo = u; return "" end)
+--    authority = string.gsub(authority, ":([^:]*)$",
+--        function(p) parsed.port = p; return "" end)
+    if authority ~= "" then parsed.host = authority end
+    local userinfo = parsed.userinfo
+    if not userinfo then return parsed end
+    userinfo = string.gsub(userinfo, ":([^:]*)$",
+        function(p) parsed.password = p; return "" end)
+    parsed.user = userinfo
+    return parsed
+end
+
 local function raises (response, reason)
     local ex = { response = response, reason = reason }
     local mt = { __tostring = function (self) return self.reason end }
@@ -95,11 +144,10 @@ local function wrap (self, name, method, args)
         validate(name, method, params, payload)
     end
 
-    local base_url = url.parse(method.base_url)
-    local path_url = url.parse(method.path)
+    local base_url = parse(method.base_url)
+    local path_url = parse(method.path)
     local path_info = (base_url.path or '') .. (path_url.path or '')
     path_info = path_info:gsub('//', '/')
-
     local env = {
         REQUEST_METHOD  = method.method,
         SERVER_NAME     = base_url.host,
@@ -183,7 +231,7 @@ local function populate (obj, spec, opts)
         assert(type(v['form-data'] or {}) == 'table', "form-data of " .. k .. " is not an hash")
         assert(type(v.headers or {}) == 'table', "headers of " .. k .. " is not an hash")
         assert(v.base_url, k .. ": base_url is missing")
-        local uri = url.parse(v.base_url)
+        local uri = parse(v.base_url)
         assert(uri.host, k .. ": base_url without host")
         assert(uri.scheme, k .. ": base_url without scheme")
         if v.required_payload or v.optional_payload then

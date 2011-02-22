@@ -28,13 +28,14 @@ function m:call (req)
                 headers_amz[#headers_amz+1] = k
             end
         end
+        if #headers_amz == 0 then return "" end
         table.sort(headers_amz)
         local lines = {}
         for i = 1, #headers_amz do
             local k = headers_amz[i]
             lines[#lines+1] = k .. ':' .. req.headers[k]
         end
-        return table.concat(lines, "\n")
+        return table.concat(lines, "\n") .. "\n"
     end -- get_canonical_headers
 
     local function get_string_to_sign ()
@@ -43,9 +44,9 @@ function m:call (req)
             bucket = '/' .. bucket
         end
         local object = '/' .. (spore.params.object or '')
-        local query = env.QUERY_STRING or ''
+        local query = env.spore.method.path:sub(2)
         if query ~= '' then
-            query = '?' .. query
+            query = string.gsub(query, "(:%w+)", "")
         end
         return req.method .. "\n"
             .. (req.headers['content-md5'] or '') .. "\n"

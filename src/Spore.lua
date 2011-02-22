@@ -62,10 +62,6 @@ local function validate (caller, method, params, payload)
                     break
                 end
             end
-            if method.aws_parameters and param == "aws_parameters" then
-               found = true
-               break
-            end
             if not found then
                 for i = 1, #optional_params do
                     if param == optional_params[i] then

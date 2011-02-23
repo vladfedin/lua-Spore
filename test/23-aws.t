@@ -15,8 +15,8 @@ require 'Spore.Protocols'.request = function (req)
 end -- mock
 require 'Spore.Request'.finalize = function (self)
     self.method = 'GET'
-    self.url = 'http://services.org:9999/restapi/show?dummy'
     self.env.QUERY_STRING = 'dummy'
+    self.url = 'http://' .. self.env.SERVER_NAME .. ':9999/restapi/show?' .. self.env.QUERY_STRING
 end -- mock
 
 if not require_ok 'Spore.Middleware.Auth.AWS' then
@@ -26,12 +26,14 @@ end
 local mw = require 'Spore.Middleware.Auth.AWS'
 
 local req = require 'Spore.Request'.new({
+    SERVER_NAME = 'services.org',
     spore = {
         headers = {
             ['Date'] = 'AWS',
             ['Content-MD5'] = 'AWS',
         },
         params = {
+            bucket = 'mybucket',
             ['x-amz-p1'] = 'foo',
             ['x-amz-P2'] = 'bar',
         },
@@ -54,7 +56,7 @@ is( r, nil )
 req.env.spore.authentication = true
 r = mw.call(data, req)
 is( r, response )
-is( response.request.url, "http://services.org:9999/restapi/show?dummy", "url" )
+is( response.request.url, "http://mybucket.services.org:9999/restapi/show?dummy", "url" )
 like( response.request.headers['authorization'], "^AWS xxx:", "authorization" )
 like( response.request.headers['date'], "GMT$", "date" )
 is( response.request.headers['x-amz-p1'], 'foo', "x-amz-p1" )

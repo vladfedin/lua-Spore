@@ -2,6 +2,7 @@ Revision history for lua-Spore
 
 0.1.1
 	- define a specific escape function for URI
+	- add middleware Auth.AWS (thanks to Alexander Gladysh & Vladimir Fedin)
 
 0.1.0  Fri Nov 26 10:30:00 2010
 	First release

@@ -32,14 +32,17 @@ function m:call (req)
                 headers_amz[#headers_amz+1] = k
             end
         end
-        if #headers_amz == 0 then return "" end
-        table.sort(headers_amz)
-        local lines = {}
-        for i = 1, #headers_amz do
-            local k = headers_amz[i]
-            lines[#lines+1] = k .. ':' .. req.headers[k]
+        if #headers_amz == 0 then
+            return ''
+        else
+            table.sort(headers_amz)
+            local lines = {}
+            for i = 1, #headers_amz do
+                local k = headers_amz[i]
+                lines[#lines+1] = k .. ':' .. req.headers[k]
+            end
+            return table.concat(lines, "\n") .. "\n"
         end
-        return table.concat(lines, "\n") .. "\n"
     end -- get_canonical_headers
 
     local function get_string_to_sign ()

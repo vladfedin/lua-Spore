@@ -34,6 +34,7 @@ build = {
     modules = {
         ['Spore']                               = 'src/Spore.lua',
         ['Spore.Core']                          = 'src/Spore/Core.lua',
+        ['Spore.Middleware.Auth.AWS']           = 'src/Spore/Middleware/Auth/AWS.lua',
         ['Spore.Middleware.Auth.Basic']         = 'src/Spore/Middleware/Auth/Basic.lua',
         ['Spore.Middleware.Auth.OAuth']         = 'src/Spore/Middleware/Auth/OAuth.lua',
         ['Spore.Middleware.Cache']              = 'src/Spore/Middleware/Cache.lua',

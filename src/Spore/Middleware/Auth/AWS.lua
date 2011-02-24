@@ -22,6 +22,7 @@ local m = {}
 
 function m:call (req)
     local env = req.env
+    local query = env.QUERY_STRING or ''
     local spore = env.spore
     local bucket = spore.params.bucket or ''
 
@@ -50,12 +51,11 @@ function m:call (req)
             bucket = '/' .. bucket
         end
         local object = '/' .. (spore.params.object or '')
-        local query = env.spore.method.path:sub(2)
         if query ~= '' then
-            query = string.gsub(query, "(:%w+)", "")
+            query = '?' .. query
         end
 
-        return spore.method.method .. "\n"
+        return req.method .. "\n"
             .. (req.headers['content-md5'] or '') .. "\n"
             .. (req.headers['content-type'] or '') .. "\n"
             .. (req.headers['date'] or '') .. "\n"

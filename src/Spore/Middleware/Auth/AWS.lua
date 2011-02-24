@@ -24,7 +24,7 @@ function m:call (req)
     local env = req.env
     local query = env.QUERY_STRING or ''
     local spore = env.spore
-    local bucket = spore.params.bucket or ''
+    local bucket = tostring(spore.params.bucket or '')
 
     local function get_canonical_headers ()
         local headers_amz = {}
@@ -50,7 +50,7 @@ function m:call (req)
         if bucket ~= '' then
             bucket = '/' .. bucket
         end
-        local object = '/' .. (spore.params.object or '')
+        local object = '/' .. tostring(spore.params.object or '')
         if query ~= '' then
             query = '?' .. query
         end
@@ -65,7 +65,7 @@ function m:call (req)
 
     if spore.authentication and self.aws_access_key and self.aws_secret_key then
         if spore.params.bucket then
-            env.SERVER_NAME = tostring(spore.params.bucket) .. '.' .. env.SERVER_NAME
+            env.SERVER_NAME = bucket .. '.' .. env.SERVER_NAME
             spore.params.bucket = nil
         end
 

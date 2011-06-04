@@ -39,11 +39,11 @@ local function slurp (name)
         f:close()
         return content
     else
-        local res = request{
+        local res = m.request{
             env = {
                 spore = {
                     url_scheme = uri.scheme,
-                    debug = debug,
+                    debug = require'Spore'.debug,
                 },
             },
             method = 'GET',

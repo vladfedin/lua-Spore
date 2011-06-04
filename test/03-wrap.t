@@ -4,7 +4,7 @@ local Spore = require 'Spore'
 
 require 'Test.More'
 
-plan(27)
+plan(31)
 
 local status = 200
 require 'Spore.Protocols'.request = function (req) return { request = req, status = status } end -- mock
@@ -68,4 +68,22 @@ is( env.SERVER_PORT, '9999' )
 is( env.PATH_INFO, '/restapi/doit' )
 is( env.QUERY_STRING, 'action=action1&user=john' )
 is( res.request.url, 'http://services.org:9999/restapi/doit?action=action1&user=john' )
+
+local client = Spore.new_from_string([[
+{
+    base_url : "http://services.org/restapi/get_info",
+    methods : {
+        get_info : {
+            path : "",
+            method : "GET",
+        }
+    }
+}
+]])
+type_ok( client, 'table', "empty path")
+local res = client:get_info()
+local env = res.request.env
+is( env.PATH_INFO, '/restapi/get_info' )
+nok( env.QUERY_STRING )
+is( res.request.url, 'http://services.org/restapi/get_info' )
 

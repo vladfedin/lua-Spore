@@ -4,7 +4,7 @@ Spore = require 'Spore'
 
 require 'Test.More'
 
-plan(24)
+plan(25)
 
 error_like( [[Spore.new_from_string(true)]],
             "bad argument #1 to new_from_string %(string expected, got boolean%)" )
@@ -123,6 +123,19 @@ error_like( [=[Spore.new_from_string([[
 }
 ]])]=],
             "base_url is missing" )
+
+error_like( [=[Spore.new_from_string([[
+{
+    base_url : "",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+        }
+    }
+}
+]])]=],
+            "base_url is invalid" )
 
 error_like( [=[Spore.new_from_string([[
 {

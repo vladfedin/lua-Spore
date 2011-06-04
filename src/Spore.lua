@@ -184,6 +184,7 @@ local function populate (obj, spec, opts)
         assert(type(v.headers or {}) == 'table', "headers of " .. k .. " is not an hash")
         assert(v.base_url, k .. ": base_url is missing")
         local uri = url.parse(v.base_url)
+        assert(uri, k .. ": base_url is invalid")
         assert(uri.host, k .. ": base_url without host")
         assert(uri.scheme, k .. ": base_url without scheme")
         if v.required_payload or v.optional_payload then

@@ -16,7 +16,7 @@ function m:call (req)
 
     return  function (res)
                 while nredirect < m.max_redirect do
-                    local location = res.headers['location']
+                    local location = res.headers and res.headers['location']
                     local status = res.status
                     if location and (status == 301 or status == 302
                                   or status == 303 or status == 307) then

@@ -144,7 +144,7 @@ function m:finalize (oauth)
         }
         for k, v in pairs(spore.params) do
             k = tostring(k)
-            if k:match'^oauth_' and not query_vals[k] then
+            if k ~= 'realm' and not query_vals[k] then
                 query_keys[#query_keys+1] = k
                 query_vals[k] = escape5849(tostring(v))
             end

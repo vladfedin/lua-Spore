@@ -39,8 +39,13 @@ function m:call (req)
         params.oauth_nonce = generate_nonce()
         params.oauth_signature_method = self.oauth_signature_method or 'HMAC-SHA1'
         params.oauth_timestamp = generate_timestamp()
-        params.oauth_token = self.oauth_token
         params.oauth_version = '1.0'
+        if self.oauth_token then        -- access token
+            params.oauth_token = self.oauth_token
+            params.oauth_verifier = self.oauth_verifier
+        else                            -- request token
+            params.oauth_callback = self.oauth_callback or 'oob'        -- out-of-band
+        end
         req:finalize(true)
 
         local signature_key = escape(self.oauth_consumer_secret) .. '&' .. escape(self.oauth_token_secret or '')
@@ -85,7 +90,7 @@ end
 
 return m
 --
--- Copyright (c) 2010 Francois Perrad
+-- Copyright (c) 2010-2011 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

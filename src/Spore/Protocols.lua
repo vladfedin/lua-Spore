@@ -118,6 +118,10 @@ local function request (req)
         req.headers['content-type'] = req.headers['content-type'] or 'application/x-www-form-urlencoded'
     end
 
+    if req.method == 'POST' and not req.headers['content-length'] then
+        req.headers['content-length'] = 0
+    end
+
     local t = {}
     req.sink = ltn12.sink.table(t)
 

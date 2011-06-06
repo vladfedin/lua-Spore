@@ -55,22 +55,24 @@ local function validate (caller, method, params, payload)
     if not method.unattended_params then
         local optional_params = method.optional_params or {}
         for param in pairs(params) do
-            local found = false
-            for i = 1, #required_params do
-                if param == required_params[i] then
-                    found = true
-                    break
-                end
-            end
-            if not found then
-                for i = 1, #optional_params do
-                    if param == optional_params[i] then
+            if not param:match'^oauth_' then
+                local found = false
+                for i = 1, #required_params do
+                    if param == required_params[i] then
                         found = true
                         break
                     end
                 end
+                if not found then
+                    for i = 1, #optional_params do
+                        if param == optional_params[i] then
+                            found = true
+                            break
+                        end
+                    end
+                end
+                assert(found, param .. " is not expected for method " .. caller)
             end
-            assert(found, param .. " is not expected for method " .. caller)
         end
     end
 end

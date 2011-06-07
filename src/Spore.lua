@@ -248,6 +248,7 @@ local function new_from_spec (...)
 end
 m.new_from_spec = new_from_spec
 
+m._NAME = ...
 m._VERSION = version
 m._DESCRIPTION = "lua-Spore : a generic ReST client"
 m._COPYRIGHT = "Copyright (c) 2010-2011 Francois Perrad"

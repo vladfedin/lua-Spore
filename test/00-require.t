@@ -2,7 +2,7 @@
 
 require 'Test.More'
 
-plan(13)
+plan(14)
 
 if not require_ok 'Spore' then
     BAIL_OUT "no lib"
@@ -12,6 +12,7 @@ local m = require 'Spore'
 type_ok( m, 'table', "Spore" )
 is( m, package.loaded['Spore'] )
 
+is( m._NAME, 'Spore', "_NAME" )
 like( m._COPYRIGHT, 'Perrad', "_COPYRIGHT" )
 like( m._DESCRIPTION, 'ReST client', "_DESCRIPTION" )
 type_ok( m._VERSION, 'string', "_VERSION" )

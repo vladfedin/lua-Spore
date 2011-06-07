@@ -23,7 +23,7 @@ local m = {}
 
 m.early_validate = true
 
-local version = '0.1.0'
+local version = '0.1.1'
 
 local function raises (response, reason)
     local ex = { response = response, reason = reason }

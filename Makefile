@@ -112,6 +112,9 @@ export LUA_PATH=;;src/?.lua
 test:
 	prove --exec=$(LUA) ./test/*.t
 
+test_eg:
+	prove --exec=$(LUA) ./eg/*.lua
+
 coverage:
 	rm -f ./luacov.stats.out ./luacov.report.out
 	-prove --exec="$(LUA) -lluacov" ./test/*.t ./eg/*.lua

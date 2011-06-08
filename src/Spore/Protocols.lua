@@ -127,6 +127,9 @@ local function request (req)
 
     if spore.debug then
         spore.debug:write(req.method, " ", req.url, "\n")
+        for k, v in pairs(req.headers) do
+            spore.debug:write(k, ": ", v, "\n")
+        end
     end
     local r, status, headers, line = prot.request(req)
     if spore.debug then

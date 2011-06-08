@@ -4,7 +4,7 @@ local Request = require 'Spore.Request'
 
 require 'Test.More'
 
-plan(40)
+plan(43)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
@@ -55,6 +55,15 @@ req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/usr1/show/value2', "url" )
 is( env.PATH_INFO, '/restapi/usr1/show/value2' )
 is( env.QUERY_STRING, nil )
+
+env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
+env.QUERY_STRING = nil
+env.spore.params.prm2 = 'path2/value2'
+req:finalize()
+is( req.url, 'prot://services.org:9999/restapi/usr1/show/path2/value2', "url" )
+is( env.PATH_INFO, '/restapi/usr1/show/path2/value2' )
+is( env.QUERY_STRING, nil )
+env.spore.params.prm2 = 'value2'
 
 env.PATH_INFO = '/restapi/doit'
 env.QUERY_STRING = 'action=action1'

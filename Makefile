@@ -28,6 +28,7 @@ install:
 	cp src/Spore/Middleware/UserAgent.lua           $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Auth/AWS.lua            $(LIBDIR)/Spore/Middleware/Auth
 	cp src/Spore/Middleware/Auth/Basic.lua          $(LIBDIR)/Spore/Middleware/Auth
+	cp src/Spore/Middleware/Auth/Bearer.lua         $(LIBDIR)/Spore/Middleware/Auth
 	cp src/Spore/Middleware/Auth/OAuth.lua          $(LIBDIR)/Spore/Middleware/Auth
 	cp src/Spore/Middleware/Format/JSON.lua         $(LIBDIR)/Spore/Middleware/Format
 	cp src/Spore/Middleware/Format/XML.lua          $(LIBDIR)/Spore/Middleware/Format

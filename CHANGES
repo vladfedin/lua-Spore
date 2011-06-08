@@ -5,6 +5,7 @@ Revision history for lua-Spore
 	- add middleware Auth.AWS (thanks to Alexander Gladysh & Vladimir Fedin)
 	- fix new_from_spec() with URL (slurp)
 	- fix wrap() when path is empty
+	- add middleware Auth.Bearer
 
 0.1.0  Fri Nov 26 10:30:00 2010
 	First release

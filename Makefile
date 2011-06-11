@@ -6,10 +6,10 @@ ifndef REV
   REV   := 1
 endif
 
-ifndef DESTDIR
-  DESTDIR := /usr/local
-endif
-LIBDIR  := $(DESTDIR)/share/lua/5.1
+LUAVER  := 5.1
+PREFIX  := /usr/local
+DPREFIX := $(DESTDIR)$(PREFIX)
+LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
 
 install:
 	mkdir -p $(LIBDIR)/Spore/Middleware/Auth

@@ -11,6 +11,9 @@ PREFIX  := /usr/local
 DPREFIX := $(DESTDIR)$(PREFIX)
 LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
 
+all:
+	@echo "Nothing to build here, you can just make install"
+
 install:
 	mkdir -p $(LIBDIR)/Spore/Middleware/Auth
 	mkdir -p $(LIBDIR)/Spore/Middleware/Format

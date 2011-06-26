@@ -24,6 +24,7 @@ install:
 	cp src/Spore/Protocols.lua                      $(LIBDIR)/Spore
 	cp src/Spore/Request.lua                        $(LIBDIR)/Spore
 	cp src/Spore/Middleware/Cache.lua               $(LIBDIR)/Spore/Middleware
+	cp src/Spore/Middleware/DoNotTrack.lua          $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Logging.lua             $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Mock.lua                $(LIBDIR)/Spore/Middleware
 	cp src/Spore/Middleware/Redirection.lua         $(LIBDIR)/Spore/Middleware

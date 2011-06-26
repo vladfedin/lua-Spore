@@ -39,6 +39,7 @@ build = {
         ['Spore.Middleware.Auth.Bearer']        = 'src/Spore/Middleware/Auth/Bearer.lua',
         ['Spore.Middleware.Auth.OAuth']         = 'src/Spore/Middleware/Auth/OAuth.lua',
         ['Spore.Middleware.Cache']              = 'src/Spore/Middleware/Cache.lua',
+        ['Spore.Middleware.DoNotTrack']         = 'src/Spore/Middleware/DoNotTrack.lua',
         ['Spore.Middleware.Format.JSON']        = 'src/Spore/Middleware/Format/JSON.lua',
         ['Spore.Middleware.Format.XML']         = 'src/Spore/Middleware/Format/XML.lua',
         ['Spore.Middleware.Format.YAML']        = 'src/Spore/Middleware/Format/YAML.lua',

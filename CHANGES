@@ -6,6 +6,7 @@ Revision history for lua-Spore
 	- fix new_from_spec() with URL (slurp)
 	- fix wrap() when path is empty
 	- add middleware Auth.Bearer
+	- add middleware DoNotTrack
 
 0.1.0  Fri Nov 26 10:30:00 2010
 	First release

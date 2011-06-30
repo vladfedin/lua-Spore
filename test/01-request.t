@@ -4,7 +4,7 @@ local Request = require 'Spore.Request'
 
 require 'Test.More'
 
-plan(43)
+plan(48)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
@@ -18,7 +18,11 @@ local env = {
             prm1 = 1,
             prm2 = "value2",
             prm3 = "Value Z",
+            oauth_prm = "valO",
         },
+        headers = {
+            auth = "OAuth :oauth_prm",
+        }
     },
 }
 local req = Request.new(env)
@@ -33,28 +37,38 @@ is( req.method, nil )
 
 env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
 env.QUERY_STRING = nil
-req:finalize()
+req:finalize(true)
 is( req.method, 'PET', "method" )
 is( req.url, 'prot://services.org:9999/restapi/usr1/show/value2?prm3=Value%20Z', "url" )
 is( env.PATH_INFO, '/restapi/usr1/show/value2' )
 is( env.QUERY_STRING, 'prm3=Value%20Z' )
+is( req.oauth_signature_base_string, 'PET&prot%3A%2F%2Fservices.org%3A9999%2Frestapi%2Fusr1%2Fshow%2Fvalue2&oauth_prm%3DvalO%26prm3%3DValue%2520Z', "OAuth signature base string" )
+is( req.headers.auth, 'OAuth valO' )
+req.oauth_signature_base_string = nil
+req.headers.auth = nil
 
 env.PATH_INFO = '/restapi/:prm3/show'
 env.QUERY_STRING = nil
 env.REQUEST_METHOD = 'TEP'
-req:finalize()
+req:finalize(true)
 is( req.method, 'TEP', "method" )
 is( req.url, 'prot://services.org:9999/restapi/Value%20Z/show?prm1=1&prm2=value2', "url" )
 is( env.PATH_INFO, '/restapi/Value%20Z/show' )
 is( env.QUERY_STRING, 'prm1=1&prm2=value2' )
+is( req.oauth_signature_base_string, 'TEP&prot%3A%2F%2Fservices.org%3A9999%2Frestapi%2FValue%2520Z%2Fshow&oauth_prm%3DvalO%26prm1%3D1%26prm2%3Dvalue2', "OAuth signature base string" )
+is( req.headers.auth, 'OAuth valO' )
+req.oauth_signature_base_string = nil
+req.headers.auth = nil
 
 env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
 env.QUERY_STRING = nil
 env.spore.params.prm3 = nil
+env.spore.params.oauth_prm = nil
 req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/usr1/show/value2', "url" )
 is( env.PATH_INFO, '/restapi/usr1/show/value2' )
 is( env.QUERY_STRING, nil )
+is( req.oauth_signature_base_string, nil )
 
 env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
 env.QUERY_STRING = nil

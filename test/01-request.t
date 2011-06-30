@@ -94,9 +94,9 @@ env.QUERY_STRING = nil
 env.spore.form_data = nil
 env.spore.headers = {
     head1 = 'f(:prm1)',
-    head2 = 'g(:prm2); :prm1',
-    head3 = 'h(:prm3)',
-    head7 = 'r(:prm7)',
+    Head2 = 'g(:prm2); :prm1',
+    HeaD3 = 'h(:prm3)',
+    HEAD7 = 'r(:prm7)',
 }
 req:finalize()
 is( req.url, 'prot://services.org:9999/restapi/path', "url" )

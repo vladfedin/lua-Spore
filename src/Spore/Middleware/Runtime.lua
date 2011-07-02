@@ -13,14 +13,20 @@ function m:call (req)
 
     return  function (res)
                 local diff = socket.gettime() - start_time
-                res.headers['x-spore-runtime'] = string.format('%.4f', diff)
+                local str = string.format('%.4f', diff)
+                local header = res.headers['x-spore-runtime']
+                if header then
+                    res.headers['x-spore-runtime'] = header .. ',' .. str
+                else
+                    res.headers['x-spore-runtime'] = str
+                end
                 return res
             end
 end
 
 return m
 --
--- Copyright (c) 2010 Francois Perrad
+-- Copyright (c) 2010-2011 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

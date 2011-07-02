@@ -20,7 +20,7 @@ function m:call (req)
     end
     req.headers['accept'] = 'application/json'
     return  function (res)
-                if res.body then
+                if res.body and res.body ~= '' then
                     local r, msg = pcall(function ()
                         local decode = require 'json.decode'.decode
                         res.body = decode(res.body)

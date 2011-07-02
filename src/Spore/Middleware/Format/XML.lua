@@ -140,7 +140,7 @@ function m:call (req)
     end
     req.headers['accept'] = 'text/xml'
     return  function (res)
-                if res.body then
+                if res.body and res.body ~= '' then
                     local r, msg = xml.parse(res.body)
                     if r then
                         res.body = { [r.tag] = collapse(r, self) }

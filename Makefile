@@ -122,7 +122,7 @@ test_eg:
 
 coverage:
 	rm -f ./luacov.stats.out ./luacov.report.out
-	-prove --exec="$(LUA) -lluacov" ./test/*.t ./eg/*.lua
+	-prove --exec="$(LUA) -lluacov" ./test/*.t
 	luacov
 
 README.html: README.md

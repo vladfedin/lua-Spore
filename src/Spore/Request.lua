@@ -74,7 +74,7 @@ function m:finalize (oauth)
     local query, query_keys, query_vals = {}, {}, {}
     if query_string then
         if oauth then
-            for k, v in query_string:gmatch '([^=]+)=([^&])&?' do
+            for k, v in query_string:gmatch '([^=]+)=([^&]+)&?' do
                 query_keys[#query_keys+1] = k
                 query_vals[k] = v
             end

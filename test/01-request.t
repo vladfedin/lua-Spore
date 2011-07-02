@@ -4,7 +4,7 @@ local Request = require 'Spore.Request'
 
 require 'Test.More'
 
-plan(48)
+plan(49)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
@@ -81,10 +81,12 @@ env.spore.params.prm2 = 'value2'
 
 env.PATH_INFO = '/restapi/doit'
 env.QUERY_STRING = 'action=action1'
-req:finalize()
+req:finalize(true)
 is( req.url, 'prot://services.org:9999/restapi/doit?action=action1&prm1=1&prm2=value2', "url" )
 is( env.PATH_INFO, '/restapi/doit' )
 is( env.QUERY_STRING, 'action=action1&prm1=1&prm2=value2' )
+is( req.oauth_signature_base_string, 'TEP&prot%3A%2F%2Fservices.org%3A9999%2Frestapi%2Fdoit&action%3Daction1%26prm1%3D1%26prm2%3Dvalue2', "OAuth signature base string" )
+req.oauth_signature_base_string = nil
 
 env.PATH_INFO = '/restapi/path'
 env.QUERY_STRING = nil

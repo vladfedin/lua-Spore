@@ -39,12 +39,14 @@ local function element (name, t, options, level)
         end
     end
     r = r .. '>'
-    if indent and type(t) == 'table' then
-        r = r .. '\n'
-    end
     if type(t) == 'table' then
+        local first = true
         for k, v in pairs(t) do
             if type(v) == 'table' then
+                if indent and first then
+                    r = r .. '\n'
+                    first = false
+                end
                 if #v > 0 then
                     for i = 1, #v do
                         r = r .. element(k, v[i], options, level+1)
@@ -61,11 +63,11 @@ local function element (name, t, options, level)
                 end
             end
         end
+        if indent and not first then
+            r = r .. indent:rep(level)
+        end
     else
         r = r .. escape(t)
-    end
-    if indent and type(t) == 'table' then
-        r = r .. indent:rep(level)
     end
     r = r .. '</' .. name .. '>'
     if indent then

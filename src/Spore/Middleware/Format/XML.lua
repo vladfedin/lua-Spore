@@ -74,9 +74,9 @@ local function element (name, t, options, level)
     return r
 end
 
-local function to_xml (t, options)
+function m.to_xml (t, options)
     for k, v in pairs(t) do
-        return element(k, v, options, 0)
+        return element(k, v, options or {}, 0)
     end
 end
 
@@ -119,7 +119,7 @@ end
 function m:call (req)
     local spore = req.env.spore
     if spore.payload and type(spore.payload) == 'table' then
-        spore.payload = to_xml(spore.payload, self)
+        spore.payload = m.to_xml(spore.payload, self)
         req.headers['content-type'] = 'text/xml'
     end
     req.headers['accept'] = 'text/xml'
@@ -142,7 +142,7 @@ end
 
 return m
 --
--- Copyright (c) 2010 Francois Perrad
+-- Copyright (c) 2010-2011 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

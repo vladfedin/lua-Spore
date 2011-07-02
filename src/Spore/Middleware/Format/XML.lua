@@ -149,7 +149,9 @@ function m:call (req)
                             spore.errors:write(msg, "\n")
                             spore.errors:write(res.body, "\n")
                         end
-                        raises(res, msg)
+                        if res.status == 200 then
+                            raises(res, msg)
+                        end
                     end
                 end
                 return res

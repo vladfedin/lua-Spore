@@ -30,7 +30,9 @@ function m:call (req)
                             spore.errors:write(msg, "\n")
                             spore.errors:write(res.body, "\n")
                         end
-                        raises(res, msg)
+                        if res.status == 200 then
+                            raises(res, msg)
+                        end
                     end
                 end
                 return res
@@ -39,7 +41,7 @@ end
 
 return m
 --
--- Copyright (c) 2010 Francois Perrad
+-- Copyright (c) 2010-2011 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

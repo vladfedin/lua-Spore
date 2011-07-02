@@ -31,9 +31,13 @@ local function element (name, t, options, level)
         r = r .. indent:rep(level)
     end
     r = r .. '<' .. name
+    local h = {}
     if type(t) == 'table' then
+        for i in ipairs(t) do
+            h[i] = true
+        end
         for k, v in pairs(t) do
-            if type(v) ~= 'table' then
+            if not h[k] and type(v) ~= 'table' then
                 r = r .. ' ' .. k .. '="' .. escape(v, true) .. '"'
             end
         end
@@ -47,20 +51,30 @@ local function element (name, t, options, level)
                     r = r .. '\n'
                     first = false
                 end
-                if #v > 0 then
+                local n = 0
+                for _ in pairs(v) do
+                    n = n + 1
+                end
+                if #v == n then
                     for i = 1, #v do
                         r = r .. element(k, v[i], options, level+1)
                     end
                 else
                     local key_attr = options.key_attr or {}
                     local key = key_attr[k]
-                    for kk, vv in pairs(v) do
-                        if key then
-                            vv[key] = kk
+                    if key then
+                        for kk, vv in pairs(v) do
+                            if key then
+                                vv[key] = kk
+                            end
+                            r = r .. element(k, vv, options, level+1)
                         end
-                        r = r .. element(k, vv, options, level+1)
+                    else
+                        r = r .. element(k, v, options, level+1)
                     end
                 end
+            elseif h[k] then
+                r = r .. escape(v)
             end
         end
         if indent and not first then

@@ -47,7 +47,7 @@ local env = {
 local req = require 'Spore.Request'.new(env)
 local cb = mw.call({}, req)
 type_ok( cb, 'function', "returns a function" )
-is( env.spore.payload, [[<config logdir="/var/log/foo/" debugfile="/tmp/foo.debug"><server><address>10.0.0.101</address><address>10.0.1.101</address></server><server><address>10.0.0.102</address></server><server><address>10.0.0.103</address><address>10.0.1.103</address></server></config>]], "payload encoded")
+is( env.spore.payload, [[<config logdir="/var/log/foo/" debugfile="/tmp/foo.debug"><server><sahara><address>10.0.0.101</address><address>10.0.1.101</address></sahara><gobi><address>10.0.0.102</address></gobi><kalahari><address>10.0.0.103</address><address>10.0.1.103</address></kalahari></server></config>]], "payload encoded")
 
 env.spore.payload = payload
 local req = require 'Spore.Request'.new(env)

@@ -4,7 +4,7 @@ Spore = require 'Spore'
 
 require 'Test.More'
 
-plan(25)
+plan(29)
 
 error_like( [[Spore.new_from_string(true)]],
             "bad argument #1 to new_from_string %(string expected, got boolean%)" )
@@ -220,4 +220,35 @@ type_ok( client.enable, 'function' )
 type_ok( client.reset_middlewares, 'function' )
 type_ok( client.getInfo, 'function' )
 is( client.get_info, nil )
+Spore.methname_modifier = nil
 
+
+require 'Spore.Protocols'.request = function (req)
+    return {
+        status = 200,
+        body = [[
+{
+    base_url : "http://services.org/restapi/",
+    methods : {
+        get_info : {
+            path : "/show",
+            method : "GET",
+        }
+    }
+}
+]],
+    }
+end -- mock
+
+local client = Spore.new_from_spec 'http://local.dummy.org/spec.json'
+type_ok( client, 'table' )
+type_ok( client.enable, 'function' )
+type_ok( client.get_info, 'function' )
+
+
+require 'Spore.Protocols'.request = function (req)
+    return { status = 404 }
+end -- mock
+
+error_like( [[Spore.new_from_spec 'http://local.dummy.org/spec.json']],
+            "404 not expected" )

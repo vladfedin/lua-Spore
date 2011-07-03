@@ -90,11 +90,12 @@ local function element (name, t, options, level)
     return r
 end
 
-function m.to_xml (t, options)
+local function to_xml (t, options)
     for k, v in pairs(t) do
         return element(k, v, options or {}, 0)
     end
 end
+m.to_xml = to_xml
 
 local function collapse (doc, options)
     local string_leaf = true
@@ -135,7 +136,7 @@ end
 function m:call (req)
     local spore = req.env.spore
     if spore.payload and type(spore.payload) == 'table' then
-        spore.payload = m.to_xml(spore.payload, self)
+        spore.payload = to_xml(spore.payload, self)
         req.headers['content-type'] = 'text/xml'
     end
     req.headers['accept'] = 'text/xml'

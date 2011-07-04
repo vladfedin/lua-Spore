@@ -46,6 +46,7 @@ is( req.oauth_signature_base_string, 'PET&prot%3A%2F%2Fservices.org%3A9999%2Fres
 is( req.headers.auth, 'OAuth valO' )
 req.oauth_signature_base_string = nil
 req.headers.auth = nil
+req.url = nil
 
 env.PATH_INFO = '/restapi/:prm3/show'
 env.QUERY_STRING = nil
@@ -59,6 +60,7 @@ is( req.oauth_signature_base_string, 'TEP&prot%3A%2F%2Fservices.org%3A9999%2Fres
 is( req.headers.auth, 'OAuth valO' )
 req.oauth_signature_base_string = nil
 req.headers.auth = nil
+req.url = nil
 
 env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
 env.QUERY_STRING = nil
@@ -69,6 +71,7 @@ is( req.url, 'prot://services.org:9999/restapi/usr1/show/value2', "url" )
 is( env.PATH_INFO, '/restapi/usr1/show/value2' )
 is( env.QUERY_STRING, nil )
 is( req.oauth_signature_base_string, nil )
+req.url = nil
 
 env.PATH_INFO = '/restapi/usr:prm1/show/:prm2'
 env.QUERY_STRING = nil
@@ -78,6 +81,7 @@ is( req.url, 'prot://services.org:9999/restapi/usr1/show/path2/value2', "url" )
 is( env.PATH_INFO, '/restapi/usr1/show/path2/value2' )
 is( env.QUERY_STRING, nil )
 env.spore.params.prm2 = 'value2'
+req.url = nil
 
 env.PATH_INFO = '/restapi/doit'
 env.QUERY_STRING = 'action=action1'
@@ -87,6 +91,7 @@ is( env.PATH_INFO, '/restapi/doit' )
 is( env.QUERY_STRING, 'action=action1&prm1=1&prm2=value2' )
 is( req.oauth_signature_base_string, 'TEP&prot%3A%2F%2Fservices.org%3A9999%2Frestapi%2Fdoit&action%3Daction1%26prm1%3D1%26prm2%3Dvalue2', "OAuth signature base string" )
 req.oauth_signature_base_string = nil
+req.url = nil
 
 env.PATH_INFO = '/restapi/path'
 env.QUERY_STRING = nil
@@ -105,6 +110,7 @@ is( env.spore.form_data.form1, "f(1)", "form-data" )
 is( env.spore.form_data.form2, "g(value2)" )
 is( env.spore.form_data.form3, "h(Value Z)" )
 is( env.spore.form_data.form7, nil )
+req.url = nil
 
 env.QUERY_STRING = nil
 env.spore.form_data = nil
@@ -123,6 +129,7 @@ is( req.headers.head1, "f(1)", "headers" )
 is( req.headers.head2, "g(value2); 1" )
 is( req.headers.head3, "h(Value Z)" )
 is( req.headers.head7, nil )
+req.url = nil
 
 env.QUERY_STRING = nil
 env.spore.params.prm1 = 2

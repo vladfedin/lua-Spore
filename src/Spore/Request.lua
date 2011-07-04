@@ -55,6 +55,9 @@ end
 m.escape5849 = escape5849
 
 function m:finalize (oauth)
+    if self.url then
+        return
+    end
     local env = self.env
     local spore = env.spore
     if not require 'Spore'.early_validate then

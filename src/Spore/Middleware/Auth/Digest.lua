@@ -2,6 +2,7 @@
 -- lua-Spore : <http://fperrad.github.com/lua-Spore/>
 --
 
+local error = error
 local time = require 'os'.time
 local format = require 'string'.format
 local evp = require 'crypto'.evp
@@ -73,11 +74,22 @@ function m:call (req)
                 for k, v in res.headers['www-authenticate']:gmatch'(%w+)="([^"]*)"' do
                     self[k] = v
                 end
-                if self.qop and self.qop ~= 'auth-int' then
-                    self.qop = 'auth'
+                if self.qop then
+                    for v in self.qop:gmatch'([%w%-]+)[,;]?' do
+                        self.qop = v
+                        if v == 'auth' then
+                            break
+                        end
+                    end
+                    if self.qop ~= 'auth' then
+                        error(self.qop .. " is not supported")
+                    end
                 end
                 if not self.algorithm then
                     self.algorithm = 'MD5'
+                end
+                if self.algorithm ~= 'MD5' then
+                    error(self.algorithm .. " is not supported")
                 end
                 self.nc = 0
                 add_header(self, req)

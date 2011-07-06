@@ -24,49 +24,49 @@ local function path_query (uri)
     return url.build{ path = t.path, query = t.query }
 end
 
-local function add_header(challenge, req)
-    challenge.nc = challenge.nc + 1
-    local nc = format('%08X', challenge.nc)
-    local cnonce = m.generate_nonce()
-    local uri = path_query(req.url)
-    local ha1, ha2, response
-    ha1 = evp.digest('md5', challenge.username .. ':'
-                         .. challenge.realm .. ':'
-                         .. challenge.password)
-    ha2 = evp.digest('md5', req.method .. ':'
-                         .. uri)
-    if challenge.qop then
-        response = evp.digest('md5', ha1 .. ':'
-                                  .. challenge.nonce .. ':'
-                                  .. nc .. ':'
-                                  .. cnonce .. ':'
-                                  .. challenge.qop .. ':'
-                                  .. ha2)
-    else
-        response = evp.digest('md5', ha1 .. ':'
-                                  .. challenge.nonce .. ':'
-                                  .. ha2)
-    end
-    local auth = 'Digest username="' .. challenge.username
-              .. '", realm="' .. challenge.realm
-              .. '", nonce="' .. challenge.nonce
-              .. '", uri="' .. uri
-              .. '", algorithm="' .. challenge.algorithm
-              .. '", nc=' .. nc
-              .. ', cnonce="' .. cnonce
-              .. '", response="' .. response
-              .. '", opaque="' .. challenge.opaque .. '"'
-    if challenge.qop then
-        auth = auth .. ', qop=' .. challenge.qop
-    end
-    req.headers['authorization'] = auth
-end
-
 function m:call (req)
+    local function add_header ()
+        self.nc = self.nc + 1
+        local nc = format('%08X', self.nc)
+        local cnonce = m.generate_nonce()
+        local uri = path_query(req.url)
+        local ha1, ha2, response
+        ha1 = evp.digest('md5', self.username .. ':'
+                             .. self.realm .. ':'
+                             .. self.password)
+        ha2 = evp.digest('md5', req.method .. ':'
+                             .. uri)
+        if self.qop then
+            response = evp.digest('md5', ha1 .. ':'
+                                      .. self.nonce .. ':'
+                                      .. nc .. ':'
+                                      .. cnonce .. ':'
+                                      .. self.qop .. ':'
+                                      .. ha2)
+        else
+            response = evp.digest('md5', ha1 .. ':'
+                                      .. self.nonce .. ':'
+                                      .. ha2)
+        end
+        local auth = 'Digest username="' .. self.username
+                  .. '", realm="' .. self.realm
+                  .. '", nonce="' .. self.nonce
+                  .. '", uri="' .. uri
+                  .. '", algorithm="' .. self.algorithm
+                  .. '", nc=' .. nc
+                  .. ', cnonce="' .. cnonce
+                  .. '", response="' .. response
+                  .. '", opaque="' .. self.opaque .. '"'
+        if self.qop then
+            auth = auth .. ', qop=' .. self.qop
+        end
+        req.headers['authorization'] = auth
+    end  -- add_header
+
     if req.env.spore.authentication and self.username and self.password then
         if self.nonce then
             req:finalize()
-            add_header(self, req)
+            add_header()
         end
 
         return  function (res)
@@ -92,7 +92,7 @@ function m:call (req)
                     error(self.algorithm .. " is not supported")
                 end
                 self.nc = 0
-                add_header(self, req)
+                add_header()
                 return Protocols.request(req)
             end
             return res

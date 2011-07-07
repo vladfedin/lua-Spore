@@ -10,13 +10,16 @@ plan(8)
 
 local response = { status = 200, headers = {} }
 require 'Spore.Protocols'.request = function (req)
-    like(req.url, "^http://services.org:9999/restapi/show%?dummy&oauth_signature=[%%%w]+$")
+    is(req.url, 'http://services.org:9999/restapi/show?dummy')
     return response
 end -- mock
 require 'Spore.Request'.finalize = function (self)
     self.method = 'GET'
     self.url = 'http://services.org:9999/restapi/show?dummy'
     self.oauth_signature_base_string = self.url
+    self.headers = {
+        authorization = 'Oauth',
+    }
 end -- mock
 
 if not require_ok 'Spore.Middleware.Auth.OAuth' then

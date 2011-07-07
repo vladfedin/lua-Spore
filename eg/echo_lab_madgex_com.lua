@@ -7,6 +7,7 @@
 local Spore = require 'Spore'
 
 local keys = {
+    realm = '',
     oauth_consumer_key    = 'key',
     oauth_consumer_secret = 'secret',
 }
@@ -31,19 +32,9 @@ local client = Spore.new_from_string [[
             "unattended_params" : true,
             "expected_status" : [ 200, 400, 401 ]
         },
-        "echo_h" : {
-            "path" : "/echo.ashx",
-            "method" : "GET",
-            "headers" : {
-                "authorization" : "OAuth realm=\"\", oauth_consumer_key=\":oauth_consumer_key\", oauth_token=\":oauth_token\", oauth_signature_method=\":oauth_signature_method\", oauth_signature=\":oauth_signature\", oauth_timestamp=\":oauth_timestamp\", oauth_nonce=\":oauth_nonce\", oauth_version=\":oauth_version\""
-            },
-            "unattended_params" : true,
-            "expected_status" : [ 200, 400, 401 ]
-        },
         "echo_p" : {
             "path" : "/echo.ashx",
             "method" : "POST",
-            "required_payload" : true,
             "unattended_params" : true,
             "expected_status" : [ 200, 400, 401 ]
         }
@@ -71,11 +62,7 @@ local r = client:echo{ method = 'foo bar', bar = 'baz' }
 print(r.body)
 assert(r.body == 'bar=baz&method=foo bar')
 
-local r = client:echo_h{ method = 'foo bar', bar = 'baz' }
-print(r.body)
-assert(r.body == 'bar=baz&method=foo bar')
-
-local r = client:echo_p{ payload = '@oauth', method = 'foo bar', bar = 'baz' }
+local r = client:echo_p{ method = 'foo bar', bar = 'baz' }
 print(r.body)
 assert(r.body == 'bar=baz&method=foo bar')
 

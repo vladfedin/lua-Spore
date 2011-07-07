@@ -59,10 +59,10 @@ function m:call (req)
                 auth = auth .. [[, oauth_token=":oauth_token"]]
             end
         end
-        if not req.env.spore.headers then
-            req.env.spore.headers = {}
+        if not spore.headers then
+            spore.headers = {}
         end
-        req.env.spore.headers['authorization'] = auth
+        spore.headers['authorization'] = auth
         req:finalize(true)
 
         local signature_key = escape(self.oauth_consumer_secret) .. '&' .. escape(self.oauth_token_secret or '')

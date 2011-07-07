@@ -72,7 +72,7 @@ function m:finalize (oauth)
     local headers = {}
     for k, v in pairs(spore.headers or {}) do
         headers[tostring(k):lower()] = tostring(v)
-     end
+    end
     local payload = spore.payload
     local query, query_keys, query_vals = {}, {}, {}
     if query_string then
@@ -93,7 +93,7 @@ function m:finalize (oauth)
         path_info, n = path_info:gsub(':' .. k, (escape_path(v):gsub('%%', '%%%%')))
         for kk, vv in pairs(form_data) do
             local nn
-            vv, nn = vv:gsub(':' .. k, v)
+            vv, nn = vv:gsub(':' .. k, (v:gsub('%%', '%%%%')))
             if nn > 0 then
                 form_data[kk] = vv
                 form[kk] = vv
@@ -102,7 +102,7 @@ function m:finalize (oauth)
         end
         for kk, vv in pairs(headers) do
             local nn
-            vv, nn = vv:gsub(':' .. k, v)
+            vv, nn = vv:gsub(':' .. k, (v:gsub('%%', '%%%%')))
             if nn > 0 then
                 headers[kk] = vv
                 self.headers[kk] = vv

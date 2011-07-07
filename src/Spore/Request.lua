@@ -76,13 +76,18 @@ function m:finalize (oauth)
     local payload = spore.payload
     local query, query_keys, query_vals = {}, {}, {}
     if query_string then
+        query[1] = query_string
         if oauth then
-            for k, v in query_string:gmatch '([^=]+)=([^&]+)&?' do
+            for k, v in query_string:gmatch '([^=]+)=([^&]*)&?' do
                 query_keys[#query_keys+1] = k
                 query_vals[k] = v
             end
-        else
-            query[1] = query_string
+        end
+    end
+    if oauth and payload then  -- TODO: content-type
+        for k, v in payload:gmatch '([^=&]+)=?([^&]*)&?' do
+            query_keys[#query_keys+1] = k
+            query_vals[k] = v:gsub('+', '%%20')
         end
     end
     local form = {}
@@ -102,6 +107,9 @@ function m:finalize (oauth)
         end
         for kk, vv in pairs(headers) do
             local nn
+            if oauth and k:match'^oauth_' then
+                v = escape(v)
+            end
             vv, nn = vv:gsub(':' .. k, (v:gsub('%%', '%%%%')))
             if nn > 0 then
                 headers[kk] = vv
@@ -110,22 +118,13 @@ function m:finalize (oauth)
             end
         end
         if n == 0 then
+            query[#query+1] = escape(k) .. '=' .. escape(v)
             if oauth then
-                if not k:match'^oauth_' or payload ~= '@oauth' then
+                if not k:match'^oauth_' then
                     query_keys[#query_keys+1] = escape5849(k)
                     query_vals[k] = escape5849(v)
                 end
-            else
-                query[#query+1] = escape(k) .. '=' .. escape(v)
             end
-        end
-    end
-    if oauth then
-        tsort(query_keys)
-        for i = 1, #query_keys do
-            local k = query_keys[i]
-            local v = query_vals[k]
-            query[#query+1] = k .. '=' .. v
         end
     end
     if #query > 0 then
@@ -138,10 +137,18 @@ function m:finalize (oauth)
     end
     self.method = env.REQUEST_METHOD
     if oauth then
+        local scheme = env.spore.url_scheme
+        local port = env.SERVER_PORT
+        if port == '80' and scheme == 'http' then
+            port = nil
+        end
+        if port == '443' and scheme == 'https' then
+            port = nil
+        end
         local base_url = url.build {
-            scheme  = env.spore.url_scheme,
+            scheme  = scheme,
             host    = env.SERVER_NAME,
-            port    = env.SERVER_PORT,
+            port    = port,
             path    = path_info,
             -- no query
         }

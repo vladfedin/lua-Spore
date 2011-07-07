@@ -68,7 +68,7 @@ function m:call (req)
         local signature_key = escape(self.oauth_consumer_secret) .. '&' .. escape(self.oauth_token_secret or '')
         local oauth_signature
         if params.oauth_signature_method == 'PLAINTEXT' then
-            oauth_signature = escape(escape(signature_key))
+            oauth_signature = escape(signature_key)
         else
             if params.oauth_signature_method == 'HMAC-SHA1' then
                 local hmac_binary = crypto.digest('sha1', req.oauth_signature_base_string, signature_key, true)

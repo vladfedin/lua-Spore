@@ -60,11 +60,11 @@ assert(keys.oauth_token_secret == 'accesssecret')
 
 local r = client:echo{ method = 'foo bar', bar = 'baz' }
 print(r.body)
-assert(r.body == 'bar=baz&method=foo bar')
+assert(r.body == 'method=foo bar&bar=baz')
 
 local r = client:echo_p{ method = 'foo bar', bar = 'baz' }
 print(r.body)
-assert(r.body == 'bar=baz&method=foo bar')
+assert(r.body == 'method=foo bar&bar=baz')
 
 print 'ok - http://echo.lab.madgex.com'
 print '1..1'

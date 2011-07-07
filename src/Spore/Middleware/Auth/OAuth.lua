@@ -21,7 +21,7 @@ local m = {}
         RFC 5849 : The OAuth 1.0 Protocol
 --]]
 
-local function generate_timestamp()
+function m.generate_timestamp()
     return tostring(time())
 end
 
@@ -36,15 +36,17 @@ function m:call (req)
         local spore = env.spore
         local params = spore.params
         params.oauth_consumer_key = self.oauth_consumer_key
-        params.oauth_nonce = m.generate_nonce()
         params.oauth_signature_method = self.oauth_signature_method or 'HMAC-SHA1'
-        params.oauth_timestamp = generate_timestamp()
-        params.oauth_version = '1.0'
         local auth = 'OAuth'
         if self.realm then
             auth = auth .. ' realm="' .. tostring(self.realm) .. '",'
         end
-        auth = auth .. [[ oauth_consumer_key=":oauth_consumer_key", oauth_signature_method=":oauth_signature_method", oauth_timestamp=":oauth_timestamp", oauth_nonce=":oauth_nonce", oauth_signature=":oauth_signature", oauth_version=":oauth_version"]]
+        auth = auth .. [[ oauth_consumer_key=":oauth_consumer_key", oauth_signature_method=":oauth_signature_method", oauth_signature=":oauth_signature"]]
+        if params.oauth_signature_method ~= 'PLAINTEXT' then
+            params.oauth_timestamp = m.generate_timestamp()
+            params.oauth_nonce = m.generate_nonce()
+            auth = auth .. [[, oauth_timestamp=":oauth_timestamp", oauth_nonce=":oauth_nonce"]]
+        end
         if not self.oauth_token then    -- 1) request token
             params.oauth_callback = self.oauth_callback or 'oob'        -- out-of-band
             auth = auth .. [[, oauth_callback=":oauth_callback"]]

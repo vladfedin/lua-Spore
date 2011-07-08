@@ -84,10 +84,13 @@ function m:finalize (oauth)
             end
         end
     end
-    if oauth and payload then  -- TODO: content-type
-        for k, v in payload:gmatch '([^=&]+)=?([^&]*)&?' do
-            query_keys[#query_keys+1] = k
-            query_vals[k] = v:gsub('+', '%%20')
+    if oauth and payload then
+        local ct = self.headers['content-type']
+        if not ct or ct == 'application/x-www-form-urlencoded' then
+            for k, v in payload:gmatch '([^=&]+)=?([^&]*)&?' do
+                query_keys[#query_keys+1] = k
+                query_vals[k] = v:gsub('+', '%%20')
+            end
         end
     end
     local form = {}
@@ -119,11 +122,9 @@ function m:finalize (oauth)
         end
         if n == 0 then
             query[#query+1] = escape(k) .. '=' .. escape(v)
-            if oauth then
-                if not k:match'^oauth_' then
-                    query_keys[#query_keys+1] = escape5849(k)
-                    query_vals[k] = escape5849(v)
-                end
+            if oauth and not k:match'^oauth_' then
+                query_keys[#query_keys+1] = escape5849(k)
+                query_vals[k] = escape5849(v)
             end
         end
     end
@@ -136,7 +137,7 @@ function m:finalize (oauth)
         spore.form_data = form
     end
     self.method = env.REQUEST_METHOD
-    if oauth then
+    if oauth and spore.params.oauth_signature_method ~= 'PLAINTEXT' then
         local scheme = env.spore.url_scheme
         local port = env.SERVER_PORT
         if port == '80' and scheme == 'http' then

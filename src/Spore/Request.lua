@@ -63,6 +63,7 @@ function m:finalize (oauth)
     if not require 'Spore'.early_validate then
         require 'Spore'.validate(spore.caller, spore.method, spore.params, spore.payload)
     end
+    local base_string_needed = oauth and spore.params.oauth_signature_method ~= 'PLAINTEXT'
     local path_info = env.PATH_INFO
     local query_string = env.QUERY_STRING
     local form_data = {}
@@ -77,14 +78,14 @@ function m:finalize (oauth)
     local query, query_keys, query_vals = {}, {}, {}
     if query_string then
         query[1] = query_string
-        if oauth then
+        if base_string_needed then
             for k, v in query_string:gmatch '([^=]+)=([^&]*)&?' do
                 query_keys[#query_keys+1] = k
                 query_vals[k] = v
             end
         end
     end
-    if oauth and payload then
+    if base_string_needed and payload then
         local ct = self.headers['content-type']
         if not ct or ct == 'application/x-www-form-urlencoded' then
             for k, v in payload:gmatch '([^=&]+)=?([^&]*)&?' do
@@ -122,7 +123,7 @@ function m:finalize (oauth)
         end
         if n == 0 then
             query[#query+1] = escape(k) .. '=' .. escape(v)
-            if oauth and not k:match'^oauth_' then
+            if base_string_needed then
                 query_keys[#query_keys+1] = escape5849(k)
                 query_vals[k] = escape5849(v)
             end
@@ -137,7 +138,7 @@ function m:finalize (oauth)
         spore.form_data = form
     end
     self.method = env.REQUEST_METHOD
-    if oauth and spore.params.oauth_signature_method ~= 'PLAINTEXT' then
+    if base_string_needed then
         local scheme = env.spore.url_scheme
         local port = env.SERVER_PORT
         if port == '80' and scheme == 'http' then

@@ -8,7 +8,6 @@ local tostring = tostring
 local require = require
 local string = string
 local tconcat = require 'table'.concat
-local tsort = require 'table'.sort
 local url = require 'socket.url'
 
 
@@ -31,28 +30,21 @@ function m.new (env)
 end
 
 local function escape (s)
-    -- see RFC 3986
+    -- see RFC 3986 & RFC 5849
     -- unreserved
     return string.gsub(s, '[^-._~%w]', function(c)
-        return string.format('%%%02x', string.byte(c))
+        return string.format('%%%02X', string.byte(c))
     end)
 end
+m.escape = escape
 
 local function escape_path (s)
     -- see RFC 3986
     -- unreserved + slash
     return string.gsub(s, '[^-._~%w/]', function(c)
-        return string.format('%%%02x', string.byte(c))
+        return string.format('%%%02X', string.byte(c))
     end)
 end
-
-local function escape5849 (s)
-    -- see RFC 5849, Section 3.6
-    return string.gsub(s, '[^-._~%w]', function(c)
-        return string.upper(string.format('%%%02x', string.byte(c)))
-    end)
-end
-m.escape5849 = escape5849
 
 function m:finalize (oauth)
     if self.url then
@@ -63,7 +55,6 @@ function m:finalize (oauth)
     if not require 'Spore'.early_validate then
         require 'Spore'.validate(spore.caller, spore.method, spore.params, spore.payload)
     end
-    local base_string_needed = oauth and spore.params.oauth_signature_method ~= 'PLAINTEXT'
     local path_info = env.PATH_INFO
     local query_string = env.QUERY_STRING
     local form_data = {}
@@ -74,25 +65,9 @@ function m:finalize (oauth)
     for k, v in pairs(spore.headers or {}) do
         headers[tostring(k):lower()] = tostring(v)
     end
-    local payload = spore.payload
-    local query, query_keys, query_vals = {}, {}, {}
+    local query = {}
     if query_string then
         query[1] = query_string
-        if base_string_needed then
-            for k, v in query_string:gmatch '([^=]+)=([^&]*)&?' do
-                query_keys[#query_keys+1] = k
-                query_vals[k] = v
-            end
-        end
-    end
-    if base_string_needed and payload then
-        local ct = self.headers['content-type']
-        if not ct or ct == 'application/x-www-form-urlencoded' then
-            for k, v in payload:gmatch '([^=&]+)=?([^&]*)&?' do
-                query_keys[#query_keys+1] = k
-                query_vals[k] = v:gsub('+', '%%20')
-            end
-        end
     end
     local form = {}
     for k, v in pairs(spore.params) do
@@ -111,9 +86,6 @@ function m:finalize (oauth)
         end
         for kk, vv in pairs(headers) do
             local nn
-            if oauth and k:match'^oauth_' then
-                v = escape(v)
-            end
             vv, nn = vv:gsub(':' .. k, (v:gsub('%%', '%%%%')))
             if nn > 0 then
                 headers[kk] = vv
@@ -123,10 +95,6 @@ function m:finalize (oauth)
         end
         if n == 0 then
             query[#query+1] = escape(k) .. '=' .. escape(v)
-            if base_string_needed then
-                query_keys[#query_keys+1] = escape5849(k)
-                query_vals[k] = escape5849(v)
-            end
         end
     end
     if #query > 0 then
@@ -138,40 +106,6 @@ function m:finalize (oauth)
         spore.form_data = form
     end
     self.method = env.REQUEST_METHOD
-    if base_string_needed then
-        local scheme = env.spore.url_scheme
-        local port = env.SERVER_PORT
-        if port == '80' and scheme == 'http' then
-            port = nil
-        end
-        if port == '443' and scheme == 'https' then
-            port = nil
-        end
-        local base_url = url.build {
-            scheme  = scheme,
-            host    = env.SERVER_NAME,
-            port    = port,
-            path    = path_info,
-            -- no query
-        }
-        for k, v in pairs(spore.params) do
-            k = tostring(k)
-            if k:match'^oauth_' and not query_vals[k] then
-                query_keys[#query_keys+1] = k
-                query_vals[k] = escape5849(tostring(v))
-            end
-        end
-        tsort(query_keys)
-        params = {}
-        for i = 1, #query_keys do
-            local k = query_keys[i]
-            local v = query_vals[k]
-            params[#params+1] = k .. '=' .. v
-        end
-        local normalized = tconcat(params, '&')
-        self.oauth_signature_base_string = self.method:upper() .. '&' .. escape5849(base_url)
-                                                               .. '&' .. escape5849(normalized)
-    end
     self.url = url.build {
         scheme  = spore.url_scheme,
         host    = env.SERVER_NAME,

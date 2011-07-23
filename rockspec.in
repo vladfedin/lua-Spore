@@ -56,5 +56,8 @@ build = {
         ['Spore.Protocols']                     = 'src/Spore/Protocols.lua',
         ['Spore.Request']                       = 'src/Spore/Request.lua',
     },
+    install = {
+        bin = { 'src/discovery2spore' }
+    },
     copy_directories = { 'doc', 'test' },
 }

@@ -9,12 +9,15 @@ endif
 LUAVER  := 5.1
 PREFIX  := /usr/local
 DPREFIX := $(DESTDIR)$(PREFIX)
+BINDIR  := $(DPREFIX)/bin
 LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
 
 all:
 	@echo "Nothing to build here, you can just make install"
 
 install:
+	mkdir -p $(BINDIR)
+	cp src/discovery2spore                          $(BINDIR)
 	mkdir -p $(LIBDIR)/Spore/Middleware/Auth
 	mkdir -p $(LIBDIR)/Spore/Middleware/Format
 	mkdir -p $(LIBDIR)/Spore/Middleware/Parameter

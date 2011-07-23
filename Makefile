@@ -21,6 +21,7 @@ install:
 	mkdir -p $(LIBDIR)/Spore/Middleware/Proxy
 	cp src/Spore.lua                                $(LIBDIR)
 	cp src/Spore/Core.lua                           $(LIBDIR)/Spore
+	cp src/Spore/GoogleDiscovery.lua                $(LIBDIR)/Spore
 	cp src/Spore/Protocols.lua                      $(LIBDIR)/Spore
 	cp src/Spore/Request.lua                        $(LIBDIR)/Spore
 	cp src/Spore/Middleware/Cache.lua               $(LIBDIR)/Spore/Middleware

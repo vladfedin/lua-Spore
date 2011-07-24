@@ -4,10 +4,13 @@ Spore = require 'Spore'
 
 require 'Test.More'
 
-plan(5)
+plan(6)
 
 error_like( [[Spore.new_from_lua(true)]],
             "bad argument #1 to new_from_lua %(table expected, got boolean%)" )
+
+error_like( [[Spore.new_from_lua({}, true)]],
+            "bad argument #2 to new_from_lua %(table expected, got boolean%)" )
 
 local client = Spore.new_from_lua{
     base_url = 'http://services.org/restapi/',

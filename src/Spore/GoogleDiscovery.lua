@@ -6,6 +6,7 @@
 local error = error
 local pairs = pairs
 local type = type
+local checktype = require 'Spore'.checktype
 local new_from_lua = require 'Spore'.new_from_lua
 local slurp = require 'Spore.Protocols'.slurp
 local decode = require 'json.decode'.decode
@@ -88,14 +89,16 @@ local function convert (gdoc)
 end
 m.convert = convert
 
-function m.new_from_discovery (api)
+function m.new_from_discovery (api, opts)
+    opts = opts or {}
+    checktype('new_from_discovery', 2, opts, 'table')
     if type(api) == 'string' then
         local content = slurp(api)
-        return new_from_lua(convert(decode(content)))
+        return new_from_lua(convert(decode(content)), opts)
     end
     if type(api) == 'table' then
         local r = discovery:getRest(api)
-        return new_from_lua(convert(r.body))
+        return new_from_lua(convert(r.body), opts)
     end
     error("bad argument #1 to new_from_discovery (string or table expected, got "
           .. type(api) .. ")")

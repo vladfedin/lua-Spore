@@ -198,10 +198,12 @@ local function populate (obj, spec, opts)
     end
 end
 
-local function new_from_lua (spec)
+local function new_from_lua (spec, opts)
+    opts = opts or {}
     checktype('new_from_lua', 1, spec, 'table')
+    checktype('new_from_lua', 2, opts, 'table')
     local obj = new()
-    populate(obj, spec, {})
+    populate(obj, spec, opts)
     return obj
 end
 m.new_from_lua = new_from_lua

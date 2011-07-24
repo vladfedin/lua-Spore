@@ -15,22 +15,6 @@ local decode = require 'json.decode'.decode
 _ENV = nil
 local m = {}
 
-local discovery = new_from_lua {
-    base_url = 'https://www.googleapis.com/discovery/v1/',
-    methods = {
-        getRest = {
-            path = 'apis/:api/:version/rest',
-            method = 'GET',
-            required_params = {
-                'api',
-                'version',
-            },
-            expected_status =  { 200 },
-        },
-    },
-}
-discovery:enable 'Format.JSON'
-
 local expected_status = {
     GET     = { 200, 404 },
     DELETE  = { 204 },
@@ -77,7 +61,9 @@ local function convert (gdoc)
                         method = meth.httpMethod,
                         required_params = required_params,
                         optional_params = optional_params,
-                        required_payload = meth.httpMethod == 'POST' or meth.httpMethod == 'PUT' or nil,
+                        required_payload = (meth.httpMethod == 'POST')
+                                        or (meth.httpMethod == 'PUT')
+                                        or nil,
                         expected_status = expected_status[meth.httpMethod],
                     }
                 end
@@ -98,7 +84,19 @@ function m.new_from_discovery (api, opts)
         return new_from_lua(convert(decode(content)), opts)
     end
     if type(api) == 'table' then
-        local r = discovery:getRest(api)
+        local discovery = new_from_lua {
+            base_url = 'https://www.googleapis.com/discovery/v1/',
+            methods = {
+                get = {
+                    path = 'apis/:api/:version/rest',
+                    method = 'GET',
+                    required_params = { 'api', 'version' },
+                    expected_status = { 200 },
+                },
+            },
+        }
+        discovery:enable 'Format.JSON'
+        local r = discovery:get(api)
         return new_from_lua(convert(r.body), opts)
     end
     error("bad argument #1 to new_from_discovery (string or table expected, got "

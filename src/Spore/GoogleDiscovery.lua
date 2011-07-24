@@ -54,11 +54,12 @@ local function convert (gdoc)
     }
 
     local function populate (resources)
-        for rname, resource in pairs(resources) do
+        for _, resource in pairs(resources) do
             if not resource.methods then
                 populate(resource)
             else
-                for methname, meth in pairs(resource.methods) do
+                for _, meth in pairs(resource.methods) do
+                    local methname = meth.id:gsub('%w+%.', '', 1):gsub('%.', '_')
                     local required_params
                     local optional_params = { 'key' }
                     for pname, param in pairs(meth.parameters or {}) do
@@ -71,7 +72,7 @@ local function convert (gdoc)
                             optional_params[#optional_params+1] = pname
                         end
                     end
-                    spore.methods[rname .. '_' .. methname] = {
+                    spore.methods[methname] = {
                         path = meth.path:gsub('{([%w_]+)}', ':%1'),
                         method = meth.httpMethod,
                         required_params = required_params,

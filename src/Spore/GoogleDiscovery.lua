@@ -45,7 +45,7 @@ local function convert (gdoc)
                 for _, meth in pairs(resource.methods) do
                     local methname = meth.id:gsub('%w+%.', '', 1):gsub('%.', '_')
                     local required_params
-                    local optional_params = { 'key' }
+                    local optional_params = { 'alt', 'fields', 'key', 'prettyPrint', 'userIp' }
                     for pname, param in pairs(meth.parameters or {}) do
                         if param.required then
                             if not required_params then

@@ -5,6 +5,7 @@
 /*.patch
 /*.bak
 /*.html
+/*.txt
 
 /luacov.*
 /*.lua

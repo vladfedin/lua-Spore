@@ -1,6 +1,6 @@
 Revision history for lua-Spore
 
-0.1.6
+0.1.6  Sun Jul 31 09:30:00 2011
 	- use Google Discovery Document as Spore specification
 	- add discovery2spore utility
 

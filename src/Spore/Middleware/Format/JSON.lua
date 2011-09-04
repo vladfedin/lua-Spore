@@ -20,7 +20,7 @@ function m:call (req)
     end
     req.headers['accept'] = 'application/json'
     return  function (res)
-                if res.body and res.body ~= '' then
+                if type(res.body) == 'string' and not res.body:match'^%s*$' then
                     local r, msg = pcall(function ()
                         local decode = require 'json.decode'.decode
                         res.body = decode(res.body)

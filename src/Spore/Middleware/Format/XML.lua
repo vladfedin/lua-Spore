@@ -141,7 +141,7 @@ function m:call (req)
     end
     req.headers['accept'] = 'text/xml'
     return  function (res)
-                if type(res.body) == 'string' and not res.body:match'^%s*$' then
+                if type(res.body) == 'string' and res.body:match'%S' then
                     local r, msg = xml.parse(res.body)
                     if r then
                         res.body = { [r.tag] = collapse(r, self) }

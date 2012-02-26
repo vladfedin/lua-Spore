@@ -51,10 +51,11 @@ resp.body = [[
 env.spore.errors = io.tmpfile()
 local r, ex = pcall(cb, resp)
 nok( r )
-like( ex.reason, "Invalid JSON data" )
+like( ex.reason, "unexpected character", "Invalid JSON data" )
 env.spore.errors:seek'set'
 local msg = env.spore.errors:read '*l'
-like( msg, "Invalid JSON data", "Invalid JSON data" )
+like( msg, "unexpected character", "Invalid JSON data" )
+local msg = env.spore.errors:read '*l'
 
 local msg = env.spore.errors:read '*a'
 is( msg, resp.body .. "\n")

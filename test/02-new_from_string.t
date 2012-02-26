@@ -13,7 +13,7 @@ error_like( [[Spore.new_from_string('', '', true)]],
             "bad argument #3 to new_from_string %(string expected, got boolean%)" )
 
 error_like( [[Spore.new_from_string('{ BAD }')]],
-            "Invalid JSON data" )
+            "unexpected character", "Invalid JSON data" )
 
 error_like( [[Spore.new_from_string('{ }', '{ }')]],
             "no method in spec" )

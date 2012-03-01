@@ -223,7 +223,7 @@ local function new_from_string (...)
     end
 
     local obj = new()
-    local json = require 'json.decode'
+    local json = require 'json'
     for i = 1, nb do
         local spec = json.decode(args[i])
         populate(obj, spec, opts)

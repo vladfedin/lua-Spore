@@ -9,7 +9,7 @@ local type = type
 local checktype = require 'Spore'.checktype
 local new_from_lua = require 'Spore'.new_from_lua
 local slurp = require 'Spore.Protocols'.slurp
-local decode = require 'json.decode'.decode
+local decode = require 'json'.decode
 
 
 _ENV = nil

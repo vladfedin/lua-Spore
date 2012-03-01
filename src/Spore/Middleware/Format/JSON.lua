@@ -3,9 +3,9 @@
 --
 
 local pcall = pcall
-local require = require
 local type = type
 local raises = require 'Spore'.raises
+local json = require 'json'
 
 
 _ENV = nil
@@ -14,16 +14,14 @@ local m = {}
 function m:call (req)
     local spore = req.env.spore
     if spore.payload and type(spore.payload) == 'table' then
-        local encode = require 'json.encode'.encode
-        spore.payload = encode(spore.payload)
+        spore.payload = json.encode(spore.payload)
         req.headers['content-type'] = 'application/json'
     end
     req.headers['accept'] = 'application/json'
     return  function (res)
                 if type(res.body) == 'string' and res.body:match'%S' then
                     local r, msg = pcall(function ()
-                        local decode = require 'json.decode'.decode
-                        res.body = decode(res.body)
+                        res.body = json.decode(res.body)
                     end)
                     if not r then
                         if spore.errors then

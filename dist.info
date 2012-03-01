@@ -12,5 +12,4 @@ depends = {
     "lua ~> 5.1",
     "luasocket >= 2.0.2",
     "luajson >= 1.1",
-    "lua-testmore >= 0.2.3",
 }

@@ -1,5 +1,11 @@
 Revision history for lua-Spore
 
+0.2.0
+	work with Lua 5.2.0
+	add LuaDist support
+	INCOMPATIBILITY : now, the use of the following idiom is mandatory
+		local Spore = require 'Spore'
+
 0.1.6  Sun Jul 31 09:30:00 2011
 	- use Google Discovery Document as Spore specification
 	- add discovery2spore utility

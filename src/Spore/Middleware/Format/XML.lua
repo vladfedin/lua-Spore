@@ -3,6 +3,7 @@
 --
 -- see http://search.cpan.org/~grantm/XML-Simple/
 
+local ipairs = ipairs
 local pairs = pairs
 local tostring = tostring
 local type = type

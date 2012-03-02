@@ -3,6 +3,7 @@
 --
 
 local error = error
+local pairs = pairs
 local tostring = tostring
 local random = require 'math'.random
 local time = require 'os'.time

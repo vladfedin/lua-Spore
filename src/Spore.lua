@@ -23,7 +23,7 @@ local m = {}
 
 m.early_validate = true
 
-local version = '0.1.6'
+local version = '0.2.0'
 
 local function raises (response, reason)
     local ex = { response = response, reason = reason }
@@ -253,7 +253,7 @@ m.new_from_spec = new_from_spec
 m._NAME = ...
 m._VERSION = version
 m._DESCRIPTION = "lua-Spore : a generic ReST client"
-m._COPYRIGHT = "Copyright (c) 2010-2011 Francois Perrad"
+m._COPYRIGHT = "Copyright (c) 2010-2012 Francois Perrad"
 return m
 --
 -- This library is licensed under the terms of the MIT/X11 license,

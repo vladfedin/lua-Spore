@@ -1,8 +1,11 @@
 Revision history for lua-Spore
 
+0.2.1
+	- add middleware Auth.DataPublica
+
 0.2.0  Sat Mar  3 22:30:00 2012
-	work with Lua 5.2.0
-	add LuaDist support
+	- work with Lua 5.2.0
+	- add LuaDist support
 	INCOMPATIBILITY : now, the use of the following idiom is mandatory
 		local Spore = require 'Spore'
 

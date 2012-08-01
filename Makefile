@@ -2,50 +2,44 @@
 LUA     := lua
 VERSION := $(shell cd src && $(LUA) -e "m = require [[Spore]]; print(m._VERSION)")
 TARBALL := lua-spore-$(VERSION).tar.gz
-ifndef REV
-  REV   := 1
-endif
+REV     := 1
 
 LUAVER  := 5.1
 PREFIX  := /usr/local
 DPREFIX := $(DESTDIR)$(PREFIX)
 BINDIR  := $(DPREFIX)/bin
 LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
+INSTALL := install
 
 all: dist.cmake
 	@echo "Nothing to build here, you can just make install"
 
 install:
-	mkdir -p $(BINDIR)
-	cp src/discovery2spore                          $(BINDIR)
-	mkdir -p $(LIBDIR)/Spore/Middleware/Auth
-	mkdir -p $(LIBDIR)/Spore/Middleware/Format
-	mkdir -p $(LIBDIR)/Spore/Middleware/Parameter
-	mkdir -p $(LIBDIR)/Spore/Middleware/Proxy
-	cp src/Spore.lua                                $(LIBDIR)
-	cp src/Spore/Core.lua                           $(LIBDIR)/Spore
-	cp src/Spore/GoogleDiscovery.lua                $(LIBDIR)/Spore
-	cp src/Spore/Protocols.lua                      $(LIBDIR)/Spore
-	cp src/Spore/Request.lua                        $(LIBDIR)/Spore
-	cp src/Spore/Middleware/Cache.lua               $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/DoNotTrack.lua          $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/Logging.lua             $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/Mock.lua                $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/Redirection.lua         $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/Runtime.lua             $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/UserAgent.lua           $(LIBDIR)/Spore/Middleware
-	cp src/Spore/Middleware/Auth/AWS.lua            $(LIBDIR)/Spore/Middleware/Auth
-	cp src/Spore/Middleware/Auth/Basic.lua          $(LIBDIR)/Spore/Middleware/Auth
-	cp src/Spore/Middleware/Auth/Bearer.lua         $(LIBDIR)/Spore/Middleware/Auth
-	cp src/Spore/Middleware/Auth/DataPublica.lua    $(LIBDIR)/Spore/Middleware/Auth
-	cp src/Spore/Middleware/Auth/Digest.lua         $(LIBDIR)/Spore/Middleware/Auth
-	cp src/Spore/Middleware/Auth/OAuth.lua          $(LIBDIR)/Spore/Middleware/Auth
-	cp src/Spore/Middleware/Format/JSON.lua         $(LIBDIR)/Spore/Middleware/Format
-	cp src/Spore/Middleware/Format/XML.lua          $(LIBDIR)/Spore/Middleware/Format
-	cp src/Spore/Middleware/Format/YAML.lua         $(LIBDIR)/Spore/Middleware/Format
-	cp src/Spore/Middleware/Parameter/Default.lua   $(LIBDIR)/Spore/Middleware/Parameter
-	cp src/Spore/Middleware/Parameter/Force.lua     $(LIBDIR)/Spore/Middleware/Parameter
-	cp src/Spore/Middleware/Proxy/Basic.lua         $(LIBDIR)/Spore/Middleware/Proxy
+	$(INSTALL) -m 755 -D src/discovery2spore                        $(BINDIR)/discovery2spore
+	$(INSTALL) -m 644 -D src/Spore.lua                              $(LIBDIR)/Spore.lua
+	$(INSTALL) -m 644 -D src/Spore/Core.lua                         $(LIBDIR)/Spore/Core.lua
+	$(INSTALL) -m 644 -D src/Spore/GoogleDiscovery.lua              $(LIBDIR)/Spore/GoogleDiscovery.lua
+	$(INSTALL) -m 644 -D src/Spore/Protocols.lua                    $(LIBDIR)/Spore/Protocols.lua
+	$(INSTALL) -m 644 -D src/Spore/Request.lua                      $(LIBDIR)/SporeRequest.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Cache.lua             $(LIBDIR)/Spore/Middleware/Cache.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/DoNotTrack.lua        $(LIBDIR)/Spore/Middleware/DoNotTrack.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Logging.lua           $(LIBDIR)/Spore/Middleware/Logging.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Mock.lua              $(LIBDIR)/Spore/Middleware/Mock.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Redirection.lua       $(LIBDIR)/Spore/Middleware/Redirection.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Runtime.lua           $(LIBDIR)/Spore/Middleware/Runtime.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/UserAgent.lua         $(LIBDIR)/Spore/Middleware/UserAgent.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Auth/AWS.lua          $(LIBDIR)/Spore/Middleware/Auth/AWS.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Auth/Basic.lua        $(LIBDIR)/Spore/Middleware/Auth/Basic.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Auth/Bearer.lua       $(LIBDIR)/Spore/Middleware/Auth/Bearer.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Auth/DataPublica.lua  $(LIBDIR)/Spore/Middleware/Auth/DataPublica.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Auth/Digest.lua       $(LIBDIR)/Spore/Middleware/Auth/Digest.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Auth/OAuth.lua        $(LIBDIR)/Spore/Middleware/Auth/OAuth.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Format/JSON.lua       $(LIBDIR)/Spore/Middleware/Format/JSON.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Format/XML.lua        $(LIBDIR)/Spore/Middleware/Format/XML.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Format/YAML.lua       $(LIBDIR)/Spore/Middleware/Format/YAML.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Parameter/Default.lua $(LIBDIR)/Spore/Middleware/Parameter/Default.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Parameter/Force.lua   $(LIBDIR)/Spore/Middleware/Parameter/Force.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Proxy/Basic.lua       $(LIBDIR)/Spore/Middleware/Proxy/Force.lua
 
 uninstall:
 	rm -f $(LIBDIR)/Spore.lua

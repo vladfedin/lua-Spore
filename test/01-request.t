@@ -4,7 +4,7 @@ local Request = require 'Spore.Request'
 
 require 'Test.More'
 
-plan(43)
+plan(46)
 
 local env = {
     HTTP_USER_AGENT = 'MyAgent',
@@ -46,9 +46,10 @@ env.QUERY_STRING = nil
 env.REQUEST_METHOD = 'TEP'
 req:finalize()
 is( req.method, 'TEP', "method" )
-is( req.url, 'prot://services.org:9999/restapi/Value%20Z/show?prm1=1&prm2=value2', "url" )
+like( req.url, '^prot://services.org:9999/restapi/Value%%20Z/show%?prm', "url" )
 is( env.PATH_INFO, '/restapi/Value%20Z/show' )
-is( env.QUERY_STRING, 'prm1=1&prm2=value2' )
+like( env.QUERY_STRING, '&?prm1=1&?' )
+like( env.QUERY_STRING, '&?prm2=value2&?' )
 req.headers.auth = nil
 req.url = nil
 
@@ -74,9 +75,11 @@ req.url = nil
 env.PATH_INFO = '/restapi/doit'
 env.QUERY_STRING = 'action=action1'
 req:finalize()
-is( req.url, 'prot://services.org:9999/restapi/doit?action=action1&prm1=1&prm2=value2', "url" )
+like( req.url, '^prot://services.org:9999/restapi/doit%?', "url" )
 is( env.PATH_INFO, '/restapi/doit' )
-is( env.QUERY_STRING, 'action=action1&prm1=1&prm2=value2' )
+like( env.QUERY_STRING, '&?action=action1&?' )
+like( env.QUERY_STRING, '&?prm1=1&?' )
+like( env.QUERY_STRING, '&?prm2=value2&?' )
 req.url = nil
 
 env.PATH_INFO = '/restapi/path'

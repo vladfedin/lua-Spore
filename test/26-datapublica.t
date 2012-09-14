@@ -6,7 +6,7 @@ if not pcall(require, 'crypto') then
     skip_all 'no crypto'
 end
 
-plan(7)
+plan(12)
 
 require 'Spore.Protocols'.request = function (req)
     return { request = req, status = 200, headers = {} }
@@ -46,5 +46,10 @@ is( r, nil )
 req.env.spore.authentication = true
 r = mw.call(data, req)
 is( r.status, 200 )
-is( r.request.url, "http://services.org/path?offset=0&format=json&limit=50&key=356a192c7813b04c54574d18c28d46e6395428ab&signature=a358aa918f36156b215531e287f6d836415be582" )
+like( r.request.url, "^http://services.org/path%?" )
+like( r.request.url, "[?&]offset=0&?" )
+like( r.request.url, "[?&]format=json&?" )
+like( r.request.url, "[?&]limit=50&?" )
+like( r.request.url, "[?&]key=356a192c7813b04c54574d18c28d46e6395428ab&?" )
+like( r.request.url, "[?&]signature=a358aa918f36156b215531e287f6d836415be582&?" )
 

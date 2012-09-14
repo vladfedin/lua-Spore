@@ -27,7 +27,8 @@ dependencies = {
 --    'luayaml >= 0.5.6',         -- syck 0.55
 --    'lualogging >= 1.1.4',
 --    'luacrypto >= 0.2.0',
-    'lua-testmore >= 0.2.3',
+    'lua-testmore >= 0.3.0',
+    'lua-testlongstring >= 0.2.0',
 }
 build = {
     type = 'builtin',

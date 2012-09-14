@@ -1,12 +1,13 @@
 #!/usr/bin/env lua
 
 require 'Test.More'
+require 'Test.LongString'
 
 if not pcall(require, 'lxp.lom') then
     skip_all 'no xml'
 end
 
-plan(14)
+plan(27)
 
 if not require_ok 'Spore.Middleware.Format.XML' then
     skip_rest "no Spore.Middleware.Format.XML"
@@ -47,26 +48,41 @@ local env = {
 local req = require 'Spore.Request'.new(env)
 local cb = mw.call({}, req)
 type_ok( cb, 'function', "returns a function" )
-is( env.spore.payload, [[<config logdir="/var/log/foo/" debugfile="/tmp/foo.debug"><server><sahara><address>10.0.0.101</address><address>10.0.1.101</address></sahara><gobi><address>10.0.0.102</address></gobi><kalahari><address>10.0.0.103</address><address>10.0.1.103</address></kalahari></server></config>]], "payload encoded")
+
+like_string( env.spore.payload, "^<config ", "payload encoded" )
+contains_string( env.spore.payload, [[ logdir="/var/log/foo/"]] )
+contains_string( env.spore.payload, [[ debugfile="/tmp/foo.debug"]] )
+contains_string( env.spore.payload, [[><server><]] )
+contains_string( env.spore.payload, [[><sahara><address>10.0.0.101</address><address>10.0.1.101</address></sahara><]] )
+contains_string( env.spore.payload, [[><gobi><address>10.0.0.102</address></gobi><]] )
+contains_string( env.spore.payload, [[><kalahari><address>10.0.0.103</address><address>10.0.1.103</address></kalahari><]] )
+like_string( env.spore.payload, "</server></config>$" )
+
 
 env.spore.payload = payload
 local req = require 'Spore.Request'.new(env)
 local cb = mw.call({ indent = '  ', key_attr = { server = 'name' } }, req)
-is( env.spore.payload, [[
-<config logdir="/var/log/foo/" debugfile="/tmp/foo.debug">
+like_string( env.spore.payload, "^<config ", "payload encoded with options" )
+contains_string( env.spore.payload, [[ logdir="/var/log/foo/"]] )
+contains_string( env.spore.payload, [[ debugfile="/tmp/foo.debug"]] )
+contains_string( env.spore.payload, [[
   <server name="sahara">
     <address>10.0.0.101</address>
     <address>10.0.1.101</address>
   </server>
+]] )
+contains_string( env.spore.payload, [[
   <server name="gobi">
     <address>10.0.0.102</address>
   </server>
+]] )
+contains_string( env.spore.payload, [[
   <server name="kalahari">
     <address>10.0.0.103</address>
     <address>10.0.1.103</address>
   </server>
-</config>
-]], "payload encoded with options")
+]] )
+like_string( env.spore.payload, "\n</config>\n$" )
 
 local resp = {
     status = 200,

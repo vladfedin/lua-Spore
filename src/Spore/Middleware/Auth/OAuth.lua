@@ -10,7 +10,7 @@ local time = require 'os'.time
 local string = require 'string'
 local tconcat = require 'table'.concat
 local tsort = require 'table'.sort
-local crypto = require 'crypto'.hmac
+local digest = require 'crypto'.hmac.digest
 local mime = require 'mime'
 local url = require 'socket.url'
 local escape = require 'Spore.Request'.escape
@@ -31,7 +31,7 @@ function m.generate_timestamp ()
 end
 
 function m.generate_nonce ()
-    return crypto.digest('sha1', tostring(random()) .. 'random' .. tostring(time()), 'keyyyy')
+    return digest('sha1', tostring(random()) .. 'random' .. tostring(time()), 'keyyyy')
 end
 
 function m:call (req)
@@ -116,7 +116,7 @@ function m:call (req)
             oparams.oauth_nonce = m.generate_nonce()
             local oauth_signature_base_string = base_string()
             if oparams.oauth_signature_method == 'HMAC-SHA1' then
-                local hmac_binary = crypto.digest('sha1', oauth_signature_base_string, signature_key, true)
+                local hmac_binary = digest('sha1', oauth_signature_base_string, signature_key, true)
                 local hmac_b64 = mime.b64(hmac_binary)
                 oauth_signature = escape(hmac_b64)
             else
@@ -154,7 +154,7 @@ end
 
 return m
 --
--- Copyright (c) 2010-2011 Francois Perrad
+-- Copyright (c) 2010-2012 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

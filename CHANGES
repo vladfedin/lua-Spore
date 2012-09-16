@@ -4,6 +4,7 @@ Revision history for lua-Spore
 	- add middleware Auth.DataPublica
 	- refactor tests for LuaJIT
 	- compat with LuaCrypto 0.3.x
+	- fix AWS signature (thanks to Pierre "catwell" Chapuis)
 
 0.2.0  Sat Mar  3 22:30:00 2012
 	- work with Lua 5.2.0

@@ -61,7 +61,7 @@ function m:call (req)
             .. (req.headers['content-type'] or '') .. "\n"
             .. (req.headers['date'] or '') .. "\n"
             .. get_canonical_headers()
-            .. bucket:lower() .. object .. query
+            .. bucket .. object .. query
     end -- get_string_to_sign
 
     if spore.authentication and self.aws_access_key and self.aws_secret_key then

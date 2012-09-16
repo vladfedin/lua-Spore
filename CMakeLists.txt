@@ -16,6 +16,7 @@ install_lua_module ( Spore.Middleware.Auth.AWS src/Spore/Middleware/Auth/AWS.lua
 install_lua_module ( Spore.Middleware.Auth.Basic src/Spore/Middleware/Auth/Basic.lua )
 install_lua_module ( Spore.Middleware.Auth.Bearer src/Spore/Middleware/Auth/Bearer.lua )
 install_lua_module ( Spore.Middleware.Auth.Digest src/Spore/Middleware/Auth/Digest.lua )
+install_lua_module ( Spore.Middleware.Auth.Digest src/Spore/Middleware/Auth/DataPublica.lua )
 install_lua_module ( Spore.Middleware.Auth.OAuth src/Spore/Middleware/Auth/OAuth.lua )
 install_lua_module ( Spore.Middleware.Cache src/Spore/Middleware/Cache.lua )
 install_lua_module ( Spore.Middleware.DoNotTrack src/Spore/Middleware/DoNotTrack.lua )

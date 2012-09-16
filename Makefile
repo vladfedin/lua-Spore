@@ -92,9 +92,6 @@ tag:
 doc:
 	git read-tree --prefix=doc/ -u remotes/origin/gh-pages
 
-dist.cmake:
-	wget https://raw.github.com/LuaDist/luadist/master/dist.cmake
-
 MANIFEST: doc dist.cmake
 	git ls-files | perl -e '$(manifest_pl)' > MANIFEST
 
@@ -137,9 +134,6 @@ README.html: README.md
 clean:
 	rm -rf doc
 	rm -f MANIFEST *.bak src/luacov.*.out *.rockspec README.html
-
-realclean: clean
-	rm -f dist.cmake
 
 .PHONY: test rockspec CHANGES dist.info
 

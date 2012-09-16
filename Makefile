@@ -92,7 +92,7 @@ tag:
 doc:
 	git read-tree --prefix=doc/ -u remotes/origin/gh-pages
 
-MANIFEST: doc dist.cmake
+MANIFEST: doc
 	git ls-files | perl -e '$(manifest_pl)' > MANIFEST
 
 $(TARBALL): MANIFEST

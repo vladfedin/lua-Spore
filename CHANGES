@@ -1,6 +1,6 @@
 Revision history for lua-Spore
 
-0.2.1
+0.2.1  Sun Sep 16 11:30:00 2012
 	- add middleware Auth.DataPublica
 	- refactor tests for LuaJIT
 	- compat with LuaCrypto 0.3.x

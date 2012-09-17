@@ -39,7 +39,7 @@ install:
 	$(INSTALL) -m 644 -D src/Spore/Middleware/Format/YAML.lua       $(LIBDIR)/Spore/Middleware/Format/YAML.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/Parameter/Default.lua $(LIBDIR)/Spore/Middleware/Parameter/Default.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/Parameter/Force.lua   $(LIBDIR)/Spore/Middleware/Parameter/Force.lua
-	$(INSTALL) -m 644 -D src/Spore/Middleware/Proxy/Basic.lua       $(LIBDIR)/Spore/Middleware/Proxy/Force.lua
+	$(INSTALL) -m 644 -D src/Spore/Middleware/Proxy/Basic.lua       $(LIBDIR)/Spore/Middleware/Proxy/Basic.lua
 
 uninstall:
 	rm -f $(LIBDIR)/Spore.lua

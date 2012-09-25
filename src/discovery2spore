@@ -10,8 +10,8 @@ end
 
 local slurp = require 'Spore.Protocols'.slurp
 local convert = require 'Spore.GoogleDiscovery'.convert
-local decode = require 'json.decode'.decode
-local encode = require 'json.encode'.encode
+local decode = require 'json'.decode
+local encode = require 'json'.encode
 
 local content = slurp(arg[1])
 print(encode(convert(decode(content))))

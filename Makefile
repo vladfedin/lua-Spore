@@ -21,6 +21,7 @@ install:
 	$(INSTALL) -m 644 -D src/Spore/GoogleDiscovery.lua              $(LIBDIR)/Spore/GoogleDiscovery.lua
 	$(INSTALL) -m 644 -D src/Spore/Protocols.lua                    $(LIBDIR)/Spore/Protocols.lua
 	$(INSTALL) -m 644 -D src/Spore/Request.lua                      $(LIBDIR)/Spore/Request.lua
+	$(INSTALL) -m 644 -D src/Spore/XML.lua                          $(LIBDIR)/Spore/XML.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/Cache.lua             $(LIBDIR)/Spore/Middleware/Cache.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/DoNotTrack.lua        $(LIBDIR)/Spore/Middleware/DoNotTrack.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/Logging.lua           $(LIBDIR)/Spore/Middleware/Logging.lua

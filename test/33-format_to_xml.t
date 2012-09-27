@@ -14,38 +14,39 @@ if not require_ok 'Spore.Middleware.Format.XML' then
     os.exit()
 end
 local m = require 'Spore.Middleware.Format.XML'
+local xml = require 'Spore.XML'
 local options = { indent = '  ' }
 
 
-is_string( m.to_xml({ root = 42 }, options), [[
+is_string( xml.dump({ root = 42 }, options), [[
 <root>42</root>
 ]] )
 
-is_string( m.to_xml({ root = 'text & <escape>' }, options), [[
+is_string( xml.dump({ root = 'text & <escape>' }, options), [[
 <root>text &amp; &lt;escape&gt;</root>
 ]] )
 
-is_string( m.to_xml({ root = { attr = 42 } }, options), [[
+is_string( xml.dump({ root = { attr = 42 } }, options), [[
 <root attr="42"></root>
 ]] )
 
-is_string( m.to_xml({ root = { attr = 42, 'va', 'lue' } }, options), [[
+is_string( xml.dump({ root = { attr = 42, 'va', 'lue' } }, options), [[
 <root attr="42">value</root>
 ]] )
 
-is_string( m.to_xml({ root = { elt = { 'text' } } }, options), [[
+is_string( xml.dump({ root = { elt = { 'text' } } }, options), [[
 <root>
   <elt>text</elt>
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { attr1 = 1, elt = { attr2 = 2, 'text' } } }, options), [[
+is_string( xml.dump({ root = { attr1 = 1, elt = { attr2 = 2, 'text' } } }, options), [[
 <root attr1="1">
   <elt attr2="2">text</elt>
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { elt = { 'A', 'b', 'C' } } }, options), [[
+is_string( xml.dump({ root = { elt = { 'A', 'b', 'C' } } }, options), [[
 <root>
   <elt>A</elt>
   <elt>b</elt>
@@ -53,7 +54,7 @@ is_string( m.to_xml({ root = { elt = { 'A', 'b', 'C' } } }, options), [[
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { attr1 = 1, elt = { 'A', 'b', 'C' } } }, options), [[
+is_string( xml.dump({ root = { attr1 = 1, elt = { 'A', 'b', 'C' } } }, options), [[
 <root attr1="1">
   <elt>A</elt>
   <elt>b</elt>
@@ -61,7 +62,7 @@ is_string( m.to_xml({ root = { attr1 = 1, elt = { 'A', 'b', 'C' } } }, options),
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { outer = { inner = { 'text' } } } }, options), [[
+is_string( xml.dump({ root = { outer = { inner = { 'text' } } } }, options), [[
 <root>
   <outer>
     <inner>text</inner>
@@ -69,7 +70,7 @@ is_string( m.to_xml({ root = { outer = { inner = { 'text' } } } }, options), [[
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { attr1= 1, outer = { attr2 = 2, inner = { attr3 = 3, 'text' } } } }, options), [[
+is_string( xml.dump({ root = { attr1= 1, outer = { attr2 = 2, inner = { attr3 = 3, 'text' } } } }, options), [[
 <root attr1="1">
   <outer attr2="2">
     <inner attr3="3">text</inner>
@@ -77,7 +78,7 @@ is_string( m.to_xml({ root = { attr1= 1, outer = { attr2 = 2, inner = { attr3 = 
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { outer = { inner = { 'A', 'b', 'C' } } } }, options), [[
+is_string( xml.dump({ root = { outer = { inner = { 'A', 'b', 'C' } } } }, options), [[
 <root>
   <outer>
     <inner>A</inner>
@@ -87,7 +88,7 @@ is_string( m.to_xml({ root = { outer = { inner = { 'A', 'b', 'C' } } } }, option
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { attr1= 1, outer = { attr2 = 2, inner = { 'A', 'b', 'C' } } } }, options), [[
+is_string( xml.dump({ root = { attr1= 1, outer = { attr2 = 2, inner = { 'A', 'b', 'C' } } } }, options), [[
 <root attr1="1">
   <outer attr2="2">
     <inner>A</inner>
@@ -97,7 +98,7 @@ is_string( m.to_xml({ root = { attr1= 1, outer = { attr2 = 2, inner = { 'A', 'b'
 </root>
 ]] )
 
-is_string( m.to_xml({ root = { attr1= 1, outer = { attr2 = 2, inner = { attr3 = 3, 'A', 'b', 'C' } } } }, options), [[
+is_string( xml.dump({ root = { attr1= 1, outer = { attr2 = 2, inner = { attr3 = 3, 'A', 'b', 'C' } } } }, options), [[
 <root attr1="1">
   <outer attr2="2">
     <inner attr3="3">AbC</inner>
@@ -108,7 +109,7 @@ is_string( m.to_xml({ root = { attr1= 1, outer = { attr2 = 2, inner = { attr3 = 
 
 local options = { indent = '  ', key_attr = { elt = 'id' } }
 
-local res = m.to_xml({
+local res = xml.dump({
     root = {
         attr1= 1,
         elt = {
@@ -131,7 +132,7 @@ contains_string( res, [[
 ]] )
 like_string( res, "</elt>\n</root>\n$" )
 
-local res = m.to_xml({
+local res = xml.dump({
     root = {
         attr1= 1,
         elt = {

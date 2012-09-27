@@ -57,6 +57,7 @@ build = {
         ['Spore.Middleware.UserAgent']          = 'src/Spore/Middleware/UserAgent.lua',
         ['Spore.Protocols']                     = 'src/Spore/Protocols.lua',
         ['Spore.Request']                       = 'src/Spore/Request.lua',
+        ['Spore.XML']                           = 'src/Spore/XML.lua',
     },
     install = {
         bin = { 'src/discovery2spore' }

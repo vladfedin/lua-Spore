@@ -33,6 +33,7 @@ install_lua_module ( Spore.Middleware.Runtime src/Spore/Middleware/Runtime.lua )
 install_lua_module ( Spore.Middleware.UserAgent src/Spore/Middleware/UserAgent.lua )
 install_lua_module ( Spore.Protocols src/Spore/Protocols.lua )
 install_lua_module ( Spore.Request src/Spore/Request.lua )
+install_lua_module ( Spore.XML src/Spore/XML.lua )
 install_lua_executable ( discovery2spore src/discovery2spore )
 
 install_data ( CHANGES COPYRIGHT README.md )

@@ -47,6 +47,11 @@ local function escape_path (s)
 end
 
 function m:finalize (oauth)
+    local function gsub (s, patt, repl)
+        repl = repl:gsub('%%', '%%%%')
+        return s:gsub(patt, repl)
+    end -- gsub
+
     if self.url then
         return
     end
@@ -73,11 +78,12 @@ function m:finalize (oauth)
     for k, v in pairs(spore.params) do
         k = tostring(k)
         v = tostring(v)
+        local patt = ':' .. k
         local n
-        path_info, n = path_info:gsub(':' .. k, (escape_path(v):gsub('%%', '%%%%')))
+        path_info, n = gsub(path_info, patt, escape_path(v))
         for kk, vv in pairs(form_data) do
             local nn
-            vv, nn = vv:gsub(':' .. k, (v:gsub('%%', '%%%%')))
+            vv, nn = gsub(vv, patt, v)
             if nn > 0 then
                 form_data[kk] = vv
                 form[kk] = vv
@@ -86,7 +92,7 @@ function m:finalize (oauth)
         end
         for kk, vv in pairs(headers) do
             local nn
-            vv, nn = vv:gsub(':' .. k, (v:gsub('%%', '%%%%')))
+            vv, nn = gsub(vv, patt, v)
             if nn > 0 then
                 headers[kk] = vv
                 self.headers[kk] = vv

@@ -1,5 +1,10 @@
 Revision history for lua-Spore
 
+0.2.2
+	- use WADL document as Spore specification
+		LIMITATION: cross-references are not supported
+	- add wadl2spore utility
+
 0.2.1  Sun Sep 16 11:30:00 2012
 	- add middleware Auth.DataPublica
 	- refactor tests for LuaJIT

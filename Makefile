@@ -16,11 +16,13 @@ all: dist.cmake
 
 install:
 	$(INSTALL) -m 755 -D src/discovery2spore                        $(BINDIR)/discovery2spore
+	$(INSTALL) -m 755 -D src/wadl2spore                             $(BINDIR)/wadl2spore
 	$(INSTALL) -m 644 -D src/Spore.lua                              $(LIBDIR)/Spore.lua
 	$(INSTALL) -m 644 -D src/Spore/Core.lua                         $(LIBDIR)/Spore/Core.lua
 	$(INSTALL) -m 644 -D src/Spore/GoogleDiscovery.lua              $(LIBDIR)/Spore/GoogleDiscovery.lua
 	$(INSTALL) -m 644 -D src/Spore/Protocols.lua                    $(LIBDIR)/Spore/Protocols.lua
 	$(INSTALL) -m 644 -D src/Spore/Request.lua                      $(LIBDIR)/Spore/Request.lua
+	$(INSTALL) -m 644 -D src/Spore/WADL.lua                         $(LIBDIR)/Spore/WADL.lua
 	$(INSTALL) -m 644 -D src/Spore/XML.lua                          $(LIBDIR)/Spore/XML.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/Cache.lua             $(LIBDIR)/Spore/Middleware/Cache.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/DoNotTrack.lua        $(LIBDIR)/Spore/Middleware/DoNotTrack.lua

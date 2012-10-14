@@ -1,6 +1,7 @@
 Revision history for lua-Spore
 
-0.2.2
+0.3.0
+	- add compatibility with URI Template (RFC 6570)
 	- use WADL document as Spore specification
 		LIMITATION: cross-references are not supported
 	- add wadl2spore utility

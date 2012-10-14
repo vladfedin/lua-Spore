@@ -47,10 +47,14 @@ local function escape_path (s)
 end
 
 function m:finalize (oauth)
-    local function gsub (s, patt, repl)
+    local function gsub2 (s, patt1, patt2, repl)
         repl = repl:gsub('%%', '%%%%')
-        return s:gsub(patt, repl)
-    end -- gsub
+        local r, n = s:gsub(patt1, repl)
+        if n == 0 then
+            r, n = s:gsub(patt2, repl)
+        end
+        return r, n
+    end -- gsub2
 
     if self.url then
         return
@@ -79,11 +83,12 @@ function m:finalize (oauth)
         k = tostring(k)
         v = tostring(v)
         local patt = ':' .. k
+        local patt6570 = '{' .. k .. '}'        -- see RFC 6570
         local n
-        path_info, n = gsub(path_info, patt, escape_path(v))
+        path_info, n = gsub2(path_info, patt, patt6570, escape_path(v))
         for kk, vv in pairs(form_data) do
             local nn
-            vv, nn = gsub(vv, patt, v)
+            vv, nn = gsub2(vv, patt, patt6570, v)
             if nn > 0 then
                 form_data[kk] = vv
                 form[kk] = vv
@@ -92,7 +97,7 @@ function m:finalize (oauth)
         end
         for kk, vv in pairs(headers) do
             local nn
-            vv, nn = gsub(vv, patt, v)
+            vv, nn = gsub2(vv, patt, patt6570, v)
             if nn > 0 then
                 headers[kk] = vv
                 self.headers[kk] = vv
@@ -123,7 +128,7 @@ end
 
 return m
 --
--- Copyright (c) 2010-2011 Francois Perrad
+-- Copyright (c) 2010-2012 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

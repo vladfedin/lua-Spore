@@ -61,6 +61,7 @@ function m:finalize (oauth)
     end
     local env = self.env
     local spore = env.spore
+    local payload = spore.method.payload or {}
     if not require 'Spore'.early_validate then
         require 'Spore'.validate(spore.caller, spore.method, spore.params, spore.payload)
     end
@@ -101,6 +102,11 @@ function m:finalize (oauth)
             if nn > 0 then
                 headers[kk] = vv
                 self.headers[kk] = vv
+                n = n + 1
+            end
+        end
+        for i = 1, #payload do
+            if k == payload[i] then
                 n = n + 1
             end
         end

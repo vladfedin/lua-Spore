@@ -19,6 +19,7 @@ local env = {
             prm2 = "value2",
             prm3 = "Value Z",
         },
+        method = {},
     },
 }
 local req = Request.new(env)

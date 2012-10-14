@@ -52,6 +52,7 @@ local req = require 'Spore.Request'.new({
         authentication = true,
         url_scheme = 'https',
         params = {},
+        method = {},
     }
 })
 mw.generate_timestamp = function () return '137131200' end
@@ -79,6 +80,7 @@ local req = require 'Spore.Request'.new({
         authentication = true,
         url_scheme = 'https',
         params = {},
+        method = {},
     }
 })
 mw.generate_timestamp = function () return '137131201' end
@@ -105,6 +107,7 @@ local req = require 'Spore.Request'.new({
         authentication = true,
         url_scheme = 'http',
         params = {},
+        method = {},
     }
 })
 mw.generate_timestamp = function () return '137131202' end
@@ -130,6 +133,7 @@ local req = require 'Spore.Request'.new({
         authentication = true,
         url_scheme = 'https',
         params = {},
+        method = {},
     }
 })
 r = mw.call(data, req)
@@ -154,6 +158,7 @@ local req = require 'Spore.Request'.new({
         authentication = true,
         url_scheme = 'https',
         params = {},
+        method = {},
     }
 })
 r = mw.call(data, req)
@@ -179,6 +184,7 @@ local req = require 'Spore.Request'.new({
         url_scheme = 'http',
         payload = 'c2&a4=2+q',
         params = {},
+        method = {},
     }
 })
 req.headers['content-type'] = 'application/x-www-form-urlencoded'

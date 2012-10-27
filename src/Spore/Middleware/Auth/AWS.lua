@@ -15,7 +15,6 @@ local crypto = require 'crypto'
 local digest = crypto.digest or crypto.evp.digest
 local hmac = crypto.hmac
 local request = require 'Spore.Protocols'.request
-local slurp = require 'Spore.Protocols'.slurp
 require 'Spore'.early_validate = false
 
 _ENV = nil
@@ -86,10 +85,6 @@ function m:call (req)
 
         local payload = spore.payload
         if payload then
-            if payload:sub(1, 1) == '@' then
-                local fname = payload:sub(2)
-                payload = slurp(fname)
-            end
             req.headers['content-length'] = payload:len()
             req.headers['content-type'] = req.headers['content-type'] or 'application/x-www-form-urlencoded'
             if spore.headers and spore.headers['Content-MD5'] == 'AWS' then

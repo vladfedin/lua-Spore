@@ -30,7 +30,7 @@ is( env.spore.params.border, 'border' )
 error_like( function () client:get_user_info{} end,
             "payload is required for method get_user_info" )
 
-error_like( function () client:get_user_info{ payload = '@file' } end,
+error_like( function () client:get_user_info{ payload = 'opaque data' } end,
             "user is required for method get_user_info" )
 
 local res = client:get_user_info{ user = 'joe', payload = 'OPAQUE' }
@@ -41,7 +41,7 @@ local res = client:get_info{ user = 'joe' }
 local env = res.request.env
 is( env.spore.params.user, 'joe' )
 
-error_like( function () client:get_info{ payload = '@file' } end,
+error_like( function () client:get_info{ payload = 'opaque data' } end,
             "payload is not expected for method get_info" )
 
 error_like( function () client:get_info{ mode = 'raw' } end,
@@ -53,7 +53,7 @@ lives_ok( function () client:get_info{ mode = 'raw' } end )
 Spore.errors = io.tmpfile()
 status = 404
 r, ex = pcall( function ()
-    local res = client:get_user_info{ payload = '@file', user = 'john' }
+    local res = client:get_user_info{ payload = 'opaque data', user = 'john' }
 end)
 is( r, false, "exception" )
 is( tostring(ex), "404 not expected", "404 not expected" )

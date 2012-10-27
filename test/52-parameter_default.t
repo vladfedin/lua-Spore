@@ -31,7 +31,7 @@ local r = client:get_info{ user = 'Joe', border = 1 }
 is( r.request.env.spore.params.user, 'Joe' )
 is( r.request.env.spore.params.border, 1 )
 
-local r = client:get_user_info{ payload = '@file' }
+local r = client:get_user_info{ payload = 'opaque data' }
 is( r.request.env.spore.params.user, 'John' )
 is( r.request.env.spore.params.border, 0 )
 

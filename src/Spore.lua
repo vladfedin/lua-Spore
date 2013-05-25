@@ -163,12 +163,12 @@ local function wrap (self, name, method, args)
     return response
 end
 
+local mt = {
+    __index = core,
+}
 local function new ()
     local obj = {
         middlewares = {}
-    }
-    local mt = {
-        __index = core,
     }
     return setmetatable(obj, mt)
 end
@@ -264,7 +264,7 @@ m.new_from_spec = new_from_spec
 m._NAME = ...
 m._VERSION = version
 m._DESCRIPTION = "lua-Spore : a generic ReST client"
-m._COPYRIGHT = "Copyright (c) 2010-2012 Francois Perrad"
+m._COPYRIGHT = "Copyright (c) 2010-2013 Francois Perrad"
 return m
 --
 -- This library is licensed under the terms of the MIT/X11 license,

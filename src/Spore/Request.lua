@@ -13,6 +13,7 @@ local url = require 'socket.url'
 
 _ENV = nil
 local m = {}
+local mt = { __index = m }
 
 m.redirect = false
 
@@ -24,9 +25,7 @@ function m.new (env)
             ['user-agent'] = env.HTTP_USER_AGENT,
         },
     }
-    return setmetatable(obj, {
-        __index = m,
-    })
+    return setmetatable(obj, mt)
 end
 
 local function escape (s)
@@ -134,7 +133,7 @@ end
 
 return m
 --
--- Copyright (c) 2010-2012 Francois Perrad
+-- Copyright (c) 2010-2013 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

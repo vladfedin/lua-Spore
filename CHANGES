@@ -1,6 +1,6 @@
 Revision history for lua-Spore
 
-0.3.0
+0.3.0  Sat May 25 10:30:00 2013
 	- SPORE 1.1 : add compatibility with URI Template (RFC 6570)
 	- SPORE 1.1 : handle parameter 'payload' from specification
 	- use WADL document as Spore specification

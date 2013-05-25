@@ -1,7 +1,7 @@
 package = 'lua-Spore'
 version = '@version@-@rev@'
 source = {
-    url = 'http://cloud.github.com/downloads/fperrad/lua-Spore/lua-spore-@version@.tar.gz',
+    url = 'http://sites.google.com/site/fperrad/lua-spore-@version@.tar.gz',
     md5 = '@md5@',
     dir = 'lua-Spore-@version@',
 }

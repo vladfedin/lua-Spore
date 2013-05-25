@@ -11,7 +11,7 @@ BINDIR  := $(DPREFIX)/bin
 LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
 INSTALL := install
 
-all: dist.cmake
+all:
 	@echo "Nothing to build here, you can just make install"
 
 install:

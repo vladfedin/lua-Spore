@@ -2,6 +2,10 @@
 
 require 'Test.More'
 
+if not pcall(require, 'lxp.lom') then
+    skip_all 'no xml'
+end
+
 plan(4)
 
 local m = require 'Spore.WADL'

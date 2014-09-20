@@ -1,0 +1,40 @@
+language: c
+
+env:
+  - LUASUFFIX=5.1 LUAVER=5.1
+  - LUASUFFIX=5.2 LUAVER=5.2
+  - LUASUFFIX=jit LUAVER=5.1
+
+# Tool setup.
+install:
+  - sudo apt-get install -qq lua5.1 liblua5.1-0-dev
+  - sudo apt-get install -qq lua5.2 liblua5.2-dev
+  - sudo apt-get install -qq luajit
+  - sudo ln -s /usr/bin/luajit-2.0.0-beta9 /usr/bin/luajit
+  - sudo rm /usr/bin/lua
+  - sudo ln -s /usr/bin/lua$LUASUFFIX /usr/bin/lua
+  - lua -v
+  - git clone git://github.com/keplerproject/luarocks.git
+  - cd luarocks
+  - ./configure --lua-version=$LUAVER --lua-suffix=$LUASUFFIX
+  - make
+  - sudo make install
+  - cd ..
+  - sudo luarocks install lua-testmore
+  - sudo luarocks install lua-testlongstring
+  - sudo apt-get install -qq libssl-dev libexpat1-dev
+  - sudo luarocks install luasocket
+  - sudo luarocks install luasec
+  - sudo luarocks install luaexpat
+  - sudo luarocks install luajson
+  - sudo luarocks install lualogging
+  - sudo luarocks install luacrypto
+
+# Build and test.
+script:
+  - make LUA=lua$LUASUFFIX test
+
+branches:
+  only:
+    - master
+

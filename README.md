@@ -3,7 +3,8 @@ lua-Spore : a generic ReST client
 =================================
 
 [![Build Status](https://travis-ci.org/fperrad/lua-Spore.png)](https://travis-ci.org/fperrad/lua-Spore)
-[![Licence](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENSE)
+[![Coverage Status](https://coveralls.io/repos/fperrad/lua-Spore/badge.png?branch=master)](https://coveralls.io/r/fperrad/lua-Spore?branch=master)
+[![Licence](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](COPYRIGHT)
 
 Introduction
 ------------

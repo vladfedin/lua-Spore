@@ -4,13 +4,14 @@ require 'Test.More'
 
 plan(9)
 
+package.loaded['socket.http'] = {
+    request = function (req) return req, 200 end -- mock
+}
+
 if not require_ok 'Spore.Middleware.Parameter.Default' then
     skip_rest "no Spore.Middleware.Parameter.Default"
     os.exit()
 end
-
-local status = 200
-require 'Spore.Protocols'.request = function (req) return { request = req, status = status } end -- mock
 
 local Spore = require 'Spore'
 local client = Spore.new_from_spec('./test/api.json', {})

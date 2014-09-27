@@ -8,12 +8,9 @@ end
 
 plan(17)
 
-if not require_ok 'Spore.Middleware.Format.XML' then
-    skip_rest "no Spore.Middleware.Format.XML"
-    os.exit()
-end
-
-local body = [[
+package.loaded['socket.http'] = {
+    request = function (req)
+        req.sink([[
 <config logdir="/var/log/foo/" debugfile="/tmp/foo.debug">
   <server name="sahara" osname="solaris" osversion="2.6">
     <address>10.0.0.101</address>
@@ -27,8 +24,15 @@ local body = [[
     <address>10.0.1.103</address>
   </server>
 </config>
-]]
-require 'Spore.Protocols'.request = function (req) return { request = req, status = 200, body = body } end -- mock
+]])
+        return req, 200, {}
+    end -- mock
+}
+
+if not require_ok 'Spore.Middleware.Format.XML' then
+    skip_rest "no Spore.Middleware.Format.XML"
+    os.exit()
+end
 
 local Spore = require 'Spore'
 local client = Spore.new_from_spec('./test/api.json', {})

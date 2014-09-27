@@ -8,9 +8,9 @@ end
 
 plan(12)
 
-require 'Spore.Protocols'.request = function (req)
-    return { request = req, status = 200, headers = {} }
-end -- mock
+package.loaded['socket.http'] = {
+    request = function (req) return req, 200, {} end -- mock
+}
 
 if not require_ok 'Spore.Middleware.Auth.DataPublica' then
     skip_rest "no Spore.Middleware.Auth.DataPublica"

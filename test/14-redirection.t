@@ -4,8 +4,9 @@ require 'Test.More'
 
 plan(5)
 
-local response = { status = 222, headers = {} }
-require 'Spore.Protocols'.request = function (req) return response end -- mock
+package.loaded['socket.http'] = {
+    request = function (req) return req, 222, {} end -- mock
+}
 
 if not require_ok 'Spore.Middleware.Redirection' then
     skip_rest "no Spore.Middleware.Redirection"
@@ -25,4 +26,4 @@ is( r, res )
 
 local res = { status = 301, headers = { location = "http://next.org" } }
 r = cb(res)
-is( r, response )
+is( r.status, 222 )

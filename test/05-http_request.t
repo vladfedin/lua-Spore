@@ -1,26 +1,28 @@
 #!/usr/bin/env lua
 
-local Spore = require 'Spore'
-
 require 'Test.More'
 
 plan(5)
 
-local response = { status = 200 }
-require 'Spore.Protocols'.request = function (req) return response end -- mock
+local headers = {}
+package.loaded['socket.http'] = {
+    request = function (req) return req, 200, headers end -- mock
+}
+
+local Spore = require 'Spore'
 
 local client = Spore.new_from_spec './test/api.json'
 
 local res = client:get_user_info{ payload = 'opaque data', user = 'john' }
-is( res, response, "without middleware" )
+is( res.headers, headers, "without middleware" )
 
 client:enable 'Format.JSON'
 local res = client:get_user_info{ payload = 'opaque data', user = 'john' }
-is( res, response, "with middleware" )
+is( res.headers, headers, "with middleware" )
 
 client:enable 'UserAgent'
 local res = client:get_info()
-is( res, response, "with middleware" )
+is( res.headers, headers, "with middleware" )
 
 package.loaded['Spore.Middleware.Dummy'] = {}
 local dummy_resp = { status = 200 }

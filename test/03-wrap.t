@@ -2,7 +2,7 @@
 
 require 'Test.More'
 
-plan(42)
+plan(52)
 
 local status = 200
 package.loaded['socket.http'] = {
@@ -129,7 +129,44 @@ is( spore.payload.prm3, 'val3' )
 local res = client:action{ prm1 = 'action1', prm2 = 2, payload = 'this OPAQUE payload will be trashed' }
 local env = res.request.env
 is( res.request.url, 'http://services.org:9999/restapi/doit/action1' )
+is( res.request.headers['content-type'], 'application/x-www-form-urlencoded' )
+ok( res.request.headers['content-length'] )
 local spore = env.spore
 type_ok( spore.payload, 'table', 'payload')
 is( spore.payload.prm2, 2 )
 is( spore.payload.prm3, nil )
+
+local client = Spore.new_from_string([[
+{
+    "base_url" : "http://services.org:9999/restapi/",
+    "methods" : {
+        "action" : {
+            "path" : "/doit/:prm1",
+            "method" : "POST",
+            "required_params" : [
+                "prm1",
+                "prm2"
+            ],
+            "optional_params" : [
+                "prm3",
+                "prm4"
+            ],
+            "form-data" : {
+                "form2": "g(:prm2)",
+                "form3": "h(:prm3)"
+            },
+        }
+    }
+}
+]])
+type_ok( client, 'table', "form_data")
+local res = client:action{ prm1 = 'action1', prm2 = 2, prm3 = 'val3', prm4 = 'val4' }
+local env = res.request.env
+is( env.PATH_INFO, '/restapi/doit/action1' )
+is( res.request.url, 'http://services.org:9999/restapi/doit/action1?prm4=val4' )
+like( res.request.headers['content-type'], '^multipart/form%-data; boundary=' )
+ok( res.request.headers['content-length'] )
+local spore = env.spore
+type_ok( spore.form_data, 'table', 'form_data')
+is( spore.form_data.form2, 'g(2)' )
+is( spore.form_data.form3, 'h(val3)' )

@@ -5,7 +5,7 @@ version = "0.3.0"
 desc = "a generic ReST client"
 author = "Francois Perrad"
 license = "MIT/X11"
-url = "http://fperrad.github.com/lua-Spore/"
+url = "http://fperrad.github.io/lua-Spore/"
 maintainer = "Francois Perrad"
 
 depends = {

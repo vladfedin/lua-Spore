@@ -5,8 +5,7 @@
 local pcall = pcall
 local type = type
 local raises = require 'Spore'.raises
-require 'yaml'
-local yaml = yaml
+local yaml = require 'lyaml'
 
 
 _ENV = nil
@@ -15,7 +14,7 @@ local m = {}
 function m:call (req)
     local spore = req.env.spore
     if spore.payload and type(spore.payload) == 'table' then
-        spore.payload = yaml.dump(spore.payload)
+        spore.payload = yaml.dump({ spore.payload })
         req.headers['content-type'] = 'text/x-yaml'
     end
     req.headers['accept'] = 'text/x-yaml'
@@ -40,7 +39,7 @@ end
 
 return m
 --
--- Copyright (c) 2010-2011 Francois Perrad
+-- Copyright (c) 2010-2014 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

@@ -2,11 +2,11 @@
 
 require 'Test.More'
 
-if not pcall(require, 'yaml') then
+if not pcall(require, 'lyaml') then
     skip_all 'no yaml'
 end
 
-plan(13)
+plan(14)
 
 if not require_ok 'Spore.Middleware.Format.YAML' then
     skip_rest "no Spore.Middleware.Format.YAML"
@@ -25,8 +25,9 @@ local req = require 'Spore.Request'.new(env)
 local cb = mw.call({}, req)
 type_ok( cb, 'function', "returns a function" )
 is( env.spore.payload, [[
---- 
+---
 lua: table
+...
 ]], "payload encoded")
 
 local resp = {
@@ -54,11 +55,12 @@ INV?LID
 env.spore.errors = io.tmpfile()
 local r, ex = pcall(cb, resp)
 nok( r )
-like( ex.reason, "syntax error" )
+like( ex.reason, "could not find expected" )
 env.spore.errors:seek'set'
 local msg = env.spore.errors:read '*l'
-like( msg, "syntax error", "syntax error" )
+like( msg, "could not find expected", "could not find expected" )
 
-local msg = env.spore.errors:read '*a'
-is( msg, resp.body .. "\n")
+local msg = msg .. env.spore.errors:read '*a'
+like( msg, [[username : "john"]] )
+like( msg, [[INV%?LID]] )
 

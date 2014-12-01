@@ -23,13 +23,14 @@ install:
   - sudo luarocks install luacov-coveralls
   - sudo luarocks install lua-testmore
   - sudo luarocks install lua-testlongstring
-  - sudo apt-get install -qq libssl-dev libexpat1-dev
+  - sudo apt-get install -qq libssl-dev libexpat1-dev libyaml-dev
   - sudo luarocks install luasocket
   - sudo luarocks install luasec
   - sudo luarocks install luaexpat
   - sudo luarocks install luajson
   - sudo luarocks install lualogging
   - sudo luarocks install luacrypto
+  - sudo luarocks install lyaml
 
 # Build and test.
 script:

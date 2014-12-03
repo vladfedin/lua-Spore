@@ -6,7 +6,7 @@ if not pcall(require, 'lxp.lom') then
     skip_all 'no xml'
 end
 
-plan(8)
+plan(12)
 
 local m = require 'Spore.WADL'
 type_ok( m, 'table', "Spore.WADL" )
@@ -37,3 +37,7 @@ type_ok( meth, 'table' )
 is( meth.base_url, 'http://services.org:9999/restapi/' )
 is( meth.path, 'show' )
 is( meth.method, 'GET' )
+is( #meth.required_params, 1 )
+is( meth.required_params[1], 'user' )
+is( #meth.optional_params, 1 )
+is( meth.optional_params[1], 'border' )

@@ -45,8 +45,8 @@ end, "no HTTP_PROXY", "no HTTP_PROXY" )
 
 os.getenv = function () return 'http://john:s3kr3t@proxy.myorg:8080' end --mock
 
-local r = client:get_info()
+r = client:get_info()
 is( r.body, 'dummy' )
 
-local r = client:get_info()
+r = client:get_info()
 is( r.body, 'dummy' )

@@ -128,6 +128,7 @@ test_eg:
 
 luacheck:
 	luacheck --std=max --no-unused-args src
+	luacheck --std=min --no-unused-args --config .test.luacheckrc test/*.t
 
 coverage:
 	rm -f ./luacov.stats.out ./luacov.report.out

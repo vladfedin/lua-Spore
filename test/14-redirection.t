@@ -21,9 +21,9 @@ local cb = mw.call( {}, req )
 type_ok( cb, 'function' )
 
 local res = { status = 200, headers = {} }
-r = cb(res)
+local r = cb(res)
 is( r, res )
 
-local res = { status = 301, headers = { location = "http://next.org" } }
+res = { status = 301, headers = { location = "http://next.org" } }
 r = cb(res)
 is( r.status, 222 )

@@ -13,7 +13,6 @@ if not require_ok 'Spore.Middleware.Format.XML' then
     skip_rest "no Spore.Middleware.Format.XML"
     os.exit()
 end
-local m = require 'Spore.Middleware.Format.XML'
 local xml = require 'Spore.XML'
 local options = { indent = '  ' }
 
@@ -107,7 +106,7 @@ is_string( xml.dump({ root = { attr1= 1, outer = { attr2 = 2, inner = { attr3 = 
 ]] )
 
 
-local options = { indent = '  ', key_attr = { elt = 'id' } }
+options = { indent = '  ', key_attr = { elt = 'id' } }
 
 local res = xml.dump({
     root = {
@@ -132,7 +131,7 @@ contains_string( res, [[
 ]] )
 like_string( res, "</elt>\n</root>\n$" )
 
-local res = xml.dump({
+res = xml.dump({
     root = {
         attr1= 1,
         elt = {

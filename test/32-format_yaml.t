@@ -60,7 +60,7 @@ env.spore.errors:seek'set'
 local msg = env.spore.errors:read '*l'
 like( msg, "could not find expected", "could not find expected" )
 
-local msg = msg .. env.spore.errors:read '*a'
+msg = msg .. env.spore.errors:read '*a'
 like( msg, [[username : "john"]] )
 like( msg, [[INV%?LID]] )
 

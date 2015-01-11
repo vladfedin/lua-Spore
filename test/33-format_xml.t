@@ -60,8 +60,8 @@ like_string( env.spore.payload, "</server></config>$" )
 
 
 env.spore.payload = payload
-local req = require 'Spore.Request'.new(env)
-local cb = mw.call({ indent = '  ', key_attr = { server = 'name' } }, req)
+req = require 'Spore.Request'.new(env)
+cb = mw.call({ indent = '  ', key_attr = { server = 'name' } }, req)
 like_string( env.spore.payload, "^<config ", "payload encoded with options" )
 contains_string( env.spore.payload, [[ logdir="/var/log/foo/"]] )
 contains_string( env.spore.payload, [[ debugfile="/tmp/foo.debug"]] )
@@ -112,5 +112,5 @@ env.spore.errors:seek'set'
 local msg = env.spore.errors:read '*l'
 is( msg, "not well-formed (invalid token)", "Invalid XML" )
 
-local msg = env.spore.errors:read '*a'
+msg = env.spore.errors:read '*a'
 is( msg, resp.body .. "\n")

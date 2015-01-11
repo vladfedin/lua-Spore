@@ -53,7 +53,7 @@ is( r.body.config.server.gobi.address[1], "10.0.0.102" )
 
 client:reset_middlewares()
 client:enable 'Format.XML'
-local r = client:get_info()
+r = client:get_info()
 is( #r.body.config, 0, "without option" )
 is( r.body.config.logdir, "/var/log/foo/" )
 is( r.body.config.debugfile, "/tmp/foo.debug" )

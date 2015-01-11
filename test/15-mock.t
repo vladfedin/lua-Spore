@@ -26,7 +26,7 @@ local server = {
 
     '/show',
     function (req)
-        uri = url.parse(req.url)
+        local uri = url.parse(req.url)
         return {
             status = 200,
             headers = {},
@@ -41,7 +41,7 @@ local r = client:get_info{ user = 'unknown' }
 is( r.status, 200 )
 is( r.body, 'user=unknown' )
 
-local r = client:get_info{ user = 'John.Doe' }
+r = client:get_info{ user = 'John.Doe' }
 is( r.status, 404 )
 is( r.body, 'Who are you?' )
 

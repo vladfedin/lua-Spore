@@ -204,7 +204,7 @@ Spore.methname_modifier = function (name)
     local lowerCamelCase = name:gsub('_(%w)', function (c) return c:upper() end)
     return lowerCamelCase
 end
-local client = Spore.new_from_string([[
+client = Spore.new_from_string([[
 {
     base_url : "http://services.org/restapi/",
     methods : {
@@ -240,7 +240,7 @@ require 'Spore.Protocols'.request = function (req)
     }
 end -- mock
 
-local client = Spore.new_from_spec 'http://local.dummy.org/spec.json'
+client = Spore.new_from_spec 'http://local.dummy.org/spec.json'
 type_ok( client, 'table' )
 type_ok( client.enable, 'function' )
 type_ok( client.get_info, 'function' )

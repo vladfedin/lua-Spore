@@ -16,7 +16,7 @@ local req = require 'Spore.Request'.new({ spore = { params = { prm1 = 0 } }})
 type_ok( req, 'table', "Spore.Request.new" )
 is( req.env.spore.params.prm1, 0 )
 
-local r = mw.call( {
+local _ = mw.call( {
     prm1 = 1,
     prm2 = 2,
 }, req )

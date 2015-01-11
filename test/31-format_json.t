@@ -55,7 +55,7 @@ like( ex.reason, "unexpected character", "Invalid JSON data" )
 env.spore.errors:seek'set'
 local msg = env.spore.errors:read '*l'
 like( msg, "unexpected character", "Invalid JSON data" )
-local msg = env.spore.errors:read '*l'
+local _ = env.spore.errors:read '*l'
 
-local msg = env.spore.errors:read '*a'
+msg = env.spore.errors:read '*a'
 is( msg, resp.body .. "\n")

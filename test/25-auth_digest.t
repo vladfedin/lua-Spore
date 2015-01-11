@@ -73,12 +73,12 @@ is( r, response )
 
 
 mw.generate_nonce = old_generate_nonce
-local data = {
+data = {
     username = 'Mufasa',
     password = 'Circle Of Life',
 }
 cb = mw.call(data, req)
-r = cb{
+local _ = cb{
     status = 401,
     headers = {
         ['www-authenticate'] = [[Digest
@@ -98,7 +98,7 @@ error_like( function ()
         password = 'Circle Of Life',
     }
     local cb = mw.call(data, req)
-    local r = cb{
+    local _ = cb{
         status = 401,
         headers = {
             ['www-authenticate'] = [[Digest qop="auth-int", nonce="dcd98b7102dd2f0e8b11d0f600bfb0c093"]]
@@ -112,7 +112,7 @@ error_like( function ()
         password = 'Circle Of Life',
     }
     local cb = mw.call(data, req)
-    local r = cb{
+    local _ = cb{
         status = 401,
         headers = {
             ['www-authenticate'] = [[Digest algorithm="MD5-sess", qop="auth", nonce="dcd98b7102dd2f0e8b11d0f600bfb0c093"]]

@@ -126,6 +126,9 @@ test:
 test_eg:
 	prove --exec=$(LUA) ./eg/*.lua
 
+luacheck:
+	luacheck --std=max --no-unused-args src
+
 coverage:
 	rm -f ./luacov.stats.out ./luacov.report.out
 	-prove --exec="$(LUA) -lluacov" ./test/*.t

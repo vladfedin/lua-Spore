@@ -21,6 +21,7 @@ install:
   - sudo make install
   - cd ..
   - sudo luarocks install luacov-coveralls
+  - sudo luarocks install luacheck
   - sudo luarocks install lua-testmore
   - sudo luarocks install lua-testlongstring
   - sudo apt-get install -qq libssl-dev libexpat1-dev libyaml-dev
@@ -34,6 +35,7 @@ install:
 
 # Build and test.
 script:
+  - make luacheck
   - make LUA=lua$LUASUFFIX coveralls
 
 branches:

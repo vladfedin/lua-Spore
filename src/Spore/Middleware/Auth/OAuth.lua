@@ -7,7 +7,6 @@ local pairs = pairs
 local tostring = tostring
 local random = require 'math'.random
 local time = require 'os'.time
-local string = require 'string'
 local tconcat = require 'table'.concat
 local tsort = require 'table'.sort
 local digest = require 'crypto'.hmac.digest

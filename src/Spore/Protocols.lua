@@ -131,7 +131,7 @@ local function request (req)
             spore.debug:write(k, ": ", v, "\n")
         end
     end
-    local r, status, headers, line = prot.request(req)
+    local _, status, headers, line = prot.request(req)
     if spore.debug then
         spore.debug:write(line or status, "\n")
     end

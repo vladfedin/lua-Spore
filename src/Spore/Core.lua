@@ -6,7 +6,6 @@
 local assert = assert
 local require = require
 local type = type
-local ltn12 = require 'ltn12'
 local Request = require 'Spore.Request'
 local Protocols = require 'Spore.Protocols'
 
@@ -48,7 +47,6 @@ function m:reset_middlewares ()
 end
 
 function m:http_request (env)
-    local spore = env.spore
     local req = Request.new(env)
     local callbacks = {}
     local response

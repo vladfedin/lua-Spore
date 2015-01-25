@@ -1,4 +1,5 @@
-globals = {
+codes = true
+read_globals = {
     -- Test.More
     'plan',
     'done_testing',
@@ -27,8 +28,6 @@ globals = {
     'todo_skip',
     'skip_rest',
     'todo',
-    -- Spore
-    'Spore',
     -- Test.LongString
     'is_string',
     'is_string_nows',
@@ -37,3 +36,9 @@ globals = {
     'contains_string',
     'lacks_string',
 }
+globals = {
+    -- Spore
+    'Spore',
+}
+ignore = { '212/req', '212/self' }
+files['test/41-proxy_basic.t'].ignore = { '122/os' }

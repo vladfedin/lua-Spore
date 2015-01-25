@@ -20,7 +20,7 @@ local n = 1000000
 if package.loaded['luacov'] then
     n = n / 200
 end
-for i = 1, n do end
+for _ = 1, n do --[[no op]] end
 local res = { headers = {} }
 is( res, cb(res) )
 local header = res.headers['x-spore-runtime']

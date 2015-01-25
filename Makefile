@@ -127,8 +127,8 @@ test_eg:
 	prove --exec=$(LUA) ./eg/*.lua
 
 luacheck:
-	luacheck --std=max --no-unused-args src
-	luacheck --std=min --no-unused-args --config .test.luacheckrc test/*.t
+	luacheck --std=max --codes src --ignore 212 --ignore 213 --ignore 512
+	luacheck --std=min --config .test.luacheckrc test/*.t
 
 coverage:
 	rm -f ./luacov.stats.out ./luacov.report.out

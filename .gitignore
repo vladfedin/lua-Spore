@@ -2,6 +2,7 @@
 /MANIFEST
 /*.tar
 /*.tar.gz
+/*.src.rock
 /*.patch
 /*.bak
 /*.html

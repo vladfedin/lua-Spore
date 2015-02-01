@@ -1,6 +1,6 @@
 Revision history for lua-Spore
 
-0.3.1
+0.3.1  Sun Feb  1 14:30:00 2015
 	- switch to lyaml which works with Lua 5.2
 
 0.3.0  Sat May 25 10:30:00 2013

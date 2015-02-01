@@ -27,8 +27,8 @@ dependencies = {
 --    'lyaml >= 5',               -- libyaml-dev
 --    'lualogging >= 1.1.4',
 --    'luacrypto >= 0.2.0',
-    'lua-testmore >= 0.3.0',
-    'lua-testlongstring >= 0.2.0',
+--    'lua-testmore >= 0.3.0',            -- test only
+--    'lua-testlongstring >= 0.2.0',      -- test only
 }
 build = {
     type = 'builtin',

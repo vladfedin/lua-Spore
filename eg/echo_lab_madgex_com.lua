@@ -51,18 +51,18 @@ for k, v in r.body:gmatch'([^&=]+)=([^&=]*)&?' do keys[k] = v end
 assert(keys.oauth_token == 'requestkey')
 assert(keys.oauth_token_secret == 'requestsecret')
 
-local r = client:get_access_token()
+r = client:get_access_token()
 assert(#r.body > 0, r.status)
 print(r.body)
 for k, v in r.body:gmatch'([^&=]+)=([^&=]*)&?' do keys[k] = v end
 assert(keys.oauth_token == 'accesskey')
 assert(keys.oauth_token_secret == 'accesssecret')
 
-local r = client:echo{ method = 'foo bar', bar = 'baz' }
+r = client:echo{ method = 'foo bar', bar = 'baz' }
 print(r.body)
 assert(r.body == 'method=foo bar&bar=baz')
 
-local r = client:echo_p{ method = 'foo bar', bar = 'baz' }
+r = client:echo_p{ method = 'foo bar', bar = 'baz' }
 print(r.body)
 assert(r.body == 'method=foo bar&bar=baz')
 

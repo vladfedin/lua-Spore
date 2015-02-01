@@ -111,10 +111,8 @@ dist: $(TARBALL)
 rockspec: $(TARBALL)
 	perl -e '$(rockspec_pl)' rockspec.in > rockspec/lua-spore-$(VERSION)-$(REV).rockspec
 
-install-rock: clean dist rockspec
-	perl -pe 's{http://cloud.github.com/downloads/fperrad/lua-Spore/}{};' \
-	    rockspec/lua-spore-$(VERSION)-$(REV).rockspec > lua-spore-$(VERSION)-$(REV).rockspec
-	luarocks install lua-spore-$(VERSION)-$(REV).rockspec
+rock:
+	luarocks pack rockspec/lua-spore-$(VERSION)-$(REV).rockspec
 
 check: test
 
@@ -128,6 +126,9 @@ test_eg:
 
 luacheck:
 	luacheck --std=max --codes src --ignore 212 --ignore 213 --ignore 512
+	luacheck --std=min --codes src/discovery2spore
+	luacheck --std=min --codes src/wadl2spore
+	luacheck --std=min --codes eg
 	luacheck --std=min --config .test.luacheckrc test/*.t
 
 coverage:

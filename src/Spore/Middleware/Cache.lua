@@ -22,9 +22,9 @@ function m:call (req)
     if res then
         return res
     else
-        return  function (res)
-                    cache[key] = res
-                    return res
+        return  function (_res)
+                    cache[key] = _res
+                    return _res
                 end
     end
 end

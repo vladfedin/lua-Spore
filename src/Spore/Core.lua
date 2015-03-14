@@ -17,10 +17,10 @@ local function _enable_if (self, cond, mw, args)
     if not mw:match'^Spore%.Middleware%.' then
         mw = 'Spore.Middleware.' .. mw
     end
-    local m = require(mw)
-    assert(type(m.call) == 'function', mw .. " without a function call")
+    local _m = require(mw)
+    assert(type(_m.call) == 'function', mw .. " without a function call")
     local f = function (req)
-        return m.call(args, req)
+        return _m.call(args, req)
     end
     local t = self.middlewares; t[#t+1] = { cond = cond, code = f }
 end

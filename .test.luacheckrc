@@ -41,4 +41,5 @@ globals = {
     'Spore',
 }
 ignore = { '212/req', '212/self' }
+files['test/25-auth_digest.t'].ignore = { '431' }
 files['test/41-proxy_basic.t'].ignore = { '122/os' }

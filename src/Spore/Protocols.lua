@@ -102,10 +102,10 @@ local function request (req)
 
     local form_data = spore.form_data
     if form_data then
-        local content, boundary = _form_data(form_data)
+        local content, _boundary = _form_data(form_data)
         req.source = ltn12.source.string(content)
         req.headers['content-length'] = content:len()
-        req.headers['content-type'] = 'multipart/form-data; boundary=' .. boundary
+        req.headers['content-type'] = 'multipart/form-data; boundary=' .. _boundary
     end
 
     local payload = spore.payload

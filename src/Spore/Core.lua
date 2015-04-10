@@ -5,7 +5,9 @@
 
 local assert = assert
 local require = require
+local select = select
 local type = type
+local coroutine = require 'coroutine'
 local Request = require 'Spore.Request'
 local Protocols = require 'Spore.Protocols'
 
@@ -87,7 +89,7 @@ end
 
 return m
 --
--- Copyright (c) 2010-2013 Francois Perrad
+-- Copyright (c) 2010-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

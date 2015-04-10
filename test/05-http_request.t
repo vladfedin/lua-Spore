@@ -38,3 +38,23 @@ is( res, dummy_resp )
 dummy_resp.status = 599
 res = client:get_info()
 is( res, dummy_resp )
+
+local async_resp = { status = 201 }
+package.loaded['Spore.Middleware.Async'] = {}
+require('Spore.Middleware.Async').call = function(args, req)
+    local result
+    -- mock async task such as http request that runs this in callback
+    result = async_resp
+    coroutine.status(args.thread)
+    return coroutine.create(function() coroutine.yield(result) end)
+end
+
+local co = coroutine.create(function()
+    res = client:get_info()
+    is( res.status, async_resp.status )
+end)
+client:reset_middlewares()
+client:enable('Async', {thread = co})
+while coroutine.status(co) ~= 'dead' do
+    coroutine.resume(co)
+end

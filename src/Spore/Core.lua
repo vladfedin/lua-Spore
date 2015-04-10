@@ -20,7 +20,12 @@ local function _enable_if (self, cond, mw, args)
     local _m = require(mw)
     assert(type(_m.call) == 'function', mw .. " without a function call")
     local f = function (req)
-        return _m.call(args, req)
+        local res = _m.call(args, req)
+        if type(res) == 'thread' then
+            coroutine.yield()
+            res = select(2, coroutine.resume(res))
+        end
+        return res
     end
     local t = self.middlewares; t[#t+1] = { cond = cond, code = f }
 end

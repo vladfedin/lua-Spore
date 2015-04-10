@@ -1,5 +1,8 @@
 Revision history for lua-Spore
 
+0.3.2
+	- middleware could handle thread (see PR#21)
+
 0.3.1  Sun Feb  1 14:30:00 2015
 	- switch to lyaml which works with Lua 5.2
 

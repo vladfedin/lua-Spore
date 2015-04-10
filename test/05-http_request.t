@@ -2,7 +2,7 @@
 
 require 'Test.More'
 
-plan(5)
+plan(6)
 
 local headers = {}
 package.loaded['socket.http'] = {

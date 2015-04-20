@@ -125,7 +125,7 @@ test_eg:
 	prove --exec=$(LUA) ./eg/*.lua
 
 luacheck:
-	luacheck --std=max --codes src --ignore 212 --ignore 213 --ignore 512
+	luacheck --std=max --codes src --ignore 211/_ENV 212 213 512
 	luacheck --std=min --codes src/discovery2spore
 	luacheck --std=min --codes src/wadl2spore
 	luacheck --std=min --codes eg

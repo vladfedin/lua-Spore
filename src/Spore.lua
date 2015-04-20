@@ -18,7 +18,7 @@ local core = require 'Spore.Core'
 local slurp = require 'Spore.Protocols'.slurp
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 m.early_validate = true

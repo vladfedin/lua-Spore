@@ -12,7 +12,7 @@ local slurp = require 'Spore.Protocols'.slurp
 local decode = require 'json'.decode
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 local expected_status = {
@@ -105,7 +105,7 @@ end
 
 return m
 --
--- Copyright (c) 2011 Francois Perrad
+-- Copyright (c) 2011-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

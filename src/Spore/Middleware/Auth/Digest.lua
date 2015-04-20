@@ -11,7 +11,7 @@ local url = require 'socket.url'
 local Protocols = require 'Spore.Protocols'
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 --  see RFC-2617
@@ -103,7 +103,7 @@ end
 
 return m
 --
--- Copyright (c) 2011-2012 Francois Perrad
+-- Copyright (c) 2011-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

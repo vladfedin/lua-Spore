@@ -19,7 +19,7 @@ local tconcat = require 'table'.concat
 math.randomseed(os.time())
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 local r, https = pcall(require, 'ssl.https')
@@ -146,7 +146,7 @@ m.request = request
 
 return m
 --
--- Copyright (c) 2010-2013 Francois Perrad
+-- Copyright (c) 2010-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

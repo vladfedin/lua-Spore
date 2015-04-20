@@ -12,7 +12,7 @@ local Request = require 'Spore.Request'
 local Protocols = require 'Spore.Protocols'
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 local function _enable_if (self, cond, mw, args)

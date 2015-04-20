@@ -8,7 +8,7 @@ local mime = require 'mime'
 local url = require 'socket.url'
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 local function _env_proxy (scheme)
@@ -60,7 +60,7 @@ end
 
 return m
 --
--- Copyright (c) 2010 Francois Perrad
+-- Copyright (c) 2010-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

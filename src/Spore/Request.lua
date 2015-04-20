@@ -11,7 +11,7 @@ local tconcat = require 'table'.concat
 local url = require 'socket.url'
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 local mt = { __index = m }
 
@@ -133,7 +133,7 @@ end
 
 return m
 --
--- Copyright (c) 2010-2013 Francois Perrad
+-- Copyright (c) 2010-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

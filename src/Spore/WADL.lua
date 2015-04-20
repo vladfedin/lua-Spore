@@ -15,7 +15,7 @@ local new_from_lua = require 'Spore'.new_from_lua
 local slurp = require 'Spore.Protocols'.slurp
 local parse = require 'Spore.XML'.parse
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 local function convert_uri_template (uri)
@@ -124,7 +124,7 @@ end
 
 return m
 --
--- Copyright (c) 2012 Francois Perrad
+-- Copyright (c) 2012-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

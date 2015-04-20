@@ -6,7 +6,7 @@ local url = require 'socket.url'
 local Protocols = require 'Spore.Protocols'
 
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 m.max_redirect = 5
@@ -45,7 +45,7 @@ end
 
 return m
 --
--- Copyright (c) 2010-2011 Francois Perrad
+-- Copyright (c) 2010-2015 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

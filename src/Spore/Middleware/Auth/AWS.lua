@@ -17,7 +17,7 @@ local hmac = crypto.hmac
 local request = require 'Spore.Protocols'.request
 require 'Spore'.early_validate = false
 
-_ENV = nil
+local _ENV = nil
 local m = {}
 
 function m:call (req)
@@ -103,7 +103,7 @@ end
 return m
 
 --
--- Copyright (c) 2011-2012 Francois Perrad
+-- Copyright (c) 2011-2015 Francois Perrad
 -- Copyright (c) 2011 LogicEditor.com: Alexander Gladysh, Vladimir Fedin
 --
 -- This library is licensed under the terms of the MIT/X11 license,

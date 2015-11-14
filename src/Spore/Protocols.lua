@@ -118,9 +118,13 @@ local function request (req)
         req.headers['content-type'] = req.headers['content-type'] or 'application/x-www-form-urlencoded'
     end
 
-    if req.method == 'POST' and not req.headers['content-length'] then
-        req.headers['content-length'] = 0
-    end
+	if req.method == 'POST' then
+		if req.body then
+			req.headers['content-length'] = #req.body
+		elseif not req.headers['content-length'] then
+			req.headers['content-length'] = 0
+		end
+	end
 
     local t = {}
     req.sink = ltn12.sink.table(t)
@@ -131,7 +135,7 @@ local function request (req)
             spore.debug:write(k, ": ", v, "\n")
         end
     end
-    local _, status, headers, line = prot.request(req)
+    local _, status, headers, line = prot.request(req, req.body)
     if spore.debug then
         spore.debug:write(line or status, "\n")
     end

@@ -7,6 +7,7 @@ local assert = assert
 local pairs = pairs
 local pcall = pcall
 local require = require
+local tostring = tostring
 local type = type
 local unpack = require 'table'.unpack or unpack
 local io = require 'io'
@@ -50,7 +51,7 @@ local function slurp (name)
             method = 'GET',
             url = name,
         }
-        assert(res.status == 200, res.status .. " not expected")
+        assert(res.status == 200, tostring(res.status) .. " not expected")
         return res.body
     end
 end

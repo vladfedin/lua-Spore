@@ -157,7 +157,7 @@ local function wrap (self, name, method, args)
                 spore.errors:write(req.method, " ", req.url, "\n")
                 spore.errors:write(status, "\n")
             end
-            raises(response, status .. ' not expected')
+            raises(response, tostring(status) .. ' not expected')
         end
     end
     return response

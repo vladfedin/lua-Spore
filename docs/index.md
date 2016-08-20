@@ -1,0 +1,49 @@
+
+## Overview
+
+lua-Spore is an implementation of
+[SPORE](http://github.com/SPORE/specifications)
+(Specification to a POrtable Rest Environment).
+
+## References
+
+Some specifications of service are available at
+[http://github.com/SPORE/api-description](http://github.com/SPORE/api-description).
+
+## Status
+
+lua-Spore is in beta stage.
+
+It's developed for Lua 5.1, 5.2 & 5.3.
+
+## Download
+
+lua-Spore source can be downloaded from
+[GitHub](http://github.com/fperrad/lua-Spore/releases/).
+
+## Installation
+
+lua-Spore is available via LuaRocks:
+
+    luarocks install lua-spore
+
+or manually (LuaSocket and LuaJSON required), with:
+
+    make install
+
+## Test
+
+The test suite requires the modules lua-TestMore
+[lua-TestMore](http://fperrad.github.io/lua-TestMore/)
+and [lua-TestLongString](http://fperrad.github.io/lua-TestLongString).
+
+    make test
+
+## Copyright and License
+
+Copyright © 2010-2015 François Perrad
+[![OpenHUB](http://www.openhub.net/accounts/4780/widgets/account_rank.gif)](http://www.openhub.net/accounts/4780?ref=Rank)
+[![LinkedIn](http://www.linkedin.com/img/webpromo/btn_liprofile_blue_80x15.gif)](http://www.linkedin.com/in/fperrad)
+
+This library is licensed under the terms of the MIT/X11 license,
+like Lua itself.

@@ -1,0 +1,12 @@
+site_name: lua-Spore
+site_description: a generic ReST client
+site_author: François Perrad
+repo_url: https://github.com/fperrad/lua-Spore
+pages:
+- Home: index.md
+- API:
+  - Spore: spore.md
+  - Spore.Middleware: middleware.md
+  - Spore.GoogleDiscovery: discovery.md
+  - Spore.WADL: wadl.md
+theme: mkdocs

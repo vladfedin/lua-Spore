@@ -1,7 +1,11 @@
 
-## Reference
+# Spore
 
-### Global Functions
+---
+
+# Reference
+
+## Global Functions
 
 #### new_from_spec( desc1, [desc2, ...][, { options }] )
 
@@ -101,7 +105,7 @@ local client = require 'Spore'.new_from_lua{
 local r = client:get_user_info{ user = 'John' }
 ```
 
-### Instance Methods
+## Instance Methods
 
 These methods are inherited from `Spore.Core`
 (so, do not use these name in API description).
@@ -129,7 +133,7 @@ Removes all middlewares.
 
 Never directly called.
 
-### Global Variables
+## Global Variables
 
 These variables allow to do some configuration.
 
@@ -158,9 +162,9 @@ require 'Spore'.methname_modifier = function (name)
 end
 ```
 
-## Examples
+# Examples
 
-### GitHub via http
+## GitHub via http
 
 ```lua
 local Spore = require 'Spore'
@@ -177,7 +181,7 @@ print(res.headers['x-runtime']) --> 126ms
 print(res.body.user.name)       --> Scott Chacon
 ```
 
-### GitHub via https
+## GitHub via https
 
 The HTTPS protocol requires
 [LuaSec](http://github.com/brunoos/luasec).
@@ -195,7 +199,7 @@ print(res.headers['x-runtime']) --> 126ms
 print(res.body.user.name)       --> Scott Chacon
 ```
 
-### CouchDB
+## CouchDB
 
 This example comes from the book
 [CouchDB, The Definitif Guide](http://guide.couchdb.org/draft/api.html).
@@ -322,7 +326,7 @@ for k, v in pairs(r.body._attachments) do
 end
 ```
 
-### with Google & OAuth 1.0
+## with Google & OAuth 1.0
 
 This example uses the service Google URL Shortener.
 

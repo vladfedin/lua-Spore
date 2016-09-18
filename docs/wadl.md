@@ -1,5 +1,9 @@
 
-## Reference
+# Spore.WADL
+
+---
+
+# Reference
 
 This module allows to use a
 [Web Application Description Language](http://www.w3.org/Submission/wadl/)
@@ -9,7 +13,7 @@ __LIMITATION__ : cross-references are not supported.
 
 This module requires [LuaExpat](http://www.keplerproject.org/luaexpat/).
 
-### Global Functions
+## Global Functions
 
 #### new_from_wadl( desc, [, { options }] )
 
@@ -24,12 +28,12 @@ local wadl = require 'Spore.WADL'
 local client = wadl.new_from_wadl 'yahoo_news_search.wadl'
 ```
 
-### convert( wadl )
+#### convert( wadl )
 
 Converts a [WADL](http://www.w3.org/Submission/wadl/)
 document into a SPORE specification (represented by a `table`).
 
-### Utilities
+## Utilities
 
 #### wadl2spore url
 
@@ -39,6 +43,6 @@ Converts a WADL document into a Spore Specification. By this way, the SPORE spec
 $ wadl2spore yahoo_news_search.wadl > yahoo_news_search.json
 ```
 
-## Examples
+# Examples
 
 Not yet.

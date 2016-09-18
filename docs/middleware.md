@@ -1,5 +1,9 @@
 
-### Interface
+# Spore.Middleware
+
+---
+
+## Interface
 
 A middleware must use the namespace `Spore.Middleware`
 and follow this caveat:
@@ -14,7 +18,7 @@ end
 return m
 ```
 
-### Spore.Middleware.Auth.AWS
+## Spore.Middleware.Auth.AWS
 
 This middleware implements the authentication for Amazon Web Services, see the
 [ref doc](http://docs.amazonwebservices.com/AmazonS3/latest/dev/index.html?RESTAuthentication.html).
@@ -37,7 +41,7 @@ client:enable('Auth.AWS', {
 })
 ```
 
-### Spore.Middleware.Auth.Basic
+## Spore.Middleware.Auth.Basic
 
 This middleware adds a header `authorization` in the request.
 
@@ -48,7 +52,7 @@ client:enable('Auth.Basic', {
 })
 ```
 
-### Spore.Middleware.Auth.Bearer
+## Spore.Middleware.Auth.Bearer
 
 This middleware adds a header `authorization` in the request.
 
@@ -58,7 +62,7 @@ client:enable('Auth.Bearer', {
 })
 ```
 
-### Spore.Middleware.Auth.DataPublica
+## Spore.Middleware.Auth.DataPublica
 
 This middleware implements the authentication for
 [DataPublica](http://www.data-publica.com/content/api/).
@@ -77,7 +81,7 @@ client:enable('Auth.DataPublica', {
 })
 ```
 
-### Spore.Middleware.Auth.Digest
+## Spore.Middleware.Auth.Digest
 
 This middleware adds a header `authorization` in the request
 
@@ -93,7 +97,7 @@ client:enable('Auth.Digest', {
 })
 ```
 
-### Spore.Middleware.Auth.OAuth
+## Spore.Middleware.Auth.OAuth
 
 This middleware adds a header `authorization` in the request.
 
@@ -113,7 +117,7 @@ client:enable('Auth.OAuth', {
 })
 ```
 
-### Spore.Middleware.Format.JSON
+## Spore.Middleware.Format.JSON
 
 This middleware encodes the parameter `payload`
 and decodes the body of the response.
@@ -126,7 +130,7 @@ with the value `application/json`.
 client:enable 'Format.JSON'
 ```
 
-### Spore.Middleware.Format.XML
+## Spore.Middleware.Format.XML
 
 This middleware encodes the parameter `payload`
 and decodes the body of the response.
@@ -167,7 +171,7 @@ print(to_xml(payload, {
 }))
 ```
 
-### Spore.Middleware.Format.YAML
+## Spore.Middleware.Format.YAML
 
 This middleware encodes the parameter `payload`
 and decodes the body of the response.
@@ -183,7 +187,7 @@ This middleware requires
 client:enable 'Format.YAML'
 ```
 
-### Spore.Middleware.Parameter.Default
+## Spore.Middleware.Parameter.Default
 
 This middleware set some parameters with default value.
 
@@ -194,7 +198,7 @@ client:enable('Parameter.Default', {
 })
 ```
 
-### Spore.Middleware.Parameter.Force
+## Spore.Middleware.Parameter.Force
 
 This middleware forces some parameters.
 
@@ -205,7 +209,7 @@ client:enable('Parameter.Force', {
 })
 ```
 
-### Spore.Middleware.Proxy.Basic
+## Spore.Middleware.Proxy.Basic
 
 This middleware handles HTTP proxy.
 
@@ -221,7 +225,7 @@ client:enable('Proxy.Basic', {
 client:enable 'Proxy.Basic'     -- uses HTTP_PROXY=http://john:s3kr3t@proxy.myorg:8080
 ```
 
-### Spore.Middleware.Cache
+## Spore.Middleware.Cache
 
 This middleware supplies a local cache (implemented with a weak table).
 
@@ -231,7 +235,7 @@ client:enable 'Cache'
 
 Note: This middleware uses only URL as unique key.
 
-### Spore.Middleware.DoNotTrack
+## Spore.Middleware.DoNotTrack
 
 This middleware adds a header `x-do-not-track`
 with the value `1` in the request.
@@ -240,7 +244,7 @@ with the value `1` in the request.
 client:enable 'DoNotTrack'
 ```
 
-### Spore.Middleware.Logging
+## Spore.Middleware.Logging
 
 This middleware registers a logger in `env.sporex.logger`
 for use by others middlewares.
@@ -256,7 +260,7 @@ client:enable('Logging', {
 })
 ```
 
-### Spore.Middleware.Mock
+## Spore.Middleware.Mock
 
 This middleware allows to register a set of couple (condition, response).
 
@@ -271,7 +275,7 @@ rules = {
 client:enable('Mock', rules)
 ```
 
-### Spore.Middleware.Redirection
+## Spore.Middleware.Redirection
 
 This middleware handles the header `location` in the response.
 
@@ -279,7 +283,7 @@ This middleware handles the header `location` in the response.
 client:enable 'Redirection'
 ```
 
-### Spore.Middleware.Runtime
+## Spore.Middleware.Runtime
 
 This middleware adds a header `x-spore-runtime` (unit is seconds)
 in the response.
@@ -290,7 +294,7 @@ client:enable 'Runtime'
 print(response.headers['x-spore-runtime']
 ```
 
-### Spore.Middleware.UserAgent
+## Spore.Middleware.UserAgent
 
 This middleware overloads the header `useragent` in the request.
 

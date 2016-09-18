@@ -1,5 +1,9 @@
 
-## Reference
+# Spore.GoogleDiscovery
+
+---
+
+# Reference
 
 With this module, lua-Spore becomes a
 [Google APIs Client Library](http://code.google.com/apis/discovery/libraries.html)
@@ -7,7 +11,7 @@ for Lua.
 The list of supported APIs could be found
 [here](http://code.google.com/apis/explorer/).
 
-### Global Functions
+## Global Functions
 
 #### new_from_discovery( desc, [, { options }] )
 
@@ -32,19 +36,19 @@ local client = discovery.new_from_discovery { api = 'urlshortener', version = 'v
 Converts a [Google Discovery Document](http://code.google.com/apis/discovery/)
 into a SPORE specification (both are represented by a table).
 
-### Utilities
+## Utilities
 
 #### discovery2spore url
 
 Converts a Google Discovery Document into a SPORE specification. By this way, the SPORE specification could be edited/modified before use.
 
-```
+```sh
 $ discovery2spore https://www.googleapis.com/discovery/v1/apis/urlshortener/v1/rest > urlshortener.json
 ```
 
-## Examples
+# Examples
 
-### Translate "Hello World"
+## Translate "Hello World"
 
 ```lua
 local client = require 'Spore.GoogleDiscovery'.new_from_discovery{
@@ -61,7 +65,7 @@ for _, v in ipairs(r.body.data.translations) do
 end
 ```
 
-### The Discovery of Discovery
+## The Discovery of Discovery
 
 Retrieve the list of Google APIs which are described by a Discovery Document.
 
@@ -76,7 +80,7 @@ for _, item in ipairs(r.body.items) do
 end
 ```
 
-### URL Shortener
+## URL Shortener
 
 ```lua
 local client = require 'Spore.GoogleDiscovery'.new_from_discovery{

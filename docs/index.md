@@ -1,4 +1,8 @@
 
+# lua-Spore
+
+---
+
 ## Overview
 
 lua-Spore is an implementation of
@@ -25,11 +29,15 @@ lua-Spore source can be downloaded from
 
 lua-Spore is available via LuaRocks:
 
-    luarocks install lua-spore
+```sh
+luarocks install lua-spore
+```
 
 or manually (LuaSocket and LuaJSON required), with:
 
-    make install
+```sh
+make install
+```
 
 ## Test
 
@@ -37,11 +45,13 @@ The test suite requires the modules lua-TestMore
 [lua-TestMore](http://fperrad.github.io/lua-TestMore/)
 and [lua-TestLongString](http://fperrad.github.io/lua-TestLongString).
 
-    make test
+```sh
+make test
+```
 
 ## Copyright and License
 
-Copyright © 2010-2015 François Perrad
+Copyright &copy; 2010-2015 Fran&ccedil;ois Perrad
 [![OpenHUB](http://www.openhub.net/accounts/4780/widgets/account_rank.gif)](http://www.openhub.net/accounts/4780?ref=Rank)
 [![LinkedIn](http://www.linkedin.com/img/webpromo/btn_liprofile_blue_80x15.gif)](http://www.linkedin.com/in/fperrad)
 

@@ -10,3 +10,4 @@ pages:
   - Spore.GoogleDiscovery: discovery.md
   - Spore.WADL: wadl.md
 theme: mkdocs
+copyright: Copyright &copy; 2010-2015 Fran&ccedil;ois Perrad

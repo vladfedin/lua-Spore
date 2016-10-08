@@ -66,5 +66,5 @@ build = {
             'src/wadl2spore',
         }
     },
-    copy_directories = { 'doc', 'test' },
+    copy_directories = { 'docs', 'test' },
 }

@@ -57,12 +57,14 @@ build = {
         ['Spore.Middleware.UserAgent']          = 'src/Spore/Middleware/UserAgent.lua',
         ['Spore.Protocols']                     = 'src/Spore/Protocols.lua',
         ['Spore.Request']                       = 'src/Spore/Request.lua',
+        ['Spore.Swagger']                       = 'src/Spore/Swagger.lua',
         ['Spore.WADL']                          = 'src/Spore/WADL.lua',
         ['Spore.XML']                           = 'src/Spore/XML.lua',
     },
     install = {
         bin = {
             'src/discovery2spore',
+            'src/swagger2spore',
             'src/wadl2spore',
         }
     },

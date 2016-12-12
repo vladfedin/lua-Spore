@@ -4,6 +4,8 @@ Revision history for lua-Spore
 	- middleware could handle thread (see PR#21)
 	- fix POST with body (see PR#22)
 	- shadow _ENV
+	- use OpenAPI (Swagger 2.0) as Spore specification
+	- add swagger2spore utility
 
 0.3.1  Sun Feb  1 14:30:00 2015
 	- switch to lyaml which works with Lua 5.2

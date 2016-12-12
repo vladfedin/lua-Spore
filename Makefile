@@ -16,12 +16,14 @@ all:
 
 install:
 	$(INSTALL) -m 755 -D src/discovery2spore                        $(BINDIR)/discovery2spore
+	$(INSTALL) -m 755 -D src/swagger2spore                          $(BINDIR)/swagger2spore
 	$(INSTALL) -m 755 -D src/wadl2spore                             $(BINDIR)/wadl2spore
 	$(INSTALL) -m 644 -D src/Spore.lua                              $(LIBDIR)/Spore.lua
 	$(INSTALL) -m 644 -D src/Spore/Core.lua                         $(LIBDIR)/Spore/Core.lua
 	$(INSTALL) -m 644 -D src/Spore/GoogleDiscovery.lua              $(LIBDIR)/Spore/GoogleDiscovery.lua
 	$(INSTALL) -m 644 -D src/Spore/Protocols.lua                    $(LIBDIR)/Spore/Protocols.lua
 	$(INSTALL) -m 644 -D src/Spore/Request.lua                      $(LIBDIR)/Spore/Request.lua
+	$(INSTALL) -m 644 -D src/Spore/Swagger.lua                      $(LIBDIR)/Spore/Swagger.lua
 	$(INSTALL) -m 644 -D src/Spore/WADL.lua                         $(LIBDIR)/Spore/WADL.lua
 	$(INSTALL) -m 644 -D src/Spore/XML.lua                          $(LIBDIR)/Spore/XML.lua
 	$(INSTALL) -m 644 -D src/Spore/Middleware/Cache.lua             $(LIBDIR)/Spore/Middleware/Cache.lua
@@ -120,6 +122,7 @@ test_eg:
 luacheck:
 	luacheck --std=max --codes src --ignore 211/_ENV 212 213 512
 	luacheck --std=min --codes src/discovery2spore
+	luacheck --std=min --codes src/swagger2spore
 	luacheck --std=min --codes src/wadl2spore
 	luacheck --std=min --codes eg
 	luacheck --std=min --config .test.luacheckrc test/*.t

@@ -8,6 +8,7 @@ pages:
   - Spore: spore.md
   - Spore.Middleware: middleware.md
   - Spore.GoogleDiscovery: discovery.md
+  - Spore.Swagger: swagger.md
   - Spore.WADL: wadl.md
 theme: mkdocs
 copyright: Copyright &copy; 2010-2015 Fran&ccedil;ois Perrad

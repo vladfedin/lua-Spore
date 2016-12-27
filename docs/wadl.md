@@ -21,7 +21,7 @@ Instanciate a ReST client from a [WADL](http://www.w3.org/Submission/wadl/)
 document defined by an URL or a filename.
 
 The optional table `options` allows to overwrite some parameters
-of the description (see `new_from_spec`).
+of the description (see `Spore.new_from_spec`).
 
 ```lua
 local wadl = require 'Spore.WADL'

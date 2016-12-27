@@ -20,7 +20,7 @@ Instanciate a ReST client from a
 defined by an URL or a table with keys `api` and `version`.
 
 The optional table `options` allows to overwrite some parameters of the description
-(see `new_from_spec`).
+(see `Spore.new_from_spec`).
 
 ```lua
 local discovery = require 'Spore.GoogleDiscovery'
@@ -40,7 +40,8 @@ into a SPORE specification (both are represented by a table).
 
 #### discovery2spore url
 
-Converts a Google Discovery Document into a SPORE specification. By this way, the SPORE specification could be edited/modified before use.
+Converts a Google Discovery Document into a SPORE specification.
+By this way, the SPORE specification could be edited/modified before use.
 
 ```sh
 $ discovery2spore https://www.googleapis.com/discovery/v1/apis/urlshortener/v1/rest > urlshortener.json

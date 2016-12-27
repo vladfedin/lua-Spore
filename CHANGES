@@ -4,6 +4,7 @@ Revision history for lua-Spore
 	- middleware could handle thread (see PR#21)
 	- fix POST with body (see PR#22)
 	- shadow _ENV
+	- content-type in middlewares Format.* is exported and updatable
 	- use OpenAPI (Swagger 2.0) as Spore specification
 	- add swagger2spore utility
 

@@ -22,8 +22,7 @@ It's developed for Lua 5.1, 5.2 & 5.3.
 
 ## Download
 
-lua-Spore source can be downloaded from
-[GitHub](http://github.com/fperrad/lua-Spore/releases/).
+The sources are hosted on [GitHub](http://github.com/fperrad/lua-Spore).
 
 ## Installation
 
@@ -51,7 +50,7 @@ make test
 
 ## Copyright and License
 
-Copyright &copy; 2010-2015 Fran&ccedil;ois Perrad
+Copyright &copy; 2010-2016 Fran&ccedil;ois Perrad
 [![OpenHUB](http://www.openhub.net/accounts/4780/widgets/account_rank.gif)](http://www.openhub.net/accounts/4780?ref=Rank)
 [![LinkedIn](http://www.linkedin.com/img/webpromo/btn_liprofile_blue_80x15.gif)](http://www.linkedin.com/in/fperrad)
 

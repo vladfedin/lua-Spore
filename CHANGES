@@ -1,6 +1,6 @@
 Revision history for lua-Spore
 
-0.3.2
+0.3.2  Wed Dec 28 09:30:00 2016
 	- middleware could handle thread (see PR#21)
 	- fix POST with body (see PR#22)
 	- shadow _ENV

@@ -1,7 +1,7 @@
 package = 'lua-Spore'
 version = '@version@-@rev@'
 source = {
-    url = 'http://sites.google.com/site/fperrad/lua-spore-@version@.tar.gz',
+    url = 'http://github.com/fperrad/lua-Spore/raw/releases/lua-spore-@version@.tar.gz',
     md5 = '@md5@',
     dir = 'lua-Spore-@version@',
 }
@@ -14,7 +14,7 @@ description = {
         Some specifications of service are available at
         http://github.com/SPORE/api-description.
     ]],
-    homepage = 'http://fperrad.github.com/lua-Spore',
+    homepage = 'http://fperrad.github.io/lua-Spore/',
     maintainer = 'Francois Perrad',
     license = 'MIT/X11'
 }

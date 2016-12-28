@@ -8,14 +8,7 @@ end
 
 plan(12)
 
-local m = require 'Spore.WADL'
-type_ok( m, 'table', "Spore.WADL" )
-is( m, package.loaded['Spore.WADL'] )
-
-type_ok( m.new_from_wadl, 'function' )
-type_ok( m.convert, 'function' )
-
-local wadl = [[
+local doc = [[
 <?xml version="1.0"?>
 <application>
   <resources base="http://services.org:9999/restapi/">
@@ -31,7 +24,22 @@ local wadl = [[
   </resources>
 </application>
 ]]
-local spec = m.convert(wadl)
+require 'Spore.Protocols'.slurp = function ()
+    return doc
+end -- mock
+
+require 'Spore'.new_from_lua = function (t)
+    return t
+end --mock
+
+local m = require 'Spore.WADL'
+type_ok( m, 'table', "Spore.WADL" )
+is( m, package.loaded['Spore.WADL'] )
+
+type_ok( m.new_from_wadl, 'function' )
+type_ok( m.convert, 'function' )
+
+local spec = m.new_from_wadl('mock')
 local meth = spec.methods.get_info
 type_ok( meth, 'table' )
 is( meth.base_url, 'http://services.org:9999/restapi/' )

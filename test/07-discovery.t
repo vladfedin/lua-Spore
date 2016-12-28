@@ -1,18 +1,10 @@
 #!/usr/bin/env lua
 
 require 'Test.More'
-local decode = require 'json'.decode
 
 plan(12)
 
-local m = require 'Spore.GoogleDiscovery'
-type_ok( m, 'table', "Spore.GoogleDiscovery" )
-is( m, package.loaded['Spore.GoogleDiscovery'] )
-
-type_ok( m.new_from_discovery, 'function' )
-type_ok( m.convert, 'function' )
-
-local gdoc = decode [[
+local doc = [[
 {
   "title": "api",
   "version": "v1",
@@ -36,8 +28,22 @@ local gdoc = decode [[
   }
 }
 ]]
+require 'Spore.Protocols'.slurp = function ()
+    return doc
+end -- mock
 
-local spec = m.convert(gdoc)
+require 'Spore'.new_from_lua = function (t)
+    return t
+end --mock
+
+local m = require 'Spore.GoogleDiscovery'
+type_ok( m, 'table', "Spore.GoogleDiscovery" )
+is( m, package.loaded['Spore.GoogleDiscovery'] )
+
+type_ok( m.new_from_discovery, 'function' )
+type_ok( m.convert, 'function' )
+
+local spec = m.new_from_discovery('mock')
 is( spec.name, 'api' )
 is( spec.version, 'v1' )
 is( spec.description, 'api for unit test' )

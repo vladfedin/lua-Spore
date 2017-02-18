@@ -13,9 +13,9 @@ local unpack = require 'table'.unpack or unpack
 local io = require 'io'
 local math = require 'math'
 local string = require 'string'
-local ltn12 = require 'ltn12'
-local mime = require 'mime'
-local url = require 'socket.url'
+local ltn12 = require 'ltn12'           -- luasocket
+local mime = require 'mime'             -- luasocket
+local url = require 'socket.url'        -- luasocket
 local tconcat = require 'table'.concat
 math.randomseed(os.time())
 
@@ -23,13 +23,18 @@ math.randomseed(os.time())
 local _ENV = nil
 local m = {}
 
-local r, https = pcall(require, 'ssl.https')
+local r, http, https
+r, http = pcall(require, 'http.compat.socket')  -- lua-http
 if not r then
-    https = nil
+    http = nil
+    r, https = pcall(require, 'ssl.https')      -- luasec
+    if not r then
+        https = nil
+    end
 end
 local protocol = {
-    http    = require 'socket.http',
-    https   = https,
+    http    = http or require 'socket.http',
+    https   = http or https,
 }
 
 local function slurp (name)
@@ -151,7 +156,7 @@ m.request = request
 
 return m
 --
--- Copyright (c) 2010-2015 Francois Perrad
+-- Copyright (c) 2010-2017 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

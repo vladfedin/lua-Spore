@@ -39,7 +39,7 @@ install:
   - luarocks install luajson
   - luarocks install lualogging
   - luarocks install luacrypto
-  - luarocks install lyaml
+  - luarocks install lyaml 6.1.1
 
 script:
   - make luacheck

@@ -12,8 +12,8 @@ env:
   # - LUA="lua 5.3"       COMPAT=default  CFLAGS="-DLUA_FLOAT_TYPE=3"
   - LUA="luajit 2.0"    COMPAT=none     CFLAGS=""
   - LUA="luajit 2.0"    COMPAT=all      CFLAGS=""
-  - LUA="luajit 2.1"    COMPAT=none     CFLAGS=""
-  - LUA="luajit 2.1"    COMPAT=all      CFLAGS=""
+  # - LUA="luajit 2.1"    COMPAT=none     CFLAGS=""
+  # - LUA="luajit 2.1"    COMPAT=all      CFLAGS=""
 
 addons:
   apt:

@@ -1,6 +1,6 @@
 Revision history for lua-Spore
 
-0.3.3
+0.3.3  Sat Jan 20 21:30:00 2018
 	- optional support of lua-http (see issue#23)
 
 0.3.2  Wed Dec 28 09:30:00 2016

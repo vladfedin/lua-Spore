@@ -4,7 +4,7 @@ VERSION := $(shell cd src && $(LUA) -e "m = require [[Spore]]; print(m._VERSION)
 TARBALL := lua-spore-$(VERSION).tar.gz
 REV     := 1
 
-LUAVER  := 5.1
+LUAVER  := 5.3
 PREFIX  := /usr/local
 DPREFIX := $(DESTDIR)$(PREFIX)
 BINDIR  := $(DPREFIX)/bin

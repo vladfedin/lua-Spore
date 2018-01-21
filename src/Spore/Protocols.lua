@@ -156,7 +156,7 @@ m.request = request
 
 return m
 --
--- Copyright (c) 2010-2017 Francois Perrad
+-- Copyright (c) 2010-2018 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

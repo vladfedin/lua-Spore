@@ -160,7 +160,7 @@ end
 
 return m
 --
--- Copyright (c) 2016 Francois Perrad
+-- Copyright (c) 2016-2018 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

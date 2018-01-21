@@ -124,7 +124,7 @@ end
 
 return m
 --
--- Copyright (c) 2012-2015 Francois Perrad
+-- Copyright (c) 2012-2018 Francois Perrad
 --
 -- This library is licensed under the terms of the MIT/X11 license,
 -- like Lua itself.

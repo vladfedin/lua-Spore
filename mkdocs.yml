@@ -11,4 +11,4 @@ pages:
   - Spore.Swagger: swagger.md
   - Spore.WADL: wadl.md
 theme: mkdocs
-copyright: Copyright &copy; 2010-2016 Fran&ccedil;ois Perrad
+copyright: Copyright &copy; 2010-2018 Fran&ccedil;ois Perrad

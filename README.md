@@ -2,10 +2,6 @@
 lua-Spore : a generic ReST client
 =================================
 
-[![Build Status](https://travis-ci.org/fperrad/lua-Spore.png)](https://travis-ci.org/fperrad/lua-Spore)
-[![Coverage Status](https://coveralls.io/repos/fperrad/lua-Spore/badge.png?branch=master)](https://coveralls.io/r/fperrad/lua-Spore?branch=master)
-[![Licence](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](COPYRIGHT)
-
 Introduction
 ------------
 
@@ -20,8 +16,8 @@ Some specifications of service are available at
 Links
 -----
 
-The homepage is at [http://fperrad.github.io/lua-Spore](http://fperrad.github.io/lua-Spore),
-and the sources are hosted at [http://github.com/fperrad/lua-Spore](http://github.com/fperrad/lua-Spore).
+The homepage is at <https://fperrad.frama.io/lua-Spore>,
+and the sources are hosted at <https://framagit.org/fperrad/lua-Spore>.
 
 Copyright and License
 ---------------------

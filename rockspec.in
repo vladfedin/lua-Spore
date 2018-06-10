@@ -14,7 +14,7 @@ description = {
         Some specifications of service are available at
         http://github.com/SPORE/api-description.
     ]],
-    homepage = 'http://fperrad.frama.io/lua-Spore/',
+    homepage = 'https://fperrad.frama.io/lua-Spore/',
     maintainer = 'Francois Perrad',
     license = 'MIT/X11'
 }

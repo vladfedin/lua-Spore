@@ -1,7 +1,7 @@
 site_name: lua-Spore
 site_description: a generic ReST client
 site_author: François Perrad
-repo_url: https://github.com/fperrad/lua-Spore
+repo_url: https://framagit.org/fperrad/lua-Spore
 pages:
 - Home: index.md
 - API:

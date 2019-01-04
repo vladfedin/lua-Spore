@@ -1,6 +1,6 @@
 
 --
--- lua-Spore : <http://fperrad.github.com/lua-Spore>
+-- lua-Spore : <https://fperrad.frama.io/lua-Spore>
 --
 -- Web Application Description Language
 -- see http://www.w3.org/Submission/wadl/

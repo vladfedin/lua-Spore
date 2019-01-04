@@ -1,6 +1,6 @@
 
 --
--- lua-Spore : <http://fperrad.github.com/lua-Spore>
+-- lua-Spore : <https://fperrad.frama.io/lua-Spore>
 --
 
 local pairs = pairs

@@ -45,9 +45,6 @@ script:
   - make luacheck
   - make test
 
-after_success:
-  - make coveralls
-
 branches:
   only:
     - master

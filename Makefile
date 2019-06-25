@@ -133,7 +133,7 @@ check: test
 
 test:
 	LUA_PATH=";;$(CURDIR)/src/?.lua" \
-		prove --exec=$(LUA) test/*.t
+		prove --exec=$(LUA) test/*.lua
 
 test_eg:
 	LUA_PATH=";;$(CURDIR)/src/?.lua" \
@@ -145,14 +145,16 @@ luacheck:
 	luacheck --std=min --codes src/swagger2spore
 	luacheck --std=min --codes src/wadl2spore
 	luacheck --std=min --codes eg
-	luacheck --std=min --config .test.luacheckrc test/*.t
+	luacheck --std=min --config .test.luacheckrc test
 
 coverage:
 	rm -f luacov.*
 	-LUA_PATH=";;$(CURDIR)/src/?.lua" \
-		prove --exec="$(LUA) -lluacov" test/*.t
+		prove --exec="$(LUA) -lluacov" test/*.lua
 	luacov-console $(CURDIR)/src
 	luacov-console -s $(CURDIR)/src
+	luacov-console test
+	luacov-console -s test
 
 README.html: README.md
 	Markdown.pl README.md > README.html

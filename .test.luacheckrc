@@ -41,7 +41,7 @@ globals = {
     'Spore',
 }
 ignore = { '212/req', '212/self' }
-files['test/22-oauth.t'].ignore = { '631' }
-files['test/25-auth_digest.t'].ignore = { '431', '631' }
-files['test/33-format_xml.t'].ignore = { '631' }
-files['test/41-proxy_basic.t'].ignore = { '122/os' }
+files['test/22-oauth.lua'].ignore = { '631' }
+files['test/25-auth_digest.lua'].ignore = { '431', '631' }
+files['test/33-format_xml.lua'].ignore = { '631' }
+files['test/41-proxy_basic.lua'].ignore = { '122/os' }

@@ -1,5 +1,9 @@
 
+ifeq ($(wildcard bed),bed)
+LUA     := $(CURDIR)/bed/bin/lua
+else
 LUA     := lua
+endif
 VERSION := $(shell cd src && $(LUA) -e "m = require [[Spore]]; print(m._VERSION)")
 TARBALL := lua-spore-$(VERSION).tar.gz
 REV     := 1
@@ -10,6 +14,8 @@ DPREFIX := $(DESTDIR)$(PREFIX)
 BINDIR  := $(DPREFIX)/bin
 LIBDIR  := $(DPREFIX)/share/lua/$(LUAVER)
 INSTALL := install
+
+BED_OPTS:= --lua latest
 
 all:
 	@echo "Nothing to build here, you can just make install"
@@ -109,6 +115,20 @@ rockspec: $(TARBALL)
 rock:
 	luarocks pack rockspec/lua-spore-$(VERSION)-$(REV).rockspec
 
+bed:
+	hererocks bed $(BED_OPTS) --no-readline --luarocks latest --verbose
+	bed/bin/luarocks install lua-testmore
+	bed/bin/luarocks install lua-testlongstring
+	bed/bin/luarocks install luasocket
+	bed/bin/luarocks install luasec
+	bed/bin/luarocks install luaexpat
+	bed/bin/luarocks install luajson
+	bed/bin/luarocks install lualogging
+	bed/bin/luarocks install lyaml 6.1.1
+	bed/bin/luarocks install luacov
+	hererocks bed --show
+	bed/bin/luarocks list
+
 check: test
 
 export LUA_PATH=;;src/?.lua
@@ -145,6 +165,9 @@ pages:
 
 clean:
 	rm -f MANIFEST *.bak src/luacov.*.out *.rockspec README.html
+
+realclean: clean
+	rm -rf bed
 
 .PHONY: test rockspec CHANGES dist.info
 

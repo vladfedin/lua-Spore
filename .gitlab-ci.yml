@@ -1,7 +1,7 @@
-image: python:alpine
+image: python
 
 before_script:
-  - pip install mkdocs
+  - pip3 install mkdocs
 
 pages:
   script:

@@ -20,7 +20,7 @@ Some specifications of service are available at
 
 lua-Spore is in beta stage.
 
-It's developed for Lua 5.1, 5.2 & 5.3.
+It's developed for Lua 5.1, 5.2, 5.3 & 5.4.
 
 ## Download
 

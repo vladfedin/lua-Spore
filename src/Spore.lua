@@ -139,6 +139,9 @@ local function wrap (self, name, method, args)
         m.debug:write(name, " is deprecated\n")
     end
     local response = self:http_request(env)
+    if self.postprocess_response then
+        self:postprocess_response(response)
+    end
 
     local expected_status = method.expected_status
     if expected_status then

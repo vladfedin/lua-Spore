@@ -12,15 +12,9 @@ local slurp = require 'Spore.Protocols'.slurp
 local decode = require 'json'.decode
 local yaml_eval = require 'yaml'.eval
 
-local _ENV = nil
 local m = {}
 
 m.spore = '1.0'
-
-local function convert_uri_template (uri)
-    -- see RFC 6570
-    return uri:gsub('{([%w_]+)}', ':%1')
-end
 
 local ops = {
     get = true,

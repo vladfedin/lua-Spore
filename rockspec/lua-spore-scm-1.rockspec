@@ -24,6 +24,7 @@ dependencies = {
     'luajson >= 1.3',
 --    'luaexpat >= 1.1.0',        -- libexpat1-dev
 --    'lyaml >= 5',               -- libyaml-dev
+    'lua-yaml >= 1.2.1.gecf69cf',
 --    'lualogging >= 1.1.4',
 --    'luacrypto >= 0.2.0',
 --    'lua-testmore >= 0.3.0',            -- test only
@@ -57,6 +58,7 @@ build = {
         ['Spore.Protocols']                     = 'src/Spore/Protocols.lua',
         ['Spore.Request']                       = 'src/Spore/Request.lua',
         ['Spore.Swagger']                       = 'src/Spore/Swagger.lua',
+        ['Spore.OpenAPI']                       = 'src/Spore/OpenAPI.lua',
         ['Spore.WADL']                          = 'src/Spore/WADL.lua',
         ['Spore.XML']                           = 'src/Spore/XML.lua',
     },

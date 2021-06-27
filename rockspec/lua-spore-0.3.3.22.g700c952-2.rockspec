@@ -1,5 +1,5 @@
 package = 'lua-Spore'
-version = '0.3.3.22.g700c952-1'
+version = '0.3.3.22.g700c952-2'
 source = {
     url = 'git://github.com/logiceditor-com/lua-Spore.git',
     branch = "0.3.3.22.g700c952"

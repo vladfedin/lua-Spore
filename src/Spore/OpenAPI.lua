@@ -117,17 +117,22 @@ local function convert (doc, tag)
                             end
                         end
 
+                        if meth.requestBody then
+                            required_payload = true
+                        end
+
                         local expected_status
                         if not meth.responses.default then
                             expected_status = {}
                            for status in pairs(meth.responses) do
-                                expected_status[#expected_status+1] = tonumber(status)
+                                expected_status[#expected_status+1] =
+                                    tonumber(status)
                             end
                         end
 
-                        spore.methods[meth.operationId] = {
+                        spore.methods[path .. ':' .. op] = {
                             method = upper(op),
-                            path = (m.spore == '1.0') and convert_uri_template(path) or path,
+                            path = path,
                             headers = headers,
                             ['form-data'] = form_data,
                             required_params = required_params,
@@ -137,7 +142,10 @@ local function convert (doc, tag)
                             expected_status = expected_status,
                             deprecated = meth.deprecated,
                             authentication = meth.security and true or nil,
-                            description = meth.summary or meth.description,
+                            summary = meth.summary,
+                            description = meth.description,
+                            responses = meth.responses,
+                            request_body = meth.requestBody,
                         }
                     end
                 end

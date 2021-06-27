@@ -206,9 +206,29 @@ local function populate (obj, spec, opts)
             assert(not v['form-data'], "payload and form-data are exclusive")
             assert(not v.payload, "payload and required_payload|optional_payload are exclusive")
         end
-        obj[k] =  function (self, args)
-                      return wrap(self, k, v, args)
-                  end
+
+        local inner_methods = obj
+        local func_name = k
+        if k:sub(1, 1) == '/' then
+            local last_path_element
+            for path_element in v.path:gmatch('/([%w-]+)') do
+                if last_path_element then
+                    if inner_methods[last_path_element] == nil then
+                        inner_methods[last_path_element] = { }
+                    end
+                    inner_methods = inner_methods[last_path_element]
+                end
+
+                last_path_element = path_element:gsub('-', '_')
+            end
+
+            func_name = (v.method == 'POST' and '' or v.method:lower() .. '_')
+                .. last_path_element
+        end
+
+        inner_methods[func_name] = function (self, args)
+            return wrap(obj, k, v, args)
+        end
     end
 end
 

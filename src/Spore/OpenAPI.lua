@@ -10,7 +10,7 @@ local checktype = require 'Spore'.checktype
 local new_from_lua = require 'Spore'.new_from_lua
 local slurp = require 'Spore.Protocols'.slurp
 local decode = require 'json'.decode
-local yaml_eval = require 'yaml'.eval
+local lyaml = require 'lyaml'
 
 local m = {}
 
@@ -160,14 +160,11 @@ function m.new_from_open_api (api, opts, tag)
     local content = slurp(api)
 
     if api:sub(-5) == '.yaml' then
-        content = content:gsub('\r\n', '\n')
-        while content:find('\n\n') do
-            content = content:gsub('\n\n', '\n')
-        end
-        content = yaml_eval(content)
+        content = lyaml.load(content)
     else
         content = decode(content)
     end
+
     local converted_content = convert(content, tag)
     return new_from_lua(converted_content, opts), converted_content, content
 end

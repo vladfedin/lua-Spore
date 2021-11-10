@@ -124,7 +124,11 @@ local function convert (doc, tag)
                             end
                         end
 
-                        spore.methods[path .. ':' .. op] = {
+                        local method_path = (path .. '/' .. op)
+                          :gsub('{([^}]+)}', ':%1')
+                          :gsub('-', '_')
+
+                        spore.methods[method_path] = {
                             method = upper(op),
                             path = path,
                             headers = headers,

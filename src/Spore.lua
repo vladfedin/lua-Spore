@@ -17,7 +17,6 @@ local url = require 'socket.url'
 local core = require 'Spore.Core'
 local slurp = require 'Spore.Protocols'.slurp
 
-
 local _ENV = nil
 local m = {}
 
@@ -176,7 +175,7 @@ local function new ()
     return setmetatable(obj, mt)
 end
 
-local function populate (obj, spec, opts)
+local populate = function(obj, spec, opts)
     assert(spec.methods, "no method in spec")
     for k, v in pairs(spec.methods) do
         local methname_modifier = m.methname_modifier
@@ -207,26 +206,7 @@ local function populate (obj, spec, opts)
             assert(not v.payload, "payload and required_payload|optional_payload are exclusive")
         end
 
-        local inner_methods = obj
-        local func_name = k
-        if k:sub(1, 1) == '/' then
-            local last_path_element
-            for path_element in v.path:gmatch('/([%w-]+)') do
-                if last_path_element then
-                    if inner_methods[last_path_element] == nil then
-                        inner_methods[last_path_element] = { }
-                    end
-                    inner_methods = inner_methods[last_path_element]
-                end
-
-                last_path_element = path_element:gsub('-', '_')
-            end
-
-            func_name = (v.method == 'POST' and '' or v.method:lower() .. '_')
-                .. last_path_element
-        end
-
-        inner_methods[func_name] = function (self, args)
+        obj[k] = function (self, args)
             return wrap(obj, k, v, args)
         end
     end

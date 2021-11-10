@@ -154,8 +154,11 @@ function m.new_from_swagger (api, opts, tag)
     checktype('new_from_swagger', 1, api, 'string')
     checktype('new_from_swagger', 2, opts, 'table')
     checktype('new_from_swagger', 3, tag or '', 'string')
+
     local content = slurp(api)
-    return new_from_lua(convert(decode(content), tag), opts)
+    local converted_content = convert(decode(content), tag)
+
+    return new_from_lua(content, opts), converted_content, content
 end
 
 return m
